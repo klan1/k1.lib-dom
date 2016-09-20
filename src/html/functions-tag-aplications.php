@@ -44,22 +44,22 @@ function label_input_text_combo($field_name, $value, $label, $required = FALSE, 
         $required_class = "";
     }
     if ($label_link == TRUE) {
-        $a_object = new a_tag($label_link, $label);
+        $a_object = new a($label_link, $label);
         $a_object->set_attrib("class", "search-override-submit", TRUE);
-        $label = $a_object->generate_tag();
+        $label = $a_object->generate();
     }
 
-    $label_object = new html_classes\label_tag($label, $field_name, "right inline");
-    $input_object = new html_classes\input_tag("text", $field_name, $value, $required_class);
+    $label_object = new html_classes\label($label, $field_name, "right inline");
+    $input_object = new html_classes\input("text", $field_name, $value, $required_class);
 //    $input_object->set_attrib("required", (!empty($required_class)) ? TRUE : FALSE);
 
     if (!empty($error_msg)) {
         $input_object->set_attrib("class", "error", TRUE);
         $html_template = load_html_template("label_input_combo-error");
-        $html_code = sprintf($html_template, $label_object->generate_tag(), $input_object->generate_tag(), $error_msg);
+        $html_code = sprintf($html_template, $label_object->generate(), $input_object->generate(), $error_msg);
     } else {
         $html_template = load_html_template("label_input_combo");
-        $html_code = sprintf($html_template, $label_object->generate_tag(), $input_object->generate_tag());
+        $html_code = sprintf($html_template, $label_object->generate(), $input_object->generate());
     }
     return $html_code;
 }
@@ -77,7 +77,7 @@ function label_input_text_combo($field_name, $value, $label, $required = FALSE, 
 function label_text_combo($label, $value) {
 
 //    function \k1lib\html\input_label_combo(&$field_name, &$value, &$table_config_array, &$error_msg = "") {
-//    $label_object = new html_classes\label_tag($label, "", "right inline");
+//    $label_object = new html_classes\label($label, "", "right inline");
 
     $html_template = load_html_template("label-input-combo");
     $html_code = sprintf($html_template, $label, $value);
@@ -98,7 +98,7 @@ function label_text_combo($label, $value) {
 function label_text_combo_2columns($label, $value) {
 
 //    function \k1lib\html\input_label_combo(&$field_name, &$value, &$table_config_array, &$error_msg = "") {
-//    $label_object = new html_classes\label_tag($label, "", "right inline");
+//    $label_object = new html_classes\label($label, "", "right inline");
 
     $html_template = load_html_template("row-2-columns");
     $html_code = sprintf($html_template, $label, $value);
@@ -117,7 +117,7 @@ function label_text_combo_2columns($label, $value) {
  * @return html_classes\select_tag
  */
 function select_list_from_array($name, $data_array, $default_value = "", $allow_empty = FALSE, $class = "", $id = "") {
-    $select_object = new html_classes\select_tag($name);
+    $select_object = new html_classes\select($name);
     $select_object->set_attrib("class", $class, TRUE);
     $select_object->set_attrib("id", $id);
 
@@ -144,7 +144,7 @@ function table_from_array(&$data_array, $has_header = TRUE, $class = "", $id = "
         trigger_error("Array to build HTML table is empty", E_USER_NOTICE);
         return FALSE;
     }
-    $table_object = new html_classes\table_tag($class, $id);
+    $table_object = new html_classes\table($class, $id);
 
     foreach ($data_array as $row_actual_index => $row_data) {
         if ($has_header && ($row_actual_index === 0)) {
@@ -274,7 +274,7 @@ function get_link_button($linkTo, $label, $class = "", $id = "") {
             break;
     }
 
-    $button_object = new \k1lib\html\a_tag($linkTo, " " . $label, "_self", "Button", "button {$class}", $id);
+    $button_object = new \k1lib\html\a($linkTo, " " . $label, "_self", "Button", "button {$class}", $id);
     $button_object->set_attrib("class", "$button_icon", TRUE);
     $button_object->set_attrib("class", "$theme", TRUE);
     if ($js_confirm_dialog) {

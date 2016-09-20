@@ -21,4 +21,4 @@ $body->append_div("hello-world-class", "hello-world-id")->append_p("Hello world"
 $body->append_div("another-div")->set_value("A free text inside the DIV element");
 $body->get_element_by_id("hello-world-id")->append_p("With ID search object insert!");
 
-DOM::html()->generate(TRUE);
+echo DOM::generate();

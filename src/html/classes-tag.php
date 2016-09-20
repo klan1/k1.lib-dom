@@ -525,6 +525,10 @@ class DOM {
     static function html() {
         return self::$html;
     }
+    
+    static function generate() {
+        return $this->html()->generate();
+    }
 
 }
 
