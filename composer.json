@@ -1,0 +1,19 @@
+{
+    "name": "klan1/k1.lib-dom",
+    "description": "DOM Classes from K1.lib.",
+    "license": "Apache-2.0",
+    "type": "library",
+    "homepage": "https://github.com/klan1/k1.lib-dom",
+    "authors": [
+        {
+            "name": "Klan1 Network",
+            "homepage": "https://klan1.com/ref=k1.lib"
+        }
+    ],
+    "require": {
+        "php": "^5.6 | ^7.0"
+    },
+    "autoload": {
+        "files": ["src/init.php"]
+    }
+}
