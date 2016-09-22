@@ -6,10 +6,26 @@
 
 namespace k1lib\html;
 
+class tag_log {
+
+    static protected $log;
+
+    static function get_log() {
+        return self::$log;
+    }
+
+    static function log($log) {
+        self::$log .= $log . "\n";
+    }
+
+}
+
 /**
  * HTML Tag abstraction
  */
 class tag {
+
+    use append_shotcuts;
 
     /** @var String */
     protected $tag_name = NULL;
@@ -53,10 +69,42 @@ class tag {
     /** @var tag */
     protected $parent = null;
 
-    /**
-     * @var tag;
-     */
+    /** @var boolean */
+    static protected $use_log = false;
+
+    /** @var tag; */
     protected $linked_html_obj = null;
+
+    /**
+     * Constructor with $tag_name and $selfclosed options for beginning
+     * @param String $tag_name
+     * @param Boolean $selfclosed Is self closed as <tag /> or tag closed one <tag></tag>
+     */
+    function __construct($tag_name, $selfclosed = TRUE) {
+        if (!empty($tag_name) && is_string($tag_name)) {
+            $this->tag_name = $tag_name;
+        } else {
+            trigger_error("TAG has to be string", E_USER_WARNING);
+        }
+
+        if (is_bool($selfclosed)) {
+            $this->is_selfclosed = $selfclosed;
+        } else {
+            trigger_error("Self closed value has to be boolean", E_USER_WARNING);
+        }
+//            $this->set_attrib("class", "k1-{$tag_name}-object");
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] was created");
+        }
+    }
+
+    static function get_use_log() {
+        return self::$use_log;
+    }
+
+    static function set_use_log($use_log) {
+        self::$use_log = $use_log;
+    }
 
     /**
      * @return tag 
@@ -66,6 +114,9 @@ class tag {
     }
 
     function set_parent(tag $parent) {
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] is child of [{$parent->get_tag_name()}]");
+        }
         $this->parent = $parent;
     }
 
@@ -87,6 +138,9 @@ class tag {
             array_unshift($this->childs, $child_object);
         }
         $this->has_child = TRUE;
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] appends [{$child_object->get_tag_name()}]");
+        }
         return $child_object;
     }
 
@@ -104,6 +158,9 @@ class tag {
             array_unshift($this->childs_tail, $child_object);
         }
         $this->has_child = TRUE;
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] appends on tail of [{$child_object->get_tag_name()}]");
+        }
         return $child_object;
     }
 
@@ -121,6 +178,9 @@ class tag {
             array_unshift($this->childs_head, $child_object);
         }
         $this->has_child = TRUE;
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] appends on head of [{$child_object->get_tag_name()}]");
+        }
         return $child_object;
     }
 
@@ -130,7 +190,14 @@ class tag {
      * @return tag 
      */
     public function append_to($html_object) {
+        if (html::get_use_log()) {
+            tag_log::log("[{$html_object->get_tag_name()} will receive {$this->get_tag_name()}]");
+            html::set_use_log(FALSE);
+        }
         $html_object->append_child($this);
+        if (html::get_use_log()) {
+            html::set_use_log(TRUE);
+        }
         return $this;
     }
 
@@ -171,6 +238,10 @@ class tag {
                 $this->linked_html_obj->value = (($append === TRUE) && (!empty($this->linked_html_obj->value)) ) ? ($this->linked_html_obj->value . " " . $value) : ($value);
             }
         }
+
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] set value to: {$value}");
+        }
         return $this;
     }
 
@@ -180,26 +251,9 @@ class tag {
      */
     public function link_value_obj(tag $obj_to_link) {
         $this->linked_html_obj = $obj_to_link;
-    }
-
-    /**
-     * Constructor with $tag_name and $selfclosed options for beginning
-     * @param String $tag_name
-     * @param Boolean $selfclosed Is self closed as <tag /> or tag closed one <tag></tag>
-     */
-    function __construct($tag_name, $selfclosed = TRUE) {
-        if (!empty($tag_name) && is_string($tag_name)) {
-            $this->tag_name = $tag_name;
-        } else {
-            trigger_error("TAG has to be string", E_USER_WARNING);
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] is linked to [{$obj_to_link->get_tag_name()}]");
         }
-
-        if (is_bool($selfclosed)) {
-            $this->is_selfclosed = $selfclosed;
-        } else {
-            trigger_error("Self closed value has to be boolean", E_USER_WARNING);
-        }
-//            $this->set_attrib("class", "k1-{$tag_name}-object");
     }
 
     /**
@@ -232,27 +286,35 @@ class tag {
         } else {
             trigger_error("HTML ATTRIBUTE has to be string", E_USER_WARNING);
         }
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] new attrib: {$attribute}={$value}");
+        }
+
         return $this;
     }
 
     /**
      * Shortcut for $html->set_attrib("id",$id);
      * @param string $id
+     * @return tag
      */
     public function set_id($id) {
         if (!empty($id)) {
             $this->set_attrib("id", $id);
         }
+        return $this;
     }
 
     /**
      * Shortcut for $html->set_attrib("class",$class);
      * @param string $class
+     * @return tag
      */
     public function set_class($class) {
         if (!empty($class)) {
             $this->set_attrib("class", $class);
         }
+        return $this;
     }
 
     /**
@@ -369,6 +431,9 @@ class tag {
         }
 
         $this->tag_code = $this->pre_code . $html_code . $this->post_code;
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] is generated");
+        }
 
         if ($do_echo) {
             echo $this->tag_code;
@@ -392,6 +457,9 @@ class tag {
             $tabs = '';
         }
         $html_code = "{$tabs}</{$this->tag_name}>";
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] generated close tag");
+        }
 
         return $html_code;
     }
@@ -409,28 +477,31 @@ class tag {
      * @param string $id
      * @return tag
      */
-    public function get_element_by_id($id) {
-        $all_childs = $this->get_all_childs();
-        if (!empty($all_childs)) {
-            /**
-             * @var tag
-             */
+    public function get_element_by_id($id, $deep = 0) {
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] will SEARCH by ID='$id' on deep {$deep}");
+        }
+        if ($this->has_childs()) {
+            $all_childs = $this->get_all_childs();
+//            $child = new tag("dummy");
+            /** @var tag */
             foreach ($all_childs as $child) {
                 if ($child->get_attribute("id") == $id) {
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] has child [{$child->get_tag_name()}] with the ID='$id' and is returned");
+                    }
                     return $child;
                 } else {
                     if ($child->has_childs()) {
-                        $child_get_by_id_result = $child->get_element_by_id($id);
+                        $child_get_by_id_result = $child->get_element_by_id($id, $deep + 1);
                         if (!empty($child_get_by_id_result)) {
                             return $child_get_by_id_result;
                         }
                     }
                 }
             }
-            return NULL;
-        } else {
-            return FALSE;
         }
+        return FALSE;
     }
 
     /**
@@ -438,68 +509,91 @@ class tag {
      * @param string $tag_name
      * @return array|tag
      */
-    public function get_elements_by_tag($tag_name) {
-        $all_childs = $this->get_all_childs();
-        if (!empty($all_childs)) {
-            /**
-             * @var tag
-             */
-            $tags = [];
+    public function get_elements_by_tag($tag_name, $deep = 0) {
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] will SEARCH by TAG='$tag_name' on deep {$deep}");
+        }
+        if ($this->has_childs()) {
+            $all_childs = $this->get_all_childs();
+//            $child = new tag("dummy");
+            $tags = array();
+            /** @var tag */
             foreach ($all_childs as $child) {
                 if ($child->get_tag_name() == $tag_name) {
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] has child [{$child->get_tag_name()}] with the TAG='$tag_name' and is stored on array \$tags[] on deep={$deep}");
+                    }
                     $tags[] = $child;
                 } else {
-                    if ($child->has_childs()) {
-                        $child_get_by_tag_result = $child->get_elements_by_tag($tag_name);
-                        if (!empty($child_get_by_tag_result)) {
-//                            print_r($child_get_by_tag_result);
-                            $tags[] = array_merge($child_get_by_tag_result, $tags);
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}]: [{$child->get_tag_name()}] IS NOT TAG='$tag_name'");
+                    }
+                }
+                if ($child->has_childs()) {
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] will look on childs of [{$child->get_tag_name()}] childs for TAG='$tag_name'");
+                    }
+
+                    $child_get_by_tag_result = $child->get_elements_by_tag($tag_name, $deep + 1);
+                    if (!empty($child_get_by_tag_result)) {
+                        if (html::get_use_log()) {
+                            tag_log::log("[{$this->get_tag_name()}] has child [{$child->get_tag_name()}] where FOUND " . count($child_get_by_tag_result) . " tags with name='$tag_name'");
                         }
+                        $tags = array_merge($tags, $child_get_by_tag_result);
                     }
                 }
             }
-            if (!empty($tags)) {
-                return $tags;
-            } else {
-                return NULL;
-            }
-        } else {
-            return FALSE;
         }
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] will return " . count($tags) . " tags with name='$tag_name'");
+        }
+        return $tags;
     }
 
     /**
-     * Return an Array with all the objects that CLASS contains $class
-     * @param string $tag_name
-     * @return array|tag
+     * Return an Array with all the objects that CLASS is $class_name
+     * @param string $class_name
+     * @return array|class
      */
-    public function get_elements_by_class($class) {
-        $all_childs = $this->get_all_childs();
-        if (!empty($all_childs)) {
-            /**
-             * @var tag
-             */
-            $tags = [];
+    public function get_elements_by_class($class_name, $deep = 0) {
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] will SEARCH by CLASS='$class_name' on deep {$deep}");
+        }
+        if ($this->has_childs()) {
+            $all_childs = $this->get_all_childs();
+            $child = new tag("dummy");
+            $classs = array();
+            /** @var class */
             foreach ($all_childs as $child) {
-                if (strstr($child->get_attribute("class"), $class) !== FALSE) {
-                    $tags[] = $child;
+                if ($child->get_attribute("class") == $class_name) {
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] has child [{$child->get_tag_name()}] with the CLASS='$class_name' and is stored on array \$classs[] on deep={$deep}");
+                    }
+                    $classs[] = $child;
                 } else {
-                    if ($child->has_childs()) {
-                        $child_get_by_class_result = $child->get_elements_by_class($class);
-                        if (!empty($child_get_by_class_result)) {
-                            $tags[] = $child_get_by_class_result;
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}]: [{$child->get_tag_name()}] IS NOT CLASS='$class_name'");
+                    }
+                }
+                if ($child->has_childs()) {
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] will look on childs of [{$child->get_tag_name()}] childs for CLASS='$class_name'");
+                    }
+
+                    $child_get_by_class_result = $child->get_elements_by_class($class_name, $deep + 1);
+                    if (!empty($child_get_by_class_result)) {
+                        if (html::get_use_log()) {
+                            tag_log::log("[{$this->get_tag_name()}] has child [{$child->get_tag_name()}] where FOUND " . count($child_get_by_class_result) . " classs with name='$class_name'");
                         }
+                        $classs = array_merge($classs, $child_get_by_class_result);
                     }
                 }
             }
-            if (!empty($tags)) {
-                return $tags;
-            } else {
-                return NULL;
-            }
-        } else {
-            return FALSE;
         }
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] will return " . count($classs) . " classs with name='$class_name'");
+        }
+        return $classs;
     }
 
     function has_childs() {
@@ -543,7 +637,7 @@ trait append_shotcuts {
      * @param string $id
      * @return div
      */
-    function &append_div($class = "", $id = "") {
+    function append_div($class = "", $id = "") {
         $new = new div($class, $id);
         $this->append_child($new);
         return $new;
@@ -555,7 +649,7 @@ trait append_shotcuts {
      * @param string $id
      * @return span
      */
-    function &append_span($class = "", $id = "") {
+    function append_span($class = "", $id = "") {
         $new = new span($class, $id);
         $this->append_child($new);
         return $new;
@@ -567,7 +661,7 @@ trait append_shotcuts {
      * @param string $id
      * @return p
      */
-    function &append_p($value = "", $class = "", $id = "") {
+    function append_p($value = "", $class = "", $id = "") {
         $new = new p($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -583,7 +677,7 @@ trait append_shotcuts {
      * @param string $id
      * @return a
      */
-    function &append_a($href = "", $label = "", $target = "", $alt = "", $class = "", $id = "") {
+    function append_a($href = "", $label = "", $target = "", $alt = "", $class = "", $id = "") {
         $new = new a($href, $label, $target, $alt, $class, $id);
         $this->append_child($new);
         return $new;
@@ -595,8 +689,7 @@ trait append_shotcuts {
  * HTML Classes for general propouses use
  */
 class DOM {
-
-    use append_shotcuts;
+//    use append_shotcuts;
 
     /**
      * @var html
@@ -1485,6 +1578,17 @@ class legend extends tag {
 
     function __construct($value) {
         parent::__construct("legend", FALSE);
+        $this->set_value($value);
+    }
+
+}
+
+class pre extends tag {
+
+    use append_shotcuts;
+
+    function __construct($value) {
+        parent::__construct("pre", FALSE);
         $this->set_value($value);
     }
 
