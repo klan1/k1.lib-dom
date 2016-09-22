@@ -50,10 +50,24 @@ class tag {
     /** @var Integer */
     protected $child_level = 0;
 
+    /** @var tag */
+    protected $parent = null;
+
     /**
      * @var tag;
      */
     protected $linked_html_obj = null;
+
+    /**
+     * @return tag 
+     */
+    function get_parent() {
+        return $this->parent;
+    }
+
+    function set_parent(tag $parent) {
+        $this->parent = $parent;
+    }
 
     public function __toString() {
         return $this->generate();
@@ -65,7 +79,8 @@ class tag {
      * @param tag $child_object
      * @return tag 
      */
-    public function append_child($child_object, $put_last_position = TRUE) {
+    public function append_child(tag $child_object, $put_last_position = TRUE) {
+        $child_object->set_parent($this);
         if ($put_last_position) {
             $this->childs[] = $child_object;
         } else {
@@ -81,7 +96,8 @@ class tag {
      * @param tag $child_object
      * @return tag 
      */
-    public function append_child_tail($child_object, $put_last_position = TRUE) {
+    public function append_child_tail(tag $child_object, $put_last_position = TRUE) {
+        $child_object->set_parent($this);
         if ($put_last_position) {
             $this->childs_tail[] = $child_object;
         } else {
@@ -97,7 +113,8 @@ class tag {
      * @param tag $child_object
      * @return tag 
      */
-    public function append_child_head($child_object, $put_last_position = TRUE) {
+    public function append_child_head(tag $child_object, $put_last_position = TRUE) {
+        $child_object->set_parent($this);
         if ($put_last_position) {
             $this->childs_head[] = $child_object;
         } else {
@@ -383,12 +400,12 @@ class tag {
         return $this->tag_code;
     }
 
-    public function get_name() {
+    public function get_tag_name() {
         return $this->tag_name;
     }
 
     /**
-     * 
+     * Return the FIRST object found with the $id
      * @param string $id
      * @return tag
      */
@@ -403,14 +420,85 @@ class tag {
                     return $child;
                 } else {
                     if ($child->has_childs()) {
-                        $child_get_by_result = $child->get_element_by_id($id);
-                        if (!empty($child_get_by_result)) {
-                            return $child_get_by_result;
+                        $child_get_by_id_result = $child->get_element_by_id($id);
+                        if (!empty($child_get_by_id_result)) {
+                            return $child_get_by_id_result;
                         }
                     }
                 }
             }
             return NULL;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * Return an Array with all the objects that TAG is $tag_name
+     * @param string $tag_name
+     * @return array|tag
+     */
+    public function get_elements_by_tag($tag_name) {
+        $all_childs = $this->get_all_childs();
+        if (!empty($all_childs)) {
+            /**
+             * @var tag
+             */
+            $tags = [];
+            foreach ($all_childs as $child) {
+                if ($child->get_tag_name() == $tag_name) {
+                    $tags[] = $child;
+                } else {
+                    if ($child->has_childs()) {
+                        $child_get_by_tag_result = $child->get_elements_by_tag($tag_name);
+                        if (!empty($child_get_by_tag_result)) {
+//                            print_r($child_get_by_tag_result);
+                            $tags[] = array_merge($child_get_by_tag_result, $tags);
+                        }
+                    }
+                }
+            }
+            if (!empty($tags)) {
+                return $tags;
+            } else {
+                return NULL;
+            }
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * Return an Array with all the objects that CLASS contains $class
+     * @param string $tag_name
+     * @return array|tag
+     */
+    public function get_elements_by_class($class) {
+        $all_childs = $this->get_all_childs();
+        if (!empty($all_childs)) {
+            /**
+             * @var tag
+             */
+            $tags = [];
+            foreach ($all_childs as $child) {
+                if (strstr($child->get_attribute("class"), $class) !== FALSE) {
+                    $tags[] = $child;
+                } else {
+                    if ($child->has_childs()) {
+                        $child_get_by_class_result = $child->get_elements_by_class($class);
+                        if (!empty($child_get_by_class_result)) {
+                            $tags[] = $child_get_by_class_result;
+                        }
+                    }
+                }
+            }
+            if (!empty($tags)) {
+                return $tags;
+            } else {
+                return NULL;
+            }
+        } else {
+            return FALSE;
         }
     }
 
