@@ -18,8 +18,8 @@ $head->set_title("Simple example");
 $p = new \k1lib\html\p("Helo world", "class-here", "id-here");
 $p->append_to($body);
 
-$text_area = new \k1lib\html\textarea("log");
-$text_area->set_value(\k1lib\html\tag_log::get_log());
-$text_area->append_to($body);
-
 echo DOM::generate();
+
+echo "<!--\n\nHTML LOG\n\n";
+echo \k1lib\html\tag_log::get_log();
+echo "->";
