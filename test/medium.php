@@ -50,11 +50,8 @@ $body->append_child_tail(new \k1lib\html\script("https://code.jquery.com/jquery-
 $body->append_child_tail(new \k1lib\html\script("https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundation.min.js"));
 $body->append_child_tail((new \k1lib\html\script())->set_value("$(document).foundation();"));
 
-$body->append_child((new \k1lib\html\h3("K1 PHP DOM HTML Log")));
-$body->append_child((new \k1lib\html\textarea("log"))->set_value(\k1lib\html\tag_log::get_log()));
-
-$body->append_child((new \k1lib\html\h3("K1 PHP DOM HTML Catalog")));
-$body->append_child((new \k1lib\html\textarea("log"))->set_value(\k1lib\html\tag_log::get_log()));
-
-//print_r(\k1lib\html\tag_catalog::get_catalog());
 echo DOM::generate();
+
+echo "<!--\n\nHTML LOG\n\n";
+echo \k1lib\html\tag_log::get_log();
+echo "->";
