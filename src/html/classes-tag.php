@@ -236,7 +236,7 @@ class tag {
         }
         $this->has_child = TRUE;
         if (html::get_use_log()) {
-            tag_log::log("[{$this->get_tag_name()}] appends on head of [{$child_object->get_tag_name()}]");
+            tag_log::log("[{$this->get_tag_name()}] appends on head section the tag [{$child_object->get_tag_name()}]");
         }
         return $child_object;
     }
@@ -247,14 +247,7 @@ class tag {
      * @return tag 
      */
     public function append_to($html_object) {
-        if (html::get_use_log()) {
-            tag_log::log("[{$html_object->get_tag_name()} will receive {$this->get_tag_name()}]");
-            html::set_use_log(FALSE);
-        }
         $html_object->append_child($this);
-        if (html::get_use_log()) {
-            html::set_use_log(TRUE);
-        }
         return $this;
     }
 
@@ -456,9 +449,6 @@ class tag {
 
         $html_code = "{$new_line}{$tabs}<{$this->tag_name}";
         $html_code .= $this->generate_attributes_code();
-        if ($this->is_selfclosed) {
-//                $html_code .= " /";
-        }
         $html_code .= ">";
 
         $has_childs = FALSE;
@@ -466,7 +456,9 @@ class tag {
             if ($has_childs && !empty($this->value)) {
                 $html_code .= "\n{$tabs}\t";
             }
+            // VALUE first, then child objects
             $html_code .= $this->get_value();
+            // Child objetcs generation
             if (($with_childs) && ($object_childs >= 1)) {
                 $has_childs = TRUE;
                 foreach ($this->childs as $child_object) {
