@@ -52,6 +52,6 @@ $body->append_child_tail((new \k1lib\html\script())->set_value("$(document).foun
 
 echo DOM::generate();
 
-echo "<!--\n\nHTML LOG\n\n";
+echo "\n<!--\n\nHTML LOG\n\n";
 echo \k1lib\html\tag_log::get_log();
 echo "->";
