@@ -20,12 +20,51 @@ class tag_log {
 
 }
 
+class tag_catalog {
+
+    static protected $index = 0;
+    static protected $catalog = [];
+
+    static function get_index() {
+        return self::$index;
+    }
+
+    static function index_exist($index) {
+        if (isset(self::$catalog[$index])) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    static function increase(tag $tag_object) {
+        self::$index++;
+        self::$catalog[self::$index] = $tag_object;
+        return self::$index;
+    }
+
+    static function decatalog($tag_index) {
+        if (isset(self::$catalog[$tag_index])) {
+//            self::$catalog[$tag_index] = null;
+            unset(self::$catalog[$tag_index]);
+        }
+    }
+
+    static function get_catalog() {
+        return self::$catalog;
+    }
+
+}
+
 /**
  * HTML Tag abstraction
  */
 class tag {
 
     use append_shotcuts;
+
+    /** @var String */
+    protected $tag_id = 0;
 
     /** @var String */
     protected $tag_name = NULL;
@@ -93,9 +132,27 @@ class tag {
             trigger_error("Self closed value has to be boolean", E_USER_WARNING);
         }
 //            $this->set_attrib("class", "k1-{$tag_name}-object");
+        // GET the global tag ID and catalog the object
+        $this->tag_id = tag_catalog::increase($this);
         if (html::get_use_log()) {
-            tag_log::log("[{$this->get_tag_name()}] was created");
+            tag_log::log("[{$this->get_tag_name()}] id:{$this->tag_id} was created");
         }
+    }
+
+    function decatalog() {
+        tag_catalog::decatalog($this->tag_id);
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] id:{$this->tag_id} was decataloged");
+        }
+        if ($this->has_child) {
+            foreach ($this->childs as $child_object) {
+                $child_object->decatalog();
+            }
+        }
+    }
+
+    function get_tag_id() {
+        return $this->tag_id;
     }
 
     static function get_use_log() {
@@ -133,7 +190,7 @@ class tag {
     public function append_child(tag $child_object, $put_last_position = TRUE) {
         $child_object->set_parent($this);
         if ($put_last_position) {
-            $this->childs[] = $child_object;
+            $this->childs[$child_object->get_tag_id()] = $child_object;
         } else {
             array_unshift($this->childs, $child_object);
         }
@@ -153,7 +210,7 @@ class tag {
     public function append_child_tail(tag $child_object, $put_last_position = TRUE) {
         $child_object->set_parent($this);
         if ($put_last_position) {
-            $this->childs_tail[] = $child_object;
+            $this->childs_tail[$child_object->get_tag_id()] = $child_object;
         } else {
             array_unshift($this->childs_tail, $child_object);
         }
@@ -173,7 +230,7 @@ class tag {
     public function append_child_head(tag $child_object, $put_last_position = TRUE) {
         $child_object->set_parent($this);
         if ($put_last_position) {
-            $this->childs_head[] = $child_object;
+            $this->childs_head[$child_object->get_tag_id()] = $child_object;
         } else {
             array_unshift($this->childs_head, $child_object);
         }
@@ -405,25 +462,20 @@ class tag {
         $html_code .= ">";
 
         $has_childs = FALSE;
-        if (($with_childs) && ($object_childs >= 1)) {
-            $has_childs = TRUE;
-            //lets move with index numbers begining from 0
-            $n_childs = (($n_childs === 0) ? $object_childs : $n_childs) - 1;
-            foreach ($this->childs as $index => &$child_object) {
-                if ($index > $n_childs) {
-                    break;
-                }
-                $child_object->child_level = $this->child_level + 1;
-                $html_code .= $child_object->generate();
-            }
-        }
         if (!$this->is_selfclosed) {
             if ($has_childs && !empty($this->value)) {
                 $html_code .= "\n{$tabs}\t";
             }
-
             $html_code .= $this->get_value();
-
+            if (($with_childs) && ($object_childs >= 1)) {
+                $has_childs = TRUE;
+                foreach ($this->childs as $child_object) {
+                    if (tag_catalog::index_exist($child_object->get_tag_id())) {
+                        $child_object->child_level = $this->child_level + 1;
+                        $html_code .= $child_object->generate();
+                    }
+                }
+            }
             if ($has_childs) {
                 $html_code .= "\n";
             }
