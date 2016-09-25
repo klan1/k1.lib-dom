@@ -18,6 +18,15 @@
 
 namespace k1lib\html;
 
+const IS_SELF_CLOSED = TRUE;
+const IS_NOT_SELF_CLOSED = FALSE;
+const NO_CLASS = null;
+const NO_ID = null;
+const NO_VALUE = null;
+const APPEND_ON_HEAD = 1;
+const APPEND_ON_MAIN = 2;
+const APPEND_ON_TAIL = 3;
+
 /**
  * Static Class to log all the Class tag actions 
  */
@@ -70,6 +79,19 @@ class tag_catalog {
     }
 
     /**
+     * Get a tag Object form catalog using the ID to search on Catalog index
+     * @param integer $index
+     * @return tag|null
+     */
+    static function get_by_index($index) {
+        if (self::index_exist($index)) {
+            return self::$catalog[$index];
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Checks if and index exist. If the tag have been decataloged wont be found.
      * @param integer $index
      * @return boolean
@@ -110,7 +132,7 @@ class tag_catalog {
 
     /**
      * Returns all the tag Object Catalog Array
-     * @return array
+     * @return tag[]
      */
     static function get_catalog() {
         return self::$catalog;
@@ -132,7 +154,7 @@ class tag {
     protected $tag_name = NULL;
 
     /** @var Boolean */
-    protected $is_selfclosed = FALSE;
+    protected $is_self_closed = FALSE;
 
     /** @var Array */
     protected $attributes = array();
@@ -177,19 +199,19 @@ class tag {
     protected $linked_html_obj = null;
 
     /**
-     * Constructor with $tag_name and $selfclosed options for beginning
+     * Constructor with $tag_name and $self_closed options for beginning
      * @param String $tag_name
-     * @param Boolean $selfclosed Is self closed as <tag> or tag closed one <tag></tag>
+     * @param Boolean $self_closed Is self closed as <tag> or tag closed one <tag></tag>
      */
-    function __construct($tag_name, $selfclosed = TRUE) {
+    function __construct($tag_name, $self_closed = IS_SELF_CLOSED) {
         if (!empty($tag_name) && is_string($tag_name)) {
             $this->tag_name = $tag_name;
         } else {
             trigger_error("TAG has to be string", E_USER_WARNING);
         }
 
-        if (is_bool($selfclosed)) {
-            $this->is_selfclosed = $selfclosed;
+        if (is_bool($self_closed)) {
+            $this->is_self_closed = $self_closed;
         } else {
             trigger_error("Self closed value has to be boolean", E_USER_WARNING);
         }
@@ -215,14 +237,28 @@ class tag {
                 $child_object->decatalog();
             }
         }
+        $regexp = "/\{\{ID:(\d*)\}\}/";
+        $matches = [];
+        if (preg_match_all($regexp, $this->value, $matches)) {
+            foreach ($matches[1] as $tag_id) {
+                if (tag_catalog::index_exist($tag_id)) {
+                    tag_catalog::get_by_index($tag_id)->decatalog();
+                }
+            }
+        }
     }
 
     /**
-     * Get the catalog index (an unique id) for this tag Object
-     * @return integer
+     * Get the catalog index (an unique id) for this tag Object or NULL if the 
+     * Object has been decataloged
+     * @return integer|boolean
      */
     function get_tag_id() {
-        return $this->tag_id;
+        if (tag_catalog::index_exist($this->tag_id)) {
+            return $this->tag_id;
+        } else {
+            null;
+        }
     }
 
     /**
@@ -257,13 +293,27 @@ class tag {
     }
 
     /**
-     * Wherever the tag Object is used as string, will be returned as 
-     * the generated tag
+     * When the tag Object is used as string, maybe as inline on text it
+     * will be returned as {{ID:1..}} to converted when the container Object is
+     * generated 
      * @return string
      */
     public function __toString() {
-        return $this->generate();
+        if ($this->get_tag_id()) {
+            return "{{ID:" . $this->get_tag_id() . "}}";
+        } else {
+            return "";
+        }
     }
+
+//    /**
+//     * Wherever the tag Object is used as string, will be returned as 
+//     * the generated tag
+//     * @return string
+//     */
+//    public function __toString() {
+//        return $this->generate();
+//    }
 
     /**
      * Chains an HTML tag into the actual HTML tag on MAIN collection, by default will put on last 
@@ -271,36 +321,36 @@ class tag {
      * @param tag $child_object
      * @return tag 
      */
-    public function append_child(tag $child_object, $put_last_position = TRUE) {
+    public function append_child(tag $child_object, $put_last_position = TRUE, $tag_position = APPEND_ON_MAIN) {
         $child_object->set_parent($this);
         if ($put_last_position) {
-            $this->childs[$child_object->get_tag_id()] = $child_object;
+            switch ($tag_position) {
+                case APPEND_ON_HEAD:
+                    $this->childs_head[$child_object->get_tag_id()] = $child_object;
+                    break;
+                case APPEND_ON_TAIL:
+                    $this->childs_tail[$child_object->get_tag_id()] = $child_object;
+                    break;
+                default:
+                    $this->childs[$child_object->get_tag_id()] = $child_object;
+                    break;
+            }
         } else {
-            array_unshift($this->childs, $child_object);
+            switch ($tag_position) {
+                case APPEND_ON_HEAD:
+                    array_unshift($this->childs_head, $child_object);
+                    break;
+                case APPEND_ON_TAIL:
+                    array_unshift($this->childs_tail, $child_object);
+                    break;
+                default:
+                    array_unshift($this->childs, $child_object);
+                    break;
+            }
         }
         $this->has_child = TRUE;
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] appends [{$child_object->get_tag_name()}]");
-        }
-        return $child_object;
-    }
-
-    /**
-     * Chains an HTML tag into the actual HTML tag on TAIL collection, by default will put on last 
-     * position but with $put_last_position = FALSE will be the on first position
-     * @param tag $child_object
-     * @return tag 
-     */
-    public function append_child_tail(tag $child_object, $put_last_position = TRUE) {
-        $child_object->set_parent($this);
-        if ($put_last_position) {
-            $this->childs_tail[$child_object->get_tag_id()] = $child_object;
-        } else {
-            array_unshift($this->childs_tail, $child_object);
-        }
-        $this->has_child = TRUE;
-        if (html::get_use_log()) {
-            tag_log::log("[{$this->get_tag_name()}] appends on tail of [{$child_object->get_tag_name()}]");
         }
         return $child_object;
     }
@@ -312,16 +362,18 @@ class tag {
      * @return tag 
      */
     public function append_child_head(tag $child_object, $put_last_position = TRUE) {
-        $child_object->set_parent($this);
-        if ($put_last_position) {
-            $this->childs_head[$child_object->get_tag_id()] = $child_object;
-        } else {
-            array_unshift($this->childs_head, $child_object);
-        }
-        $this->has_child = TRUE;
-        if (html::get_use_log()) {
-            tag_log::log("[{$this->get_tag_name()}] appends on head section the tag [{$child_object->get_tag_name()}]");
-        }
+        $this->append_child($child_object, $put_last_position, APPEND_ON_HEAD);
+        return $child_object;
+    }
+
+    /**
+     * Chains an HTML tag into the actual HTML tag on TAIL collection, by default will put on last 
+     * position but with $put_last_position = FALSE will be the on first position
+     * @param tag $child_object
+     * @return tag 
+     */
+    public function append_child_tail(tag $child_object, $put_last_position = TRUE) {
+        $this->append_child($child_object, $put_last_position, APPEND_ON_TAIL);
         return $child_object;
     }
 
@@ -472,7 +524,24 @@ class tag {
         if (is_object($this->value)) {
             return $this->value->generate();
         } else {
+            $this->parse_value();
             return $this->value;
+        }
+    }
+
+    /**
+     * Generate inline tag Objects on the value property
+     */
+    public function parse_value() {
+        $regexp = "/\{\{ID:(\d*)\}\}/";
+        $matches = [];
+        if (preg_match_all($regexp, $this->value, $matches)) {
+            foreach ($matches[1] as $tag_id) {
+                if (tag_catalog::index_exist($tag_id)) {
+                    $tag_string = "{{ID:" . $tag_id . "}}";
+                    $this->value = str_replace($tag_string, tag_catalog::get_by_index($tag_id)->generate(), $this->value);
+                }
+            }
         }
     }
 
@@ -482,7 +551,7 @@ class tag {
      * @return string Returns FALSE if is not attributes to generate
      */
     protected function generate_attributes_code() {
-        if ($this->is_selfclosed && !empty($this->value)) {
+        if ($this->is_self_closed && !empty($this->value)) {
             $this->set_attrib("value", $this->value);
         }
 
@@ -536,7 +605,7 @@ class tag {
         $html_code .= ">";
 
         $has_childs = FALSE;
-        if (!$this->is_selfclosed) {
+        if (!$this->is_self_closed) {
             if ($has_childs && !empty($this->value)) {
                 $html_code .= "\n{$tabs}\t";
             }
@@ -546,7 +615,7 @@ class tag {
             if (($with_childs) && ($object_childs >= 1)) {
                 $has_childs = TRUE;
                 foreach ($this->childs as $child_object) {
-                    if (tag_catalog::index_exist($child_object->get_tag_id())) {
+                    if ($child_object->get_tag_id()) {
                         $child_object->child_level = $this->child_level + 1;
                         $html_code .= $child_object->generate();
                     }
@@ -693,7 +762,7 @@ class tag {
             $classs = array();
             /** @var class */
             foreach ($all_childs as $child) {
-                if (tag_catalog::index_exist($child->get_tag_id())) {
+                if ($child->get_tag_id()) {
                     if ($child->get_attribute("class") == $class_name) {
                         if (html::get_use_log()) {
                             tag_log::log("[{$this->get_tag_name()}] has child [{$child->get_tag_name()}] with the CLASS='$class_name' and is stored on array \$classs[] on deep={$deep}");
@@ -816,6 +885,18 @@ trait append_shotcuts {
      */
     function append_a($href = "", $label = "", $target = "", $alt = "", $class = "", $id = "") {
         $new = new a($href, $label, $target, $alt, $class, $id);
+        $this->append_child($new);
+        return $new;
+    }
+
+    /**
+     * 
+     * @param string $class
+     * @param string $id
+     * @return p
+     */
+    function append_h1($value = "", $class = "", $id = "") {
+        $new = new h1($value, $class, $id);
         $this->append_child($new);
         return $new;
     }
@@ -1650,10 +1731,11 @@ class h1 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "") {
+    function __construct($value = "", $class = "", $id = "") {
         parent::__construct("h1", FALSE);
         $this->set_value($value);
         $this->set_class($class);
+        $this->set_id($id);
     }
 
 }
@@ -1665,10 +1747,11 @@ class h2 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "") {
+    function __construct($value = "", $class = "", $id = "") {
         parent::__construct("h2", FALSE);
         $this->set_value($value);
         $this->set_class($class);
+        $this->set_id($id);
     }
 
 }
@@ -1680,10 +1763,11 @@ class h3 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "") {
+    function __construct($value = "", $class = "", $id = "") {
         parent::__construct("h3", FALSE);
         $this->set_value($value);
         $this->set_class($class);
+        $this->set_id($id);
     }
 
 }
@@ -1695,10 +1779,11 @@ class h4 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "") {
+    function __construct($value = "", $class = "", $id = "") {
         parent::__construct("h4", FALSE);
         $this->set_value($value);
         $this->set_class($class);
+        $this->set_id($id);
     }
 
 }
@@ -1710,10 +1795,27 @@ class h5 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "") {
+    function __construct($value = "", $class = "", $id = "") {
         parent::__construct("h5", FALSE);
         $this->set_value($value);
         $this->set_class($class);
+        $this->set_id($id);
+    }
+
+}
+
+/**
+ * h6
+ */
+class h6 extends tag {
+
+    use append_shotcuts;
+
+    function __construct($value = "", $class = "", $id = "") {
+        parent::__construct("h6", FALSE);
+        $this->set_value($value);
+        $this->set_class($class);
+        $this->set_id($id);
     }
 
 }
