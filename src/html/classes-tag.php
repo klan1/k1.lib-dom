@@ -228,15 +228,18 @@ class tag {
      * Object to be found or generated on chain actions.     
      */
     function decatalog() {
+        // Itself from Catalog
         tag_catalog::decatalog($this->tag_id);
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] id:{$this->tag_id} was decataloged");
         }
+        // His childs
         if ($this->has_child) {
             foreach ($this->childs as $child_object) {
                 $child_object->decatalog();
             }
         }
+        // Inline objects
         $regexp = "/\{\{ID:(\d*)\}\}/";
         $matches = [];
         if (preg_match_all($regexp, $this->value, $matches)) {
