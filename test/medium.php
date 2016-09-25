@@ -13,8 +13,12 @@ DOM::start();
 $head = DOM::html()->head();
 $body = DOM::html()->body();
 
+$inline_span1 = (new \k1lib\html\span("use-me", "inline-span-1"))->set_value("Inline message 1");
+$inline_span2 = (new \k1lib\html\span("use-me", "inline-span-1"))->set_value("Inline message 2");
+
 $d1 = $body->append_div("hello-world-class", "hello-world-id");
-$d1->append_p("Hello world");
+$inline_p = $d1->append_p("Hello world: $inline_span1 - $inline_span2");
+//$inline_p->parse_value();
 
 $d2 = $body->append_div();
 $d1->append_p("Hello people")->append_span()->set_value("SPAN 1 element :)");
@@ -38,10 +42,14 @@ $class_elements = $body->get_elements_by_class("find-me-class");
 
 $div_classes = $body->append_div();
 $div_classes->append_child((new \k1lib\html\h3("This values found with class find-me-class")));
+$p_head = new \k1lib\html\p("head");
+$p_tail = new \k1lib\html\p("tail");
+$div_classes->append_child_head($p_head);
+$div_classes->append_child_tail($p_tail);
 foreach ($class_elements as $element) {
     $div_classes->append_child($element);
 }
-//$d1->decatalog();
+$d2->decatalog();
 
 
 $head->set_title("HTML TEST");
