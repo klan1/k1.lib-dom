@@ -6,50 +6,43 @@ require_once '../src/loader.php';
 
 use \k1lib\html\DOM as DOM;
 
-\k1lib\html\html::set_use_log(TRUE);
-
 DOM::start();
 
 $head = DOM::html()->head();
 $body = DOM::html()->body();
 
-$inline_span1 = (new \k1lib\html\span("use-me", "inline-span-1"))->set_value("Inline message 1");
-$inline_span2 = (new \k1lib\html\span("use-me", "inline-span-1"))->set_value("Inline message 2");
+$inline_span1 = (new \k1lib\html\span("use-me", "inline-span-1"))->set_value("Inline tag 1");
+$inline_span2 = (new \k1lib\html\span("use-me", "inline-span-2"))->set_value("Inline tag 2");
 
-$d1 = $body->append_div("hello-world-class", "hello-world-id");
-$inline_p = $d1->append_p("Hello world: $inline_span1 - $inline_span2");
-//$inline_p->parse_value();
+$body->append_div('class-a', 'id-1')->append_p("Hello world", 'hello-class', 'hello-id');
 
-$d2 = $body->append_div();
-$d1->append_p("Hello people")->append_span()->set_value("SPAN 1 element :)");
+$body->append_div('class-a', 'id-2')->append_p("Inline tags: $inline_span1 AND $inline_span2");
 
-$body->append_div("another-div")->set_value("A free text inside the DIV element");
-$a = $body->get_element_by_id("hello-world-id")->append_div()->append_a("#null");
-$a->append_span()->set_value("SPAN 2 element :)")->set_id("find-me-1");
-$a->append_span()->set_value("SPAN 3 element :)")->set_id("find-me-2")->set_class("find-me-class");
-$id_element = $body->get_element_by_id("find-me-1");
+$body->append_div("class-3", 'id-3')->set_value("This is the VALUE of this DIV element");
 
-$tag_elements = $body->get_elements_by_tag("p");
+$body->get_element_by_id("inline-span-1")->append_a("#null", 'New link here');
 
+$p1 = $body->get_element_by_id("id-2")->append_p("New P element")->append_span('class-a', 'span-id-1');
+
+$p2 = $body->get_element_by_id("id-2")->append_p("Another P element");
+
+$span_by_id = $body->get_element_by_id("span-id-1")->append_a("#link", "Another link");
+
+$tag_elements = $body->get_elements_by_tag("span");
 $i = 1;
 foreach ($tag_elements as $tag_element) {
 //    $tag_element->append_p("With TAG search object insert! {$i}");
-    $tag_element->append_p("With TAG search object insert! {$i}")->set_class("find-me-class");
+    $tag_element->append_a("#span-{$i}", 'Span found');
     $i++;
 }
-
-$class_elements = $body->get_elements_by_class("find-me-class");
-
-$div_classes = $body->append_div();
-$div_classes->append_child((new \k1lib\html\h3("This values found with class find-me-class")));
-$p_head = new \k1lib\html\p("head");
-$p_tail = new \k1lib\html\p("tail");
-$div_classes->append_child_head($p_head);
-$div_classes->append_child_tail($p_tail);
-foreach ($class_elements as $element) {
-    $div_classes->append_child($element);
+\k1lib\html\html::set_use_log(TRUE);
+$tag_elements = $body->get_elements_by_class("class-a");
+$i = 1;
+foreach ($tag_elements as $tag_element) {
+//    $tag_element->append_p("With TAG search object insert! {$i}");
+    $tag_element->append_a("#class-{$i}", 'Class found');
+    $i++;
 }
-$d2->decatalog();
 
 
 $head->set_title("HTML TEST");
@@ -57,6 +50,10 @@ $head->link_css("https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundat
 $body->append_child_tail(new \k1lib\html\script("https://code.jquery.com/jquery-2.2.0.min.js"));
 $body->append_child_tail(new \k1lib\html\script("https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundation.min.js"));
 $body->append_child_tail((new \k1lib\html\script())->set_value("$(document).foundation();"));
+
+if ($body->get_element_by_id("inline-span-2")) {
+    $body->get_element_by_id("inline-span-2")->set_value("another value");
+}
 
 echo DOM::generate();
 
