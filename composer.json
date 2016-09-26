@@ -1,6 +1,6 @@
 {
     "name": "klan1/k1.lib-dom",
-    "description": "DOM Classes from K1.lib.",
+    "description": "Say good bye to the inline HTML tags as strings on your PHP code!. DOM Classes from K1.lib.",
     "license": "Apache-2.0",
     "type": "library",
     "homepage": "https://github.com/klan1/k1.lib-dom",

@@ -1,6 +1,8 @@
 # k1.lib-dom
 
-DOM Classes from K1.lib. This is the first public version. 
+Say good bye to the inline HTML tags as strings on your PHP code!
+
+DOM Classes from K1.lib.
 
 ## Requirements
 - Apache with rewrite enabled.
