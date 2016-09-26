@@ -771,85 +771,31 @@ class tag {
                     tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned");
                 }
                 $tags[] = $this;
-            } else {
-                $inline_tags = $this->get_inline_tags();
-                $all_childs = $this->get_all_childs();
-                $all_childs = array_merge($inline_tags, $all_childs);
-                foreach ($all_childs as $child) {
-                    if (html::get_use_log()) {
-                        tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} looking on child [{$child->get_tag_name()}] ID:{$child->tag_id}");
-                    }
-                    $child_search_result = $child->get_elements_by_tag($tag_name);
-                    if (!empty($child_search_result)) {
+            }
+            /**
+             * Child and inline tags
+             */
+            $inline_tags = $this->get_inline_tags();
+            $all_childs = $this->get_all_childs();
+            $all_childs = array_merge($inline_tags, $all_childs);
+            foreach ($all_childs as $child) {
+                if (html::get_use_log()) {
+                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} looking on child [{$child->get_tag_name()}] ID:{$child->tag_id}");
+                }
+                $child_search_result = $child->get_elements_by_tag($tag_name);
+                if (!empty($child_search_result)) {
 //                        print_r($child_search_result);
-                        if (html::get_use_log()) {
-                            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return child [{$child->get_tag_name()}] ID:{$child->tag_id} results");
-                        }
-                        $tags = array_merge($tags, $child_search_result);
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return child [{$child->get_tag_name()}] ID:{$child->tag_id} results");
                     }
+                    $tags = array_merge($tags, $child_search_result);
                 }
             }
         }
         if (html::get_use_log()) {
-            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return " . count($tags) . " tags with name='$tag_name'");
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return " . count($tags) . " '$tag_name' tags");
         }
         return $tags;
-
-
-
-
-//
-//
-//
-//        $inline_tags = $this->get_inline_tags();
-//        if (!empty($inline_tags)) {
-//            foreach ($inline_tags as $tag) {
-//                if ($tag->get_tag_name() == $tag_name) {
-//                    if (html::get_use_log()) {
-//                        tag_log::log("[{$this->get_tag_name()}] has inline tag [{$tag->get_tag_name()}] with the TAG='$tag_name' and is stored on array \$tags[] on deep={$deep}");
-//                    }
-//                    $tags[] = $tag;
-//                }
-//            }
-//        }
-//        if ($this->has_childs()) {
-//            $all_childs = $this->get_all_childs();
-//            foreach ($all_childs as $child) {
-//                if ($child->get_tag_id()) {
-//                    if ($child->get_tag_name() == $tag_name) {
-//                        if (html::get_use_log()) {
-//                            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} has child [{$child->get_tag_name()}] ID:{$child->tag_id} with the TAG='$tag_name' and is stored on array \$tags[] on deep={$deep}");
-//                        }
-//                        $tags[] = $child;
-//                    } else {
-//                        if (html::get_use_log()) {
-//                            tag_log::log("[{$this->get_tag_name()}]: ID:{$this->tag_id} [{$child->get_tag_name()}] ID:{$child->tag_id} IS NOT TAG='$tag_name'");
-//                        }
-//                    }
-////                    if ($child->has_childs()) {
-//                    if (html::get_use_log()) {
-//                        tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will look on childs of [{$child->get_tag_name()}] ID:{$child->tag_id} childs for TAG='$tag_name'");
-//                    }
-//
-//                    $child_get_by_tag_result = $child->get_elements_by_tag($tag_name, $deep + 1);
-//                    if (!empty($child_get_by_tag_result)) {
-//                        if (html::get_use_log()) {
-//                            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} has child [{$child->get_tag_name()}] ID:{$child->tag_id} where FOUND " . count($child_get_by_tag_result) . " tags with name='$tag_name'");
-//                        }
-//                        $tags = array_merge($tags, $child_get_by_tag_result);
-//                    }
-////                    }
-//                } else {
-//                    if (html::get_use_log()) {
-//                        tag_log::log("[{$this->get_tag_name()}]: ID:{$this->tag_id} is not cataloged");
-//                    }
-//                }
-//            }
-//        }
-//        if (html::get_use_log()) {
-//            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return " . count($tags) . " tags with name='$tag_name'");
-//        }
-//        return $tags;
     }
 
     /**
@@ -857,47 +803,42 @@ class tag {
      * @param string $class_name
      * @return array|class
      */
-    public function get_elements_by_class($class_name, $deep = 0) {
+    public function get_elements_by_class($class_name) {
         if (html::get_use_log()) {
-            tag_log::log("[{$this->get_tag_name()}] will SEARCH by CLASS='$class_name' on deep {$deep}");
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will SEARCH by CLASS='$class_name'");
         }
-        if ($this->has_childs()) {
+        $classes = [];
+        if ($this->get_tag_id()) {
+            if ($this->get_attribute("class") == $class_name) {
+                if (html::get_use_log()) {
+                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned");
+                }
+                $classes[] = $this;
+            }
+            /**
+             * Child and inline tags
+             */
+            $inline_tags = $this->get_inline_tags();
             $all_childs = $this->get_all_childs();
-            $child = new tag("dummy");
-            $classs = array();
-            /** @var class */
+            $all_childs = array_merge($inline_tags, $all_childs);
             foreach ($all_childs as $child) {
-                if ($child->get_tag_id()) {
-                    if ($child->get_attribute("class") == $class_name) {
-                        if (html::get_use_log()) {
-                            tag_log::log("[{$this->get_tag_name()}] has child [{$child->get_tag_name()}] with the CLASS='$class_name' and is stored on array \$classs[] on deep={$deep}");
-                        }
-                        $classs[] = $child;
-                    } else {
-                        if (html::get_use_log()) {
-                            tag_log::log("[{$this->get_tag_name()}]: [{$child->get_tag_name()}] IS NOT CLASS='$class_name'");
-                        }
+                if (html::get_use_log()) {
+                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} looking on child [{$child->get_tag_name()}] ID:{$child->tag_id}");
+                }
+                $child_search_result = $child->get_elements_by_class($class_name);
+                if (!empty($child_search_result)) {
+//                        print_r($child_search_result);
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return child [{$child->get_tag_name()}] ID:{$child->tag_id} results");
                     }
-                    if ($child->has_childs()) {
-                        if (html::get_use_log()) {
-                            tag_log::log("[{$this->get_tag_name()}] will look on childs of [{$child->get_tag_name()}] childs for CLASS='$class_name'");
-                        }
-
-                        $child_get_by_class_result = $child->get_elements_by_class($class_name, $deep + 1);
-                        if (!empty($child_get_by_class_result)) {
-                            if (html::get_use_log()) {
-                                tag_log::log("[{$this->get_tag_name()}] has child [{$child->get_tag_name()}] where FOUND " . count($child_get_by_class_result) . " classs with name='$class_name'");
-                            }
-                            $classs = array_merge($classs, $child_get_by_class_result);
-                        }
-                    }
+                    $classes = array_merge($classes, $child_search_result);
                 }
             }
         }
         if (html::get_use_log()) {
-            tag_log::log("[{$this->get_tag_name()}] will return " . count($classs) . " classs with name='$class_name'");
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return " . count($classes) . " tags with CLASS='$class_name'");
         }
-        return $classs;
+        return $classes;
     }
 
     /**
