@@ -6,6 +6,8 @@ require_once '../src/loader.php';
 
 use \k1lib\html\DOM as DOM;
 
+\k1lib\html\html::set_use_log(TRUE);
+
 DOM::start();
 
 $head = DOM::html()->head();
@@ -35,7 +37,6 @@ foreach ($tag_elements as $tag_element) {
     $tag_element->append_a("#span-{$i}", 'Span found');
     $i++;
 }
-\k1lib\html\html::set_use_log(TRUE);
 $tag_elements = $body->get_elements_by_class("class-a");
 $i = 1;
 foreach ($tag_elements as $tag_element) {
