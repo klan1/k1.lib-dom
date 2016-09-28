@@ -45,6 +45,21 @@ will generate:
 	</body>
 </html>
 ```
+
+This one, will give you the same result
+
+```php
+use \k1lib\html\DOM as DOM;
+
+DOM::start();
+
+DOM::html()->head()->set_title("Simple example");
+
+DOM::html()->body()->append_p("Helo world", "class-here", "id-here");
+
+echo DOM::generate();
+```
+
 ## LICENSE
 Apache License Version 2.0, January 2004.
 

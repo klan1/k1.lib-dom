@@ -1,4 +1,7 @@
 <?php
+
+namespace k1app\test;
+
 require_once '../src/loader.php';
 
 use \k1lib\html\DOM as DOM;
@@ -16,3 +19,7 @@ $p = new \k1lib\html\p("Helo world", "class-here", "id-here");
 $p->append_to($body);
 
 echo DOM::generate();
+
+echo "<!--\n\nHTML LOG\n\n";
+echo \k1lib\html\tag_log::get_log();
+echo "->";
