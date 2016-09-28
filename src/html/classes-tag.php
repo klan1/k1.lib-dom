@@ -229,6 +229,13 @@ class tag {
         }
     }
 
+    function __clone() {
+        $this->tag_id = tag_catalog::increase($this);
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} was cloned");
+        }
+    }
+
     /**
      * Remove the tag Object from the Array catalog, this will disable the 
      * Object to be found or generated on chain actions.     
