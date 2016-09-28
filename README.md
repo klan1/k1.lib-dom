@@ -15,6 +15,36 @@ DOM Classes from K1.lib.
 composer require klan1/k1.lib-dom
 ```
 
+## Basic example
+
+```php
+use \k1lib\html\DOM as DOM;
+
+DOM::start('en');
+
+$head = DOM::html()->head();
+$body = DOM::html()->body();
+
+$head->set_title("Simple example");
+
+$p = new \k1lib\html\p("Helo world", "class-here", "id-here");
+
+$p->append_to($body);
+
+echo DOM::generate();
+```
+will generate:
+
+```html
+<html lang="en">
+	<head>
+		<title>Simple example</title>
+	</head>
+	<body>
+		<p class="class-here" id="id-here">Helo world</p>
+	</body>
+</html>
+```
 ## LICENSE
 Apache License Version 2.0, January 2004.
 
