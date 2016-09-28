@@ -5,7 +5,7 @@
 /**
  * Say good bye to inline <html> tag on your code!
  * 
- * HTML Classes for general purposes use
+ * HTML Classes for general purposes use. Say good bye to the inline HTML tags as strings on your PHP code!
  * 
  * @category library
  * @package klan1/html
@@ -229,6 +229,13 @@ class tag {
         }
     }
 
+    function __clone() {
+        $this->tag_id = tag_catalog::increase($this);
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} was cloned");
+        }
+    }
+
     /**
      * Remove the tag Object from the Array catalog, this will disable the 
      * Object to be found or generated on chain actions.     
@@ -415,21 +422,13 @@ class tag {
      * @return tag
      */
     public function set_value($value, $append = false) {
-        if (is_object($value)) {
-            if (is_object($this->value)) {
-                $this->value .= $value;
-            } elseif (!empty($this->value)) {
-                $this->value .= $value;
-            } else {
-                $this->value = $value;
-            }
+
+        if (empty($this->linked_html_obj)) {
+            $this->value = (($append === TRUE) && (!empty($this->value)) ) ? ($this->value . " " . $value) : ("$value");
         } else {
-            if (empty($this->linked_html_obj)) {
-                $this->value = (($append === TRUE) && (!empty($this->value)) ) ? ($this->value . " " . $value) : ($value);
-            } else {
-                $this->linked_html_obj->value = (($append === TRUE) && (!empty($this->linked_html_obj->value)) ) ? ($this->linked_html_obj->value . " " . $value) : ($value);
-            }
+            $this->linked_html_obj->value = (($append === TRUE) && (!empty($this->linked_html_obj->value)) ) ? ($this->linked_html_obj->value . " " . $value) : ("$value");
         }
+
 
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} set value to: {$value}");
@@ -528,7 +527,7 @@ class tag {
      */
     public function get_value($current_child_level = 0) {
         if (is_object($this->value)) {
-            trigger_error("This shouldn't be used more", E_USER_WARNING);
+            trigger_error("This shouldn't be used more", E_USER_NOTICE);
             return $this->value->generate();
         } else {
             $this->parse_value($current_child_level);
