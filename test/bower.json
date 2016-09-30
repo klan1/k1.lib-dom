@@ -1,0 +1,22 @@
+{
+  "name": "k1.lib-dom TESTS",
+  "main": [],
+  "ignore": [
+    "composer.json",
+    "CONTRIBUTING.md",
+    "package.js",
+    "package.json",
+    "sache.json",
+    ".editorconfig",
+    ".npm",
+    ".gitignore",
+    ".npmignore",
+    ".versions"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.0",
+    "jqueryui": "~1.12.0",
+    "what-input": "~2.0.0",
+    "foundation-icon-fonts": "*"
+  }
+}

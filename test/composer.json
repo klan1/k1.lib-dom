@@ -1,0 +1,14 @@
+{
+    "name": "klan1/k1.lib-dom-test",
+    "type": "testing",
+    "require": {
+        "zurb/foundation": "^6.2"
+    },
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Alejandro Trujillo J.",
+            "email": "contacto@klan1.com"
+        }
+    ]
+}
