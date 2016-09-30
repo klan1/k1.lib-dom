@@ -21,6 +21,5 @@
         "files": ["src/loader.php"]
     },
     "require-dev": {
-        "apigen/apigen": "^4.1"
     }
 }
