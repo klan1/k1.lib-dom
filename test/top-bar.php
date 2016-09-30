@@ -38,6 +38,9 @@ $top_bar->add_menu_item("#", "Level 1", $sub_menu);
 $top_bar->add_menu_item("#", "Level 2", $sub_menu);
 $top_bar->add_menu_item("#", "Level 2", $sub_menu);
 
+$top_bar->add_button("#", "Ingresar");
+$top_bar->add_button("#", "Salir", "alert");
+
 // HTML HEAD
 $head->set_title("FOUNDATION TEST");
 $head->link_css("vendor/zurb/foundation/dist/foundation.min.css");
@@ -56,65 +59,3 @@ echo DOM::generate();
 echo "<!--\n\nHTML LOG\n\n";
 echo \k1lib\html\tag_log::get_log();
 echo "->";
-exit;
-?>
-<div class="top-bar">
-    <div class="top-bar-title">
-        <span data-responsive-toggle="responsive-menu" data-hide-for="medium">
-            <button class="menu-icon dark" type="button" data-toggle></button>
-        </span>
-        <strong>Site Title</strong>
-    </div>
-    <div id="responsive-menu">
-        <div class="top-bar-left">
-            <ul class="dropdown menu" data-dropdown-menu>
-                <li>
-                    <a href="#">One</a>
-                    <ul class="menu vertical">
-                        <li><a href="#">One</a></li>
-                        <li><a href="#">Two</a></li>
-                        <li><a href="#">Three</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Two</a></li>
-                <li><a href="#">Three</a></li>
-            </ul>
-        </div>
-        <div class="top-bar-right">
-            <ul class="menu">
-                <li><input type="search" placeholder="Search"></li>
-                <li><button type="button" class="button">Search</button></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-
-<div class='title-bar' data-responsive-toggle='example-menu' data-hide-for='medium'>
-    <button class='menu-icon' type='button' data-toggle></button>
-    <div class='title-bar-title'>Menu</div>
-</div>
-
-<div class='top-bar' id='example-menu'>
-    <div class='top-bar-left'>
-        <ul class='dropdown menu' data-dropdown-menu>
-            <li class='menu-text'>Site Title</li>
-            <li>
-                <a href='#'>One</a>
-                <ul class='menu vertical'>
-                    <li><a href='#'>One</a></li>
-                    <li><a href='#'>Two</a></li>
-                    <li><a href='#'>Three</a></li>
-                </ul>
-            </li>
-            <li><a href='#'>Two</a></li>
-            <li><a href='#'>Three</a></li>
-        </ul>
-    </div>
-    <div class='top-bar-right'>
-        <ul class='menu'>
-            <li><input type='search' placeholder='Search'></li>
-            <li><button type='button' class='button'>Search</button></li>
-        </ul>
-    </div>
-</div>

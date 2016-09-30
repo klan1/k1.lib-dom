@@ -31,7 +31,6 @@ class top_bar extends tag {
      * @var ul
      */
     protected $menu_left;
-
     /**
      * @var ul
      */
@@ -63,11 +62,8 @@ class top_bar extends tag {
 
         $this->menu_right = new ul("menu", "k1app-menu-right");
         $this->menu_right->append_to($right);
-    }
-
-    function add_button($href, $label, $class = null, $id = null) {
-        $this->menu_right->append_li()->append_child(new a($href, $label, "_self", $label, "button $class", $id));
-//        $this->menu_right->append_li()->append_child(new button("Salir", "button alert", "btn-logout"));
+        $li = $this->menu_right->append_li()->append_child(new button("Ingresar", "button", "btn-login"));
+        $li = $this->menu_right->append_li()->append_child(new button("Salir", "button alert", "btn-logout"));
     }
 
     /**
@@ -116,3 +112,4 @@ class top_bar extends tag {
     }
 
 }
+

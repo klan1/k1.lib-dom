@@ -424,12 +424,12 @@ class tag {
     public function set_value($value, $append = false) {
 
         if (empty($this->linked_html_obj)) {
-            $this->value = (($append === TRUE) && (!empty($this->value)) ) ? ($this->value . " " . $value) : ("$value");
+            if (!empty($value)) {
+                $this->value = ($append === TRUE) ? ($this->value . " " . $value) : ("$value");
+            }
         } else {
             $this->linked_html_obj->value = (($append === TRUE) && (!empty($this->linked_html_obj->value)) ) ? ($this->linked_html_obj->value . " " . $value) : ("$value");
         }
-
-
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} set value to: {$value}");
         }
@@ -800,7 +800,7 @@ class tag {
     /**
      * Return an Array with all the objects that CLASS is $class_name
      * @param string $class_name
-     * @return array|class
+     * @return tag[]
      */
     public function get_elements_by_class($class_name) {
         if (html::get_use_log()) {
@@ -1174,21 +1174,33 @@ class body extends tag {
      * return section
      */
     function header() {
-        return $this->section_header;
+        if (!empty($this->section_header)) {
+            return $this->section_header;
+        } else {
+            return false;
+        }
     }
 
     /**
      * return section
      */
     function content() {
-        return $this->section_content;
+        if (!empty($this->section_content)) {
+            return $this->section_content;
+        } else {
+            return false;
+        }
     }
 
     /**
      * return section
      */
     function footer() {
-        return $this->section_footer;
+        if (!empty($this->section_footer)) {
+            return $this->section_footer;
+        } else {
+            return false;
+        }
     }
 
 }
@@ -1199,10 +1211,18 @@ class a extends tag {
 
     function __construct($href, $label, $target = "", $alt = "", $class = "", $id = "") {
         parent::__construct("a", FALSE);
-        $this->set_attrib("href", $href);
-        $this->set_value($label);
-        $this->set_attrib("target", $target);
-        $this->set_attrib("alt", $alt);
+        if (!empty($href)) {
+            $this->set_attrib("href", $href);
+        }
+        if (!empty($label)) {
+            $this->set_value($label);
+        }
+        if (!empty($target)) {
+            $this->set_attrib("target", $target);
+        }
+        if (!empty($alt)) {
+            $this->set_attrib("alt", $alt);
+        }
         $this->set_class($class, TRUE);
         $this->set_id($id);
     }
@@ -1271,7 +1291,7 @@ class ul extends tag {
      * @param string $id
      * @return li
      */
-    function &append_li($class = "", $id = "") {
+    function &append_li($value = "", $class = "", $id = "") {
         $new = new li($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -1419,7 +1439,24 @@ class span extends tag {
      */
     function __construct($class = "", $id = "") {
         parent::__construct("span", FALSE);
-//        $this->data_array &= $data_array;
+        $this->set_class($class, TRUE);
+        $this->set_id($id);
+    }
+
+}
+
+class strong extends tag {
+
+    use append_shotcuts;
+
+    /**
+     * Create a STRONG html tag with VALUE as data. Use $strong->set_value($data)
+     * @param String $class
+     * @param String $id
+     */
+    function __construct($value = '', $class = "", $id = "") {
+        parent::__construct("strong", FALSE);
+        $this->set_value($value);
         $this->set_class($class, TRUE);
         $this->set_id($id);
     }
@@ -1899,6 +1936,22 @@ class pre extends tag {
     function __construct($value) {
         parent::__construct("pre", FALSE);
         $this->set_value($value);
+    }
+
+}
+
+class button extends tag {
+
+    use append_shotcuts;
+
+    function __construct($value = "", $class = "", $id = "", $type = "button") {
+        parent::__construct("button", FALSE);
+        $this->set_value($value);
+        $this->set_class($class);
+        $this->set_id($id);
+        if (!empty($type)) {
+            $this->set_attrib("type", $type);
+        }
     }
 
 }
