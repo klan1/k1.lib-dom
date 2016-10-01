@@ -33,7 +33,7 @@ $li = $top_bar->add_menu_item("#", "Sub menu 1");
 $top_bar->add_menu_item("#", "Item 2");
 $top_bar->add_menu_item("#", "Item 3");
 
-$sub_menu = $top_bar->add_sub_menu($li, "#", "Level 1");
+$sub_menu = $top_bar->add_sub_menu($li);
 $top_bar->add_menu_item("#", "Level 1", $sub_menu);
 $top_bar->add_menu_item("#", "Level 2", $sub_menu);
 $top_bar->add_menu_item("#", "Level 2", $sub_menu);

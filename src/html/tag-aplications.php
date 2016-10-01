@@ -16,9 +16,9 @@
  * @license https://github.com/klan1/k1.lib-dom/blob/master/LICENSE Apache License 2.0
  */
 
-namespace k1lib\html;
+namespace k1lib\html\foundation;
 
-class top_bar extends tag {
+class top_bar extends \k1lib\html\tag {
 
     use append_shotcuts;
 
@@ -28,12 +28,12 @@ class top_bar extends tag {
     protected $parent;
 
     /**
-     * @var ul
+     * @var div
      */
     protected $menu_left;
 
     /**
-     * @var ul
+     * @var div
      */
     protected $menu_right;
 
@@ -65,9 +65,17 @@ class top_bar extends tag {
         $this->menu_right->append_to($right);
     }
 
+    /**
+     * @param string $href
+     * @param string $label
+     * @param string $class
+     * @param string $id
+     * @return \k1lib\html\a
+     */
     function add_button($href, $label, $class = null, $id = null) {
-        $this->menu_right->append_li()->append_child(new a($href, $label, "_self", $label, "button $class", $id));
-//        $this->menu_right->append_li()->append_child(new button("Salir", "button alert", "btn-logout"));
+        $a = new a($href, $label, "_self", $label, "button $class", $id);
+        $this->menu_right->append_li()->append_child($a);
+        return $a;
     }
 
     /**
@@ -91,7 +99,7 @@ class top_bar extends tag {
      * @param string $label
      * @return li
      */
-    function add_sub_menu(li $where, $href, $label) {
+    function add_sub_menu(li $where) {
         $sub_ul = $where->append_ul("menu vertical");
         return $sub_ul;
     }
@@ -113,6 +121,27 @@ class top_bar extends tag {
         $title_bar_title->append_span("k1app-title-1");
         $title_bar_title->append_span("k1app-title-2");
         $title_bar_title->append_span("k1app-title-3");
+    }
+
+    /**
+     * @return div
+     */
+    function menu_left() {
+        return $this->menu_left;
+    }
+
+    /**
+     * @return div
+     */
+    function menu_right() {
+        return $this->menu_right;
+    }
+
+    /**
+     * @return tag
+     */
+    function get_parent() {
+        return $this->parent;
     }
 
 }

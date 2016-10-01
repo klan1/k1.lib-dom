@@ -42,7 +42,7 @@ class tag_log {
      * @return string
      */
     static function get_log() {
-        return self::$log;
+        return htmlspecialchars(self::$log);
     }
 
     /**
