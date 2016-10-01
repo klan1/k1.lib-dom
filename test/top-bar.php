@@ -22,7 +22,7 @@ $body->init_sections();
 // Code shortcut to <section id="k1app-header"></section>
 $body_header = $body->header();
 
-$top_bar = new \k1lib\html\top_bar($body_header);
+$top_bar = new \k1lib\html\foundation\top_bar($body_header);
 $top_bar->append_to($body_header);
 
 $top_bar->set_title(1, "APP TITLE");

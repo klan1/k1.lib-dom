@@ -20,24 +20,24 @@ namespace k1lib\html\foundation;
 
 class top_bar extends \k1lib\html\tag {
 
-    use append_shotcuts;
+    use \k1lib\html\append_shotcuts;
 
     /**
-     * @var tag
+     * @var \k1lib\html\tag
      */
     protected $parent;
 
     /**
-     * @var div
+     * @var \k1lib\html\div
      */
     protected $menu_left;
 
     /**
-     * @var div
+     * @var \k1lib\html\div
      */
     protected $menu_right;
 
-    function __construct(tag $parent, $id = "") {
+    function __construct(\k1lib\html\tag $parent, $id = "") {
 
         $this->parent = $parent;
         $this->init_title_bar();
@@ -49,7 +49,7 @@ class top_bar extends \k1lib\html\tag {
 
         $left = $this->append_div("top-bar-left");
 
-        $this->menu_left = new ul("dropdown menu", "k1app-menu-left");
+        $this->menu_left = new \k1lib\html\ul("dropdown menu", "k1app-menu-left");
         $this->menu_left->append_to($left);
         $this->menu_left->set_attrib("data-dropdown-menu", TRUE);
 
@@ -61,7 +61,7 @@ class top_bar extends \k1lib\html\tag {
 
         $right = $this->append_div("top-bar-right");
 
-        $this->menu_right = new ul("menu", "k1app-menu-right");
+        $this->menu_right = new \k1lib\html\ul("menu", "k1app-menu-right");
         $this->menu_right->append_to($right);
     }
 
@@ -73,7 +73,7 @@ class top_bar extends \k1lib\html\tag {
      * @return \k1lib\html\a
      */
     function add_button($href, $label, $class = null, $id = null) {
-        $a = new a($href, $label, "_self", $label, "button $class", $id);
+        $a = new \k1lib\html\a($href, $label, "_self", $label, "button $class", $id);
         $this->menu_right->append_li()->append_child($a);
         return $a;
     }
@@ -81,9 +81,9 @@ class top_bar extends \k1lib\html\tag {
     /**
      * @param string $href
      * @param string $label
-     * @return li
+     * @return \k1lib\html\li
      */
-    function add_menu_item($href, $label, tag $where = null) {
+    function add_menu_item($href, $label, \k1lib\html\tag $where = null) {
         if (empty($where)) {
             $li = $this->menu_left->append_li();
             $li->append_a($href, $label);
@@ -97,9 +97,9 @@ class top_bar extends \k1lib\html\tag {
     /**
      * @param string $href
      * @param string $label
-     * @return li
+     * @return \k1lib\html\li
      */
-    function add_sub_menu(li $where) {
+    function add_sub_menu(\k1lib\html\li $where) {
         $sub_ul = $where->append_ul("menu vertical");
         return $sub_ul;
     }
@@ -115,7 +115,7 @@ class top_bar extends \k1lib\html\tag {
         $title = $this->parent->append_div("title-bar")
                 ->set_attrib("data-responsive-toggle", "responsive-menu")
                 ->set_attrib("data-hide-for", "medium");
-        $title->append_child((new button(null, "menu-icon"))->set_attrib("data-toggle", TRUE));
+        $title->append_child((new \k1lib\html\button(null, "menu-icon"))->set_attrib("data-toggle", TRUE));
 
         $title_bar_title = $title->append_div("title-bar-title k1app-title-container");
         $title_bar_title->append_span("k1app-title-1");
