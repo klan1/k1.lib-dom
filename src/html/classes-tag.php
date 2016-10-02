@@ -1067,6 +1067,10 @@ class head extends tag {
         $this->title->set_value($document_title);
     }
 
+    public function get_title() {
+        return $this->title->get_value();
+    }
+
     /**
      * @return link
      */

@@ -61,8 +61,9 @@ class top_bar extends \k1lib\html\tag {
 
         $right = $this->append_div("top-bar-right");
 
-        $this->menu_right = new \k1lib\html\ul("menu", "k1app-menu-right");
+        $this->menu_right = new \k1lib\html\ul("dropdown menu", "k1app-menu-right");
         $this->menu_right->append_to($right);
+        $this->menu_right->set_attrib("data-dropdown-menu", TRUE);
     }
 
     /**
