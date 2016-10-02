@@ -42,7 +42,7 @@ class tag_log {
      * @return string
      */
     static function get_log() {
-        return self::$log;
+        return htmlspecialchars(self::$log);
     }
 
     /**
@@ -1065,6 +1065,10 @@ class head extends tag {
 
     function set_title($document_title) {
         $this->title->set_value($document_title);
+    }
+
+    public function get_title() {
+        return $this->title->get_value();
     }
 
     /**
