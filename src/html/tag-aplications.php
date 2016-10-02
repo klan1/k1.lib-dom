@@ -28,12 +28,12 @@ class top_bar extends \k1lib\html\tag {
     protected $parent;
 
     /**
-     * @var \k1lib\html\div
+     * @var \k1lib\html\ul
      */
     protected $menu_left;
 
     /**
-     * @var \k1lib\html\div
+     * @var \k1lib\html\ul
      */
     protected $menu_right;
 
