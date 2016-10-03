@@ -8,3 +8,4 @@ composer.phar
 /test/bower_components/
 /test/vendor/
 /nbproject/
+/doc/
