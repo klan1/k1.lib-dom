@@ -339,13 +339,13 @@ class tag {
         if ($put_last_position) {
             switch ($tag_position) {
                 case APPEND_ON_HEAD:
-                    $this->childs_head[$child_object->get_tag_id()] = $child_object;
+                    $this->childs_head[] = $child_object;
                     break;
                 case APPEND_ON_TAIL:
-                    $this->childs_tail[$child_object->get_tag_id()] = $child_object;
+                    $this->childs_tail[] = $child_object;
                     break;
                 default:
-                    $this->childs[$child_object->get_tag_id()] = $child_object;
+                    $this->childs[] = $child_object;
                     break;
             }
         } else {
@@ -452,7 +452,7 @@ class tag {
      * @param Int $n Index beginning from 0
      * @return tag Returns FALSE if is not set
      */
-    public function &get_child($n) {
+    public function get_child($n) {
         if (isset($this->childs[$n])) {
             return $this->childs[$n];
         } else {
@@ -631,7 +631,7 @@ class tag {
      * @param Int $n_childs
      * @return string Won't return any if is set $do_echo = TRUE
      */
-    public function generate($do_echo = \FALSE, $with_childs = \TRUE, $n_childs = 0) {
+    public function generate($with_childs = \TRUE, $n_childs = 0) {
         /**
          * Merge the child arrays HEAD, MAIN and TAIL collections
          */
@@ -680,11 +680,7 @@ class tag {
             tag_log::log("[{$this->get_tag_name()}] is generated");
         }
 
-        if ($do_echo) {
-            echo $this->tag_code;
-        } else {
-            return $this->tag_code;
-        }
+        return $this->tag_code;
     }
 
     /**
@@ -1295,7 +1291,7 @@ class ul extends tag {
      * @param string $id
      * @return li
      */
-    function &append_li($value = "", $class = "", $id = "") {
+    function append_li($value = "", $class = "", $id = "") {
         $new = new li($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -1329,7 +1325,7 @@ class ol extends tag {
      * @param string $id
      * @return li
      */
-    function &append_li($value = "", $class = "", $id = "") {
+    function append_li($value = "", $class = "", $id = "") {
         $new = new li($value, $class, $id);
         $this->set_value($value);
         $this->append_child($new);
@@ -1376,7 +1372,7 @@ class li extends tag {
      * @param string $id
      * @return ul
      */
-    function &append_ul($class = "", $id = "") {
+    function append_ul($class = "", $id = "") {
         $new = new ul($class, $id);
         $this->append_child($new);
         return $new;
@@ -1388,7 +1384,7 @@ class li extends tag {
      * @param string $id
      * @return div
      */
-    function &append_ol($class = "", $id = "") {
+    function append_ol($class = "", $id = "") {
         $new = new ol($class, $id);
         $this->append_child($new);
         return $new;
@@ -1489,7 +1485,7 @@ class table extends tag {
      * @param String $id
      * @return thead
      */
-    function &append_thead($class = "", $id = "") {
+    function append_thead($class = "", $id = "") {
         $child_object = new thead($class, $id);
         $this->append_child($child_object);
         return $child_object;
@@ -1501,7 +1497,7 @@ class table extends tag {
      * @param String $id
      * @return tbody
      */
-    function &append_tbody($class = "", $id = "") {
+    function append_tbody($class = "", $id = "") {
         $child_object = new tbody($class, $id);
         $this->append_child($child_object);
         return $child_object;

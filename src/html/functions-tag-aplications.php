@@ -146,8 +146,8 @@ function table_from_array(&$data_array, $has_header = TRUE, $class = "", $id = "
     }
     $table_object = new html_classes\table($class, $id);
 
-    foreach ($data_array as $row_actual_index => $row_data) {
-        if ($has_header && ($row_actual_index === 0)) {
+    foreach ($data_array as $row_index => $row_data) {
+        if ($has_header && ($row_index === 0)) {
             $thead = $table_object->append_thead();
             $tr = $thead->append_tr();
         } else {
@@ -157,7 +157,7 @@ function table_from_array(&$data_array, $has_header = TRUE, $class = "", $id = "
             $tr = $tbody->append_tr();
         }
         foreach ($row_data as $col_index => $col_value) {
-            if ($has_header && ($row_actual_index === 0)) {
+            if ($has_header && ($row_index === 0)) {
                 $tr->append_th($col_value);
             } else {
                 if (!is_object($col_value)) {
