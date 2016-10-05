@@ -1031,6 +1031,7 @@ class DOM {
     }
 
     static function generate() {
+        self::$html->pre_code("<!DOCTYPE html>\n");
         return self::$html->generate();
     }
 
