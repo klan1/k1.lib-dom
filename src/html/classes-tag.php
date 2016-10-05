@@ -903,13 +903,23 @@ trait append_shotcuts {
     }
 
     /**
-     * 
      * @param string $class
      * @param string $id
      * @return p
      */
     function append_p($value = "", $class = "", $id = "") {
         $new = new p($value, $class, $id);
+        $this->append_child($new);
+        return $new;
+    }
+
+    /**
+     * @param string $class
+     * @param string $id
+     * @return pre
+     */
+    function append_pre($value = "", $class = "", $id = "") {
+        $new = new pre($value, $class, $id);
         $this->append_child($new);
         return $new;
     }
@@ -931,13 +941,67 @@ trait append_shotcuts {
     }
 
     /**
-     * 
      * @param string $class
      * @param string $id
      * @return p
      */
     function append_h1($value = "", $class = "", $id = "") {
         $new = new h1($value, $class, $id);
+        $this->append_child($new);
+        return $new;
+    }
+
+    /**
+     * @param string $class
+     * @param string $id
+     * @return p
+     */
+    function append_h2($value = "", $class = "", $id = "") {
+        $new = new h2($value, $class, $id);
+        $this->append_child($new);
+        return $new;
+    }
+
+    /**
+     * @param string $class
+     * @param string $id
+     * @return p
+     */
+    function append_h3($value = "", $class = "", $id = "") {
+        $new = new h3($value, $class, $id);
+        $this->append_child($new);
+        return $new;
+    }
+
+    /**
+     * @param string $class
+     * @param string $id
+     * @return p
+     */
+    function append_h4($value = "", $class = "", $id = "") {
+        $new = new h4($value, $class, $id);
+        $this->append_child($new);
+        return $new;
+    }
+
+    /**
+     * @param string $class
+     * @param string $id
+     * @return p
+     */
+    function append_h5($value = "", $class = "", $id = "") {
+        $new = new h5($value, $class, $id);
+        $this->append_child($new);
+        return $new;
+    }
+
+    /**
+     * @param string $class
+     * @param string $id
+     * @return p
+     */
+    function append_h6($value = "", $class = "", $id = "") {
+        $new = new h6($value, $class, $id);
         $this->append_child($new);
         return $new;
     }
@@ -1165,6 +1229,7 @@ class body extends tag {
         $this->section_header = new section("k1app-header");
         $this->section_header->append_to($this);
         $this->section_content = new section("k1app-content");
+        $this->section_content->set_attrib("style", "overflow-x: auto;");
         $this->section_content->append_to($this);
         $this->section_footer = new section("k1app-footer");
         $this->section_footer->append_to($this);
@@ -1933,9 +1998,11 @@ class pre extends tag {
 
     use append_shotcuts;
 
-    function __construct($value) {
+    function __construct($value, $class = "", $id = "") {
         parent::__construct("pre", FALSE);
         $this->set_value($value);
+        $this->set_class($class);
+        $this->set_id($id);
     }
 
 }

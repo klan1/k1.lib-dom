@@ -105,10 +105,10 @@ class top_bar extends \k1lib\html\tag {
         return $sub_ul;
     }
 
-    function set_title($number, $value) {
+    function set_title($number, $value, $append = FALSE) {
         $elements = $this->parent->get_elements_by_class("k1app-title-{$number}");
         foreach ($elements as $element) {
-            $element->set_value($value);
+            $element->set_value($value, $append);
         }
     }
 
