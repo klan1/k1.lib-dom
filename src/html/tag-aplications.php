@@ -74,7 +74,7 @@ class top_bar extends \k1lib\html\tag {
      * @return \k1lib\html\a
      */
     function add_button($href, $label, $class = null, $id = null) {
-        $a = new \k1lib\html\a($href, $label, "_self", $label, "button $class", $id);
+        $a = new \k1lib\html\a($href, $label, "_self", "button $class", $id);
         $this->menu_right->append_li()->append_child($a);
         return $a;
     }

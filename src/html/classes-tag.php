@@ -1275,7 +1275,7 @@ class a extends tag {
 
     use append_shotcuts;
 
-    function __construct($href, $label, $target = "", $alt = "", $class = "", $id = "") {
+    function __construct($href, $label, $target = "", $class = "", $id = "") {
         parent::__construct("a", FALSE);
         if (!empty($href)) {
             $this->set_attrib("href", $href);
@@ -1285,9 +1285,6 @@ class a extends tag {
         }
         if (!empty($target)) {
             $this->set_attrib("target", $target);
-        }
-        if (!empty($alt)) {
-            $this->set_attrib("alt", $alt);
         }
         $this->set_class($class, TRUE);
         $this->set_id($id);
@@ -1299,7 +1296,7 @@ class img extends tag {
 
     use append_shotcuts;
 
-    function __construct($src = "", $alt = "", $class = "", $id = "") {
+    function __construct($src = "", $alt = "Image", $class = "", $id = "") {
         parent::__construct("img", FALSE);
         $this->set_attrib("src", $src);
         $this->set_attrib("alt", $alt);

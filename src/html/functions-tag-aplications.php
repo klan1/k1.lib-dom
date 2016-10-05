@@ -163,7 +163,7 @@ function table_from_array(&$data_array, $has_header = TRUE, $class = "", $id = "
                 if (!is_object($col_value)) {
                     if (is_numeric($col_value)) {
                         if (is_float($col_value)) {
-                            $col_value = number_format($col_value,2);
+                            $col_value = number_format($col_value, 2);
                         } else {
                             $col_value = number_format($col_value);
                         }
@@ -274,7 +274,7 @@ function get_link_button($linkTo, $label, $class = "", $id = "") {
             break;
     }
 
-    $button_object = new \k1lib\html\a($linkTo, " " . $label, "_self", "Button", "button {$class}", $id);
+    $button_object = new \k1lib\html\a($linkTo, " " . $label, "_self", "button {$class}", $id);
     $button_object->set_attrib("class", "$button_icon", TRUE);
     $button_object->set_attrib("class", "$theme", TRUE);
     if ($js_confirm_dialog) {
