@@ -118,7 +118,8 @@ class top_bar extends \k1lib\html\tag {
                 ->set_attrib("data-hide-for", "medium");
         $title->append_child((new \k1lib\html\button(null, "menu-icon"))->set_attrib("data-toggle", TRUE));
 
-        $title_bar_title = $title->append_div("title-bar-title k1app-title-container");
+        $title_bar_title = $title->append_h1(null, "title-bar-title k1app-title-container");
+        $title_bar_title->set_attrib("style", "font-size:inherit;display:inline");
         $title_bar_title->append_span("k1app-title-1");
         $title_bar_title->append_span("k1app-title-2");
         $title_bar_title->append_span("k1app-title-3");
