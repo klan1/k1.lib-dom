@@ -1184,7 +1184,7 @@ class meta extends tag {
     use append_shotcuts;
 
     function __construct($name = "", $content = "") {
-        parent::__construct("meta", FALSE);
+        parent::__construct("meta", TRUE);
         if (!empty($name)) {
             $this->set_attrib("name", $name);
         }
