@@ -20,9 +20,9 @@ namespace k1lib\html;
 
 const IS_SELF_CLOSED = TRUE;
 const IS_NOT_SELF_CLOSED = FALSE;
-const NO_CLASS = null;
-const NO_ID = null;
-const NO_VALUE = null;
+const NO_CLASS = NULL;
+const NO_ID = NULL;
+const NO_VALUE = NULL;
 const APPEND_ON_HEAD = 1;
 const APPEND_ON_MAIN = 2;
 const APPEND_ON_TAIL = 3;
@@ -81,13 +81,13 @@ class tag_catalog {
     /**
      * Get a tag Object form catalog using the ID to search on Catalog index
      * @param integer $index
-     * @return tag|null
+     * @return tag|NULL
      */
     static function get_by_index($index) {
         if (self::index_exist($index)) {
             return self::$catalog[$index];
         } else {
-            return null;
+            return NULL;
         }
     }
 
@@ -125,7 +125,7 @@ class tag_catalog {
             $tag_index = $tag_index->get_tag_id();
         }
         if (isset(self::$catalog[$tag_index])) {
-//            self::$catalog[$tag_index] = null;
+//            self::$catalog[$tag_index] = NULL;
             unset(self::$catalog[$tag_index]);
         }
     }
@@ -196,13 +196,13 @@ class tag {
     protected $child_level = 0;
 
     /** @var tag */
-    protected $parent = null;
+    protected $parent = NULL;
 
     /** @var boolean */
-    static protected $use_log = false;
+    static protected $use_log = FALSE;
 
     /** @var tag; */
-    protected $linked_html_obj = null;
+    protected $linked_html_obj = NULL;
 
     /**
      * Constructor with $tag_name and $self_closed options for beginning
@@ -261,13 +261,13 @@ class tag {
     /**
      * Get the catalog index (an unique id) for this tag Object or NULL if the 
      * Object has been decataloged
-     * @return integer|null
+     * @return integer|NULL
      */
     function get_tag_id() {
         if (tag_catalog::index_exist($this->tag_id)) {
             return $this->tag_id;
         } else {
-            null;
+            NULL;
         }
     }
 
@@ -285,7 +285,7 @@ class tag {
 
     /**
      * Return the parent tag Object.
-     * @return \k1lib\html\tag|null
+     * @return \k1lib\html\tag|NULL
      */
     function get_parent() {
         return $this->parent;
@@ -421,7 +421,7 @@ class tag {
      * @param String $value
      * @return tag
      */
-    public function set_value($value, $append = false) {
+    public function set_value($value, $append = FALSE) {
 
         if (empty($this->linked_html_obj)) {
             if (!empty($value)) {
@@ -470,7 +470,13 @@ class tag {
     public function set_attrib($attribute, $value, $append = FALSE) {
         if (!empty($attribute) && is_string($attribute)) {
             if (empty($this->linked_html_obj)) {
-                $this->attributes[$attribute] = (($append === TRUE) && (!empty($this->attributes[$attribute])) ) ? ($this->attributes[$attribute] . " " . $value) : ($value);
+                if ($value !== NULL) {
+                    if (($append === TRUE) && (!empty($this->attributes[$attribute]))) {
+                        $this->attributes[$attribute] = $this->attributes[$attribute] . " " . $value;
+                    } else {
+                        $this->attributes[$attribute] = $value;
+                    }
+                }
             } else {
                 $this->linked_html_obj->set_attrib($attribute, $value, $append);
             }
@@ -489,9 +495,9 @@ class tag {
      * @param string $id
      * @return tag
      */
-    public function set_id($id) {
+    public function set_id($id, $append = FALSE) {
         if (!empty($id)) {
-            $this->set_attrib("id", $id);
+            $this->set_attrib("id", $id, $append);
         }
         return $this;
     }
@@ -501,9 +507,9 @@ class tag {
      * @param string $class
      * @return tag
      */
-    public function set_class($class) {
+    public function set_class($class, $append = FALSE) {
         if (!empty($class)) {
-            $this->set_attrib("class", $class);
+            $this->set_attrib("class", $class, $append);
         }
         return $this;
     }
@@ -716,7 +722,7 @@ class tag {
     /**
      * Return the FIRST object found with the $id
      * @param string $id
-     * @return tag|null
+     * @return tag|NULL
      */
     public function get_element_by_id($id) {
         if (html::get_use_log()) {
@@ -794,7 +800,8 @@ class tag {
     }
 
     /**
-     * Return an Array with all the objects that CLASS is $class_name
+     * Return an Array with all the objects that CLASS is $class_name. 
+     * NOTE: This will work ONLY with 1 class at time, or multiple in exact order.
      * @param string $class_name
      * @return tag[]
      */
@@ -804,7 +811,8 @@ class tag {
         }
         $classes = [];
         if ($this->get_tag_id()) {
-            if ($this->get_attribute("class") == $class_name) {
+//            if ($this->get_attribute("class") == $class_name) {
+            if (strstr($this->get_attribute("class"), $class_name) !== FALSE) {
                 if (html::get_use_log()) {
                     tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned");
                 }
@@ -884,7 +892,7 @@ trait append_shotcuts {
      * @param string $id
      * @return div
      */
-    function append_div($class = "", $id = "") {
+    function append_div($class = NULL, $id = NULL) {
         $new = new div($class, $id);
         $this->append_child($new);
         return $new;
@@ -896,7 +904,7 @@ trait append_shotcuts {
      * @param string $id
      * @return span
      */
-    function append_span($class = "", $id = "") {
+    function append_span($class = NULL, $id = NULL) {
         $new = new span($class, $id);
         $this->append_child($new);
         return $new;
@@ -907,7 +915,7 @@ trait append_shotcuts {
      * @param string $id
      * @return p
      */
-    function append_p($value = "", $class = "", $id = "") {
+    function append_p($value = NULL, $class = NULL, $id = NULL) {
         $new = new p($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -918,7 +926,7 @@ trait append_shotcuts {
      * @param string $id
      * @return pre
      */
-    function append_pre($value = "", $class = "", $id = "") {
+    function append_pre($value = NULL, $class = NULL, $id = NULL) {
         $new = new pre($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -934,7 +942,7 @@ trait append_shotcuts {
      * @param string $id
      * @return a
      */
-    function append_a($href = "", $label = "", $target = "", $alt = "", $class = "", $id = "") {
+    function append_a($href = NULL, $label = NULL, $target = NULL, $alt = NULL, $class = NULL, $id = NULL) {
         $new = new a($href, $label, $target, $alt, $class, $id);
         $this->append_child($new);
         return $new;
@@ -945,7 +953,7 @@ trait append_shotcuts {
      * @param string $id
      * @return p
      */
-    function append_h1($value = "", $class = "", $id = "") {
+    function append_h1($value = NULL, $class = NULL, $id = NULL) {
         $new = new h1($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -956,7 +964,7 @@ trait append_shotcuts {
      * @param string $id
      * @return p
      */
-    function append_h2($value = "", $class = "", $id = "") {
+    function append_h2($value = NULL, $class = NULL, $id = NULL) {
         $new = new h2($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -967,7 +975,7 @@ trait append_shotcuts {
      * @param string $id
      * @return p
      */
-    function append_h3($value = "", $class = "", $id = "") {
+    function append_h3($value = NULL, $class = NULL, $id = NULL) {
         $new = new h3($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -978,7 +986,7 @@ trait append_shotcuts {
      * @param string $id
      * @return p
      */
-    function append_h4($value = "", $class = "", $id = "") {
+    function append_h4($value = NULL, $class = NULL, $id = NULL) {
         $new = new h4($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -989,7 +997,7 @@ trait append_shotcuts {
      * @param string $id
      * @return p
      */
-    function append_h5($value = "", $class = "", $id = "") {
+    function append_h5($value = NULL, $class = NULL, $id = NULL) {
         $new = new h5($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -1000,7 +1008,7 @@ trait append_shotcuts {
      * @param string $id
      * @return p
      */
-    function append_h6($value = "", $class = "", $id = "") {
+    function append_h6($value = NULL, $class = NULL, $id = NULL) {
         $new = new h6($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -1017,7 +1025,7 @@ class DOM {
     /**
      * @var html
      */
-    static protected $html = null;
+    static protected $html = NULL;
 
     static function start($lang = "en") {
         self::$html = new html($lang);
@@ -1055,12 +1063,12 @@ class html extends tag {
     /**
      * @var head
      */
-    protected $head = null;
+    protected $head = NULL;
 
     /**
      * @var body
      */
-    private $body = null;
+    private $body = NULL;
 
     function __construct($lang = "en") {
         parent::__construct("html", FALSE);
@@ -1135,7 +1143,7 @@ class head extends tag {
     /**
      * @return link
      */
-    function link_css($href = "") {
+    function link_css($href = NULL) {
         $new = new link($href);
         $this->append_child_tail($new);
         return $new;
@@ -1145,7 +1153,7 @@ class head extends tag {
      * 
      * @return meta
      */
-    function append_meta($name = "", $content = "") {
+    function append_meta($name = NULL, $content = NULL) {
         $new = new meta($name, $content);
         $this->append_child_tail($new);
         return $new;
@@ -1167,7 +1175,7 @@ class section extends tag {
 
     use append_shotcuts;
 
-    function __construct($id = "", $class = "") {
+    function __construct($id = NULL, $class = NULL) {
         parent::__construct("section", FALSE);
         if (!empty($id)) {
             $this->set_attrib("id", $id);
@@ -1183,7 +1191,7 @@ class meta extends tag {
 
     use append_shotcuts;
 
-    function __construct($name = "", $content = "") {
+    function __construct($name = NULL, $content = NULL) {
         parent::__construct("meta", TRUE);
         if (!empty($name)) {
             $this->set_attrib("name", $name);
@@ -1210,17 +1218,17 @@ class body extends tag {
     /**
      * @var section
      */
-    protected $section_header = null;
+    protected $section_header = NULL;
 
     /**
      * @var section
      */
-    protected $section_content = null;
+    protected $section_content = NULL;
 
     /**
      * @var section
      */
-    protected $section_footer = null;
+    protected $section_footer = NULL;
 
     function __construct() {
         parent::__construct("body", FALSE);
@@ -1243,7 +1251,7 @@ class body extends tag {
         if (!empty($this->section_header)) {
             return $this->section_header;
         } else {
-            return false;
+            return FALSE;
         }
     }
 
@@ -1254,7 +1262,7 @@ class body extends tag {
         if (!empty($this->section_content)) {
             return $this->section_content;
         } else {
-            return false;
+            return FALSE;
         }
     }
 
@@ -1265,7 +1273,7 @@ class body extends tag {
         if (!empty($this->section_footer)) {
             return $this->section_footer;
         } else {
-            return false;
+            return FALSE;
         }
     }
 
@@ -1275,7 +1283,7 @@ class a extends tag {
 
     use append_shotcuts;
 
-    function __construct($href, $label, $target = "", $class = "", $id = "") {
+    function __construct($href, $label, $target = NULL, $class = NULL, $id = NULL) {
         parent::__construct("a", FALSE);
         if (!empty($href)) {
             $this->set_attrib("href", $href);
@@ -1296,7 +1304,7 @@ class img extends tag {
 
     use append_shotcuts;
 
-    function __construct($src = "", $alt = "Image", $class = "", $id = "") {
+    function __construct($src = NULL, $alt = "Image", $class = NULL, $id = NULL) {
         parent::__construct("img", FALSE);
         $this->set_attrib("src", $src);
         $this->set_attrib("alt", $alt);
@@ -1319,7 +1327,7 @@ class div extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("div", FALSE);
 //        $this->data_array &= $data_array;
         $this->set_class($class, TRUE);
@@ -1337,14 +1345,14 @@ class ul extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("ul", FALSE);
 //        $this->data_array &= $data_array;
         $this->set_class($class, TRUE);
         $this->set_id($id);
     }
 
-    function set_value($value, $append = false) {
+    function set_value($value, $append = FALSE) {
 //            parent::set_value($value, $append);
     }
 
@@ -1354,7 +1362,7 @@ class ul extends tag {
      * @param string $id
      * @return li
      */
-    function append_li($value = "", $class = "", $id = "") {
+    function append_li($value = NULL, $class = NULL, $id = NULL) {
         $new = new li($value, $class, $id);
         $this->append_child($new);
         return $new;
@@ -1371,14 +1379,14 @@ class ol extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("ol", FALSE);
 //        $this->data_array &= $data_array;
         $this->set_class($class, TRUE);
         $this->set_id($id);
     }
 
-    function set_value($value, $append = false) {
+    function set_value($value, $append = FALSE) {
 //            parent::set_value($value, $append);
     }
 
@@ -1388,7 +1396,7 @@ class ol extends tag {
      * @param string $id
      * @return li
      */
-    function append_li($value = "", $class = "", $id = "") {
+    function append_li($value = NULL, $class = NULL, $id = NULL) {
         $new = new li($value, $class, $id);
         $this->set_value($value);
         $this->append_child($new);
@@ -1421,7 +1429,7 @@ class li extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($value = "", $class = "", $id = "") {
+    function __construct($value = NULL, $class = NULL, $id = NULL) {
         parent::__construct("li", FALSE);
 //        $this->data_array &= $data_array;
         $this->set_value($value);
@@ -1435,7 +1443,7 @@ class li extends tag {
      * @param string $id
      * @return ul
      */
-    function append_ul($class = "", $id = "") {
+    function append_ul($class = NULL, $id = NULL) {
         $new = new ul($class, $id);
         $this->append_child($new);
         return $new;
@@ -1447,7 +1455,7 @@ class li extends tag {
      * @param string $id
      * @return div
      */
-    function append_ol($class = "", $id = "") {
+    function append_ol($class = NULL, $id = NULL) {
         $new = new ol($class, $id);
         $this->append_child($new);
         return $new;
@@ -1464,7 +1472,7 @@ class script extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($src = "") {
+    function __construct($src = NULL) {
         parent::__construct("script", FALSE);
         if (!empty($src)) {
             $this->set_attrib("src", $src);
@@ -1482,7 +1490,7 @@ class small extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("small", FALSE);
 //        $this->data_array &= $data_array;
         $this->set_class($class, TRUE);
@@ -1500,7 +1508,7 @@ class span extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("span", FALSE);
         $this->set_class($class, TRUE);
         $this->set_id($id);
@@ -1517,7 +1525,7 @@ class strong extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($value = '', $class = "", $id = "") {
+    function __construct($value = '', $class = NULL, $id = NULL) {
         parent::__construct("strong", FALSE);
         $this->set_value($value);
         $this->set_class($class, TRUE);
@@ -1535,7 +1543,7 @@ class table extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("table", FALSE);
 //        $this->data_array &= $data_array;
         $this->set_class($class, TRUE);
@@ -1548,7 +1556,7 @@ class table extends tag {
      * @param String $id
      * @return thead
      */
-    function append_thead($class = "", $id = "") {
+    function append_thead($class = NULL, $id = NULL) {
         $child_object = new thead($class, $id);
         $this->append_child($child_object);
         return $child_object;
@@ -1560,7 +1568,7 @@ class table extends tag {
      * @param String $id
      * @return tbody
      */
-    function append_tbody($class = "", $id = "") {
+    function append_tbody($class = NULL, $id = NULL) {
         $child_object = new tbody($class, $id);
         $this->append_child($child_object);
         return $child_object;
@@ -1576,7 +1584,7 @@ class thead extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("thead", FALSE);
         $this->set_class($class, TRUE);
         $this->set_id($id);
@@ -1588,7 +1596,7 @@ class thead extends tag {
      * @param String $id
      * @return tr
      */
-    function append_tr($class = "", $id = "") {
+    function append_tr($class = NULL, $id = NULL) {
         $child_object = new tr($class, $id);
         $this->append_child($child_object);
         return $child_object;
@@ -1604,7 +1612,7 @@ class tbody extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("tbody", FALSE);
         $this->set_class($class, TRUE);
         $this->set_id($id);
@@ -1616,7 +1624,7 @@ class tbody extends tag {
      * @param String $id
      * @return tr
      */
-    function append_tr($class = "", $id = "") {
+    function append_tr($class = NULL, $id = NULL) {
         $child_object = new tr($class, $id);
         $this->append_child($child_object);
         return $child_object;
@@ -1632,7 +1640,7 @@ class tr extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($class = "", $id = "") {
+    function __construct($class = NULL, $id = NULL) {
         parent::__construct("tr", FALSE);
         $this->set_class($class, TRUE);
         $this->set_id($id);
@@ -1645,7 +1653,7 @@ class tr extends tag {
      * @param String $id
      * @return th
      */
-    function append_th($value, $class = "", $id = "") {
+    function append_th($value, $class = NULL, $id = NULL) {
         $child_object = new th($value, $class, $id);
         $this->append_child($child_object);
         return $child_object;
@@ -1658,7 +1666,7 @@ class tr extends tag {
      * @param String $id
      * @return td
      */
-    function append_td($value, $class = "", $id = "") {
+    function append_td($value, $class = NULL, $id = NULL) {
         $child_object = new td($value, $class, $id);
         $this->append_child($child_object);
         return $child_object;
@@ -1675,7 +1683,7 @@ class th extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($value, $class = "", $id = "") {
+    function __construct($value, $class = NULL, $id = NULL) {
         parent::__construct("th", FALSE);
         $this->set_value($value);
         $this->set_class($class, TRUE);
@@ -1693,7 +1701,7 @@ class td extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($value, $class = "", $id = "") {
+    function __construct($value, $class = NULL, $id = NULL) {
         parent::__construct("td", FALSE);
         $this->set_value($value);
         $this->set_class($class, TRUE);
@@ -1713,7 +1721,7 @@ class input extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($type, $name, $value, $class = "", $id = "") {
+    function __construct($type, $name, $value, $class = NULL, $id = NULL) {
         parent::__construct("input", TRUE);
         $this->set_attrib("type", $type);
         $this->set_attrib("name", $name);
@@ -1734,7 +1742,7 @@ class textarea extends tag {
      * @param string $class
      * @param string $id
      */
-    function __construct($name, $class = "", $id = "") {
+    function __construct($name, $class = NULL, $id = NULL) {
         parent::__construct("textarea", FALSE);
         $this->set_attrib("name", $name);
         $this->set_class($class, TRUE);
@@ -1754,10 +1762,12 @@ class label extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($label, $for, $class = "", $id = "") {
+    function __construct($label, $for, $class = NULL, $id = NULL) {
         parent::__construct("label", FALSE);
         $this->set_value($label);
-        $this->set_attrib("for", $for);
+        if (!empty($for)) {
+            $this->set_attrib("for", $for);
+        }
         $this->set_class($class, TRUE);
         $this->set_id($id);
     }
@@ -1773,7 +1783,7 @@ class select extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($name, $class = "", $id = "") {
+    function __construct($name, $class = NULL, $id = NULL) {
         parent::__construct("select", FALSE);
         $this->set_attrib("name", $name);
         $this->set_class($class, TRUE);
@@ -1789,7 +1799,7 @@ class select extends tag {
      * @param String $id
      * @return option
      */
-    function append_option($value, $label, $selected = FALSE, $class = "", $id = "") {
+    function append_option($value, $label, $selected = FALSE, $class = NULL, $id = NULL) {
         $child_object = new option($value, $label, $selected, $class, $id);
         $this->append_child($child_object);
         return $child_object;
@@ -1808,7 +1818,7 @@ class option extends tag {
      * @param String $class
      * @param String $id
      */
-    function __construct($value, $label, $selected = FALSE, $class = "", $id = "") {
+    function __construct($value, $label, $selected = FALSE, $class = NULL, $id = NULL) {
         parent::__construct("option", FALSE);
         $this->set_value($label);
         $this->set_attrib("value", $value);
@@ -1860,7 +1870,7 @@ class p extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "", $id = "") {
+    function __construct($value = NULL, $class = NULL, $id = NULL) {
         parent::__construct("p", FALSE);
         $this->set_value($value);
         $this->set_class($class);
@@ -1876,7 +1886,7 @@ class h1 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "", $id = "") {
+    function __construct($value = NULL, $class = NULL, $id = NULL) {
         parent::__construct("h1", FALSE);
         $this->set_value($value);
         $this->set_class($class);
@@ -1892,7 +1902,7 @@ class h2 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "", $id = "") {
+    function __construct($value = NULL, $class = NULL, $id = NULL) {
         parent::__construct("h2", FALSE);
         $this->set_value($value);
         $this->set_class($class);
@@ -1908,7 +1918,7 @@ class h3 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "", $id = "") {
+    function __construct($value = NULL, $class = NULL, $id = NULL) {
         parent::__construct("h3", FALSE);
         $this->set_value($value);
         $this->set_class($class);
@@ -1924,7 +1934,7 @@ class h4 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "", $id = "") {
+    function __construct($value = NULL, $class = NULL, $id = NULL) {
         parent::__construct("h4", FALSE);
         $this->set_value($value);
         $this->set_class($class);
@@ -1940,7 +1950,7 @@ class h5 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "", $id = "") {
+    function __construct($value = NULL, $class = NULL, $id = NULL) {
         parent::__construct("h5", FALSE);
         $this->set_value($value);
         $this->set_class($class);
@@ -1956,7 +1966,7 @@ class h6 extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "", $id = "") {
+    function __construct($value = NULL, $class = NULL, $id = NULL) {
         parent::__construct("h6", FALSE);
         $this->set_value($value);
         $this->set_class($class);
@@ -1996,7 +2006,7 @@ class pre extends tag {
 
     use append_shotcuts;
 
-    function __construct($value, $class = "", $id = "") {
+    function __construct($value, $class = NULL, $id = NULL) {
         parent::__construct("pre", FALSE);
         $this->set_value($value);
         $this->set_class($class);
@@ -2009,7 +2019,7 @@ class button extends tag {
 
     use append_shotcuts;
 
-    function __construct($value = "", $class = "", $id = "", $type = "button") {
+    function __construct($value = NULL, $class = NULL, $id = NULL, $type = "button") {
         parent::__construct("button", FALSE);
         $this->set_value($value);
         $this->set_class($class);

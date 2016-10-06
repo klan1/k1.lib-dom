@@ -9,3 +9,4 @@ composer.phar
 /test/vendor/
 /nbproject/
 /doc/
+/src/html-templates_/

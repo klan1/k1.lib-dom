@@ -37,7 +37,7 @@ class top_bar extends \k1lib\html\tag {
      */
     protected $menu_right;
 
-    function __construct(\k1lib\html\tag $parent, $id = "") {
+    function __construct(\k1lib\html\tag $parent) {
 
         $this->parent = $parent;
         $this->init_title_bar();
@@ -313,6 +313,157 @@ class table_from_data extends \k1lib\html\table {
 
     public function set_max_text_length_on_cell($max_text_length_on_cell) {
         $this->max_text_length_on_cell = $max_text_length_on_cell;
+    }
+
+}
+
+class grid_cell extends \k1lib\html\div {
+
+    protected $small = NULL;
+    protected $medium = NULL;
+    protected $large = NULL;
+
+    public function __construct($col_number = NULL, $class = NULL, $id = NULL) {
+        parent::__construct("column " . $class, NULL);
+        $this->set_attrib("grid-col", $col_number);
+    }
+
+    //TODO: make the columns classes remplacable by RegExp :)
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function small($cols, $clear = FALSE) {
+        $this->small = $cols;
+        $this->set_attrib("class", "small-{$cols}", (!$clear));
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function medium($cols, $clear = FALSE) {
+        $this->medium = $cols;
+        $this->set_attrib("class", "medium-{$cols}", (!$clear));
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function large($cols, $clear = FALSE) {
+        $this->large = $cols;
+        $this->set_attrib("class", "large-{$cols}", (!$clear));
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function end($clear = FALSE) {
+        $this->set_attrib("class", "end", (!$clear));
+        return $this;
+    }
+
+    public function get_small() {
+        return $this->small;
+    }
+
+    public function get_medium() {
+        return $this->medium;
+    }
+
+    public function get_large() {
+        return $this->large;
+    }
+
+}
+
+class grid_row extends \k1lib\html\div {
+
+    /**
+     * @var \k1lib\html\tag
+     */
+    protected $parent;
+
+    /**
+     * @var grid_cell[]
+     */
+    protected $cols = [];
+
+    function __construct(\k1lib\html\tag $parent, $num_cols, $grid_row = NULL) {
+
+        $this->parent = $parent;
+
+        parent::__construct("row", NULL);
+        $this->append_to($parent);
+        if (!empty($grid_row)) {
+            $this->set_attrib("grid-row", $grid_row);
+        }
+
+        for ($col = 1; $col <= $num_cols; $col++) {
+            $this->cols[$col] = new grid_cell($col);
+            $this->cols[$col]->append_to($this);
+        }
+    }
+
+    /**
+     * @param integer $col_number
+     * @return \k1lib\html\tag
+     */
+    public function col($col_number) {
+        if (isset($this->cols[$col_number])) {
+            return $this->cols[$col_number];
+        }
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function expanded() {
+        $this->set_attrib("class", "expanded", TRUE);
+        return $this;
+    }
+
+}
+
+class label_value_row extends grid_row {
+
+    function __construct(\k1lib\html\tag $parent, $label, $value, $grid_row = 0) {
+        parent::__construct($parent, 2, $grid_row);
+
+        $this->col(1)->medium(3)->large(2);
+        $this->col(2)->medium(9)->large(10)->end();
+
+        $input_name = $this->get_name_attribute($value);
+
+        $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1-label-object right inline hide-for-small-only text-right"));
+        $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1-label-object left show-for-small-only"));
+
+
+        $this->col(2)->set_value($value);
+    }
+
+    private function get_name_attribute($tag_object) {
+        if (\method_exists($tag_object, "get_elements_by_tag")) {
+            if (!isset($tag_object)) {
+                $tag_object = new \k1lib\html\input("input", "dummy", null);
+            }
+            $elements = $tag_object->get_elements_by_tag("input");
+            if (empty($elements)) {
+                $elements = $tag_object->get_elements_by_tag("select");
+            }
+            if (empty($elements)) {
+                $elements = $tag_object->get_elements_by_tag("textarea");
+            }
+            foreach ($elements as $element) {
+                $name = $element->get_attribute("name");
+                if ($name) {
+                    return $name;
+                }
+            }
+        }
+        return null;
     }
 
 }

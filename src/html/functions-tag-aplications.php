@@ -16,12 +16,8 @@ use k1lib\html as html_classes;
  */
 function load_html_template($function_name) {
     $function_name_fixed = \str_replace("\\", "/", $function_name);
-    $file_to_load = \k1lib\HTML_TEMPLATES_PATH . "/" . \basename($function_name_fixed) . ".html";
-    if (\file_exists($file_to_load)) {
-        $template_content = \file_get_contents($file_to_load);
-        return $template_content;
-    }
-    \trigger_error("No se ha podido cargar: {$file_to_load}", E_USER_WARNING);
+    $file_to_load = "/" . \basename($function_name_fixed) . ".html";
+    \trigger_error("Please write the file: {$file_to_load} as k1.lib-dom class.", E_USER_WARNING);
     return FALSE;
 }
 
@@ -296,16 +292,18 @@ function make_form_label_input_layout($row_data, $extra_css_clasess = "", $row_d
 }
 
 function make_row_2columns_layout($row_data, $extra_css_clasess = "", $row_data_headers = null) {
-    $form_layout = "";
-    $index = 0;
+    trigger_error("NOOOOOOOoooooo " . __FUNCTION__, E_USER_WARNING);
+}
+
+function generate_row_2columns_layout(tag $parent, $row_data, $row_data_headers = null) {
+    $row = 0;
     foreach ($row_data as $field => $value) {
+        $row++;
         if (isset($row_data_headers) && array_key_exists($field, $row_data_headers)) {
-            $form_layout .= label_text_combo_2columns($row_data_headers[$field], $value);
-            $index++;
+            $field_label = $row_data_headers[$field];
         } else {
-            $form_layout .= label_text_combo_2columns($field, $value);
+            $field_label = $field;
         }
+        (new foundation\label_value_row($parent, $field_label, $value, $row));
     }
-//    return $div_row;
-    return $form_layout;
 }
