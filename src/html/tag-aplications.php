@@ -18,8 +18,48 @@
 
 namespace k1lib\html\foundation;
 
+trait foundation_methods {
+
+    /**
+     * Will search for the $text as small-1, medium-12 as: /({$text}-[0-9]+)/
+     * and replace the number part with the new number
+     * @param type $attribute
+     * @param type $text
+     * @param type $new_number
+     * @return type
+     */
+    public function replace_attribute_number($attribute, $text, $new_number) {
+        $attribute_value = $this->get_attribute($attribute);
+        $text_regexp = "/({$text}-[0-9]+)/";
+        $regexp_match = [];
+        if (preg_match($text_regexp, $attribute_value, $regexp_match)) {
+            $string_new = str_replace($regexp_match[1], "{$text}-{$new_number}", $attribute_value);
+            $this->set_attrib($attribute, $string_new);
+            return $string_new;
+        } else {
+            $this->set_attrib($attribute, $attribute_value . " {$text}-{$new_number}");
+            return $attribute_value . " {$text}-{$new_number}";
+        }
+    }
+
+    public function remove_attribute_text($attribute, $text) {
+        $attribute_value = $this->get_attribute($attribute);
+        $text_regexp = "/(\s*$text\s*)/";
+        $regexp_match = [];
+        if (preg_match($text_regexp, $attribute_value, $regexp_match)) {
+            $string_new = str_replace($regexp_match[1], "", $attribute_value);
+            $this->set_attrib($attribute, $string_new);
+            return $string_new;
+        } else {
+            return $attribute_value;
+        }
+    }
+
+}
+
 class top_bar extends \k1lib\html\tag {
 
+    use foundation_methods;
     use \k1lib\html\append_shotcuts;
 
     /**
@@ -53,7 +93,7 @@ class top_bar extends \k1lib\html\tag {
         $this->menu_left->append_to($left);
         $this->menu_left->set_attrib("data-dropdown-menu", TRUE);
 
-        $li = $this->menu_left->append_li(null, "menu-text k1app-title-container");
+        $li = $this->menu_left->append_li(NULL, "menu-text k1app-title-container");
         $li->append_span("k1app-title-1");
         $li->append_span("k1app-title-2");
         $li->append_span("k1app-title-3");
@@ -73,7 +113,7 @@ class top_bar extends \k1lib\html\tag {
      * @param string $id
      * @return \k1lib\html\a
      */
-    function add_button($href, $label, $class = null, $id = null) {
+    function add_button($href, $label, $class = NULL, $id = NULL) {
         $a = new \k1lib\html\a($href, $label, "_self", "button $class", $id);
         $this->menu_right->append_li()->append_child($a);
         return $a;
@@ -84,7 +124,7 @@ class top_bar extends \k1lib\html\tag {
      * @param string $label
      * @return \k1lib\html\li
      */
-    function add_menu_item($href, $label, \k1lib\html\tag $where = null) {
+    function add_menu_item($href, $label, \k1lib\html\tag $where = NULL) {
         if (empty($where)) {
             $li = $this->menu_left->append_li();
             $li->append_a($href, $label);
@@ -116,9 +156,9 @@ class top_bar extends \k1lib\html\tag {
         $title = $this->parent->append_div("title-bar")
                 ->set_attrib("data-responsive-toggle", "responsive-menu")
                 ->set_attrib("data-hide-for", "medium");
-        $title->append_child((new \k1lib\html\button(null, "menu-icon"))->set_attrib("data-toggle", TRUE));
+        $title->append_child((new \k1lib\html\button(NULL, "menu-icon"))->set_attrib("data-toggle", TRUE));
 
-        $title_bar_title = $title->append_h1(null, "title-bar-title k1app-title-container");
+        $title_bar_title = $title->append_h1(NULL, "title-bar-title k1app-title-container");
         $title_bar_title->set_attrib("style", "font-size:inherit;display:inline");
         $title_bar_title->append_span("k1app-title-1");
         $title_bar_title->append_span("k1app-title-2");
@@ -149,7 +189,8 @@ class top_bar extends \k1lib\html\tag {
 }
 
 class table_from_data extends \k1lib\html\table {
-//    use \k1lib\html\append_shotcuts;
+
+    use foundation_methods;
 
     /**
      * @var \k1lib\html\tag
@@ -174,7 +215,7 @@ class table_from_data extends \k1lib\html\table {
     /**
      * @var integer 
      */
-    protected $max_text_length_on_cell = null;
+    protected $max_text_length_on_cell = NULL;
 
     function __construct(\k1lib\html\tag $parent, $class = "", $id = "") {
 
@@ -219,13 +260,6 @@ class table_from_data extends \k1lib\html\table {
                     $tr->append_th($col_value);
                 } else {
                     if (!is_object($col_value)) {
-                        if (is_numeric($col_value)) {
-                            if (is_float($col_value)) {
-                                $col_value = number_format($col_value, 2);
-                            } else {
-                                $col_value = number_format($col_value);
-                            }
-                        }
                         if (is_numeric($this->max_text_length_on_cell) && strlen($col_value) > $this->max_text_length_on_cell) {
                             $col_value = substr($col_value, 0, $this->max_text_length_on_cell) . "...";
                         }
@@ -319,23 +353,29 @@ class table_from_data extends \k1lib\html\table {
 
 class grid_cell extends \k1lib\html\div {
 
+    use foundation_methods;
+
     protected $small = NULL;
     protected $medium = NULL;
     protected $large = NULL;
 
     public function __construct($col_number = NULL, $class = NULL, $id = NULL) {
-        parent::__construct("column " . $class, NULL);
-        $this->set_attrib("grid-col", $col_number);
+        parent::__construct("column" . $class, NULL);
+        $this->set_attrib("data-grid-col", $col_number);
     }
-
-    //TODO: make the columns classes remplacable by RegExp :)
 
     /**
      * @return \k1lib\html\div
      */
     public function small($cols, $clear = FALSE) {
         $this->small = $cols;
-        $this->set_attrib("class", "small-{$cols}", (!$clear));
+
+        if ($clear) {
+            $this->set_attrib("class", "small-{$cols}", (!$clear));
+        } else {
+            $this->replace_attribute_number("class", "small", $cols);
+        }
+
         return $this;
     }
 
@@ -344,7 +384,13 @@ class grid_cell extends \k1lib\html\div {
      */
     public function medium($cols, $clear = FALSE) {
         $this->medium = $cols;
-        $this->set_attrib("class", "medium-{$cols}", (!$clear));
+
+        if ($clear) {
+            $this->set_attrib("class", "medium-{$cols}", (!$clear));
+        } else {
+            $this->replace_attribute_number("class", "medium", $cols);
+        }
+
         return $this;
     }
 
@@ -353,15 +399,21 @@ class grid_cell extends \k1lib\html\div {
      */
     public function large($cols, $clear = FALSE) {
         $this->large = $cols;
-        $this->set_attrib("class", "large-{$cols}", (!$clear));
+
+        if ($clear) {
+            $this->set_attrib("class", "large-{$cols}", (!$clear));
+        } else {
+            $this->replace_attribute_number("class", "large", $cols);
+        }
+
         return $this;
     }
 
     /**
      * @return \k1lib\html\div
      */
-    public function end($clear = FALSE) {
-        $this->set_attrib("class", "end", (!$clear));
+    public function end() {
+        $this->set_attrib("class", "end", TRUE);
         return $this;
     }
 
@@ -381,6 +433,8 @@ class grid_cell extends \k1lib\html\div {
 
 class grid_row extends \k1lib\html\div {
 
+    use foundation_methods;
+
     /**
      * @var \k1lib\html\tag
      */
@@ -398,7 +452,7 @@ class grid_row extends \k1lib\html\div {
         parent::__construct("row", NULL);
         $this->append_to($parent);
         if (!empty($grid_row)) {
-            $this->set_attrib("grid-row", $grid_row);
+            $this->set_attrib("data-grid-row", $grid_row);
         }
 
         for ($col = 1; $col <= $num_cols; $col++) {
@@ -432,13 +486,21 @@ class label_value_row extends grid_row {
     function __construct(\k1lib\html\tag $parent, $label, $value, $grid_row = 0) {
         parent::__construct($parent, 2, $grid_row);
 
-        $this->col(1)->medium(3)->large(2);
-        $this->col(2)->medium(9)->large(10)->end();
+        $this->col(1)->medium(4)->large(3);
+        $this->col(2)->medium(8)->large(9)->end();
+
+        $this->col(2)->remove_attribute_text("class", "end");
 
         $input_name = $this->get_name_attribute($value);
 
-        $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1-label-object right inline hide-for-small-only text-right"));
-        $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1-label-object left show-for-small-only"));
+        if (method_exists($label, "generate")) {
+            $small_label = clone $label;
+            $this->col(1)->append_child($label->set_class("k1-label-object right inline hide-for-small-only text-right"));
+            $this->col(1)->append_child($small_label->set_class("k1-label-object left show-for-small-only"));
+        } else {
+            $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1-label-object right inline hide-for-small-only text-right"));
+            $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1-label-object left show-for-small-only"));
+        }
 
 
         $this->col(2)->set_value($value);
@@ -447,7 +509,7 @@ class label_value_row extends grid_row {
     private function get_name_attribute($tag_object) {
         if (\method_exists($tag_object, "get_elements_by_tag")) {
             if (!isset($tag_object)) {
-                $tag_object = new \k1lib\html\input("input", "dummy", null);
+                $tag_object = new \k1lib\html\input("input", "dummy", NULL);
             }
             $elements = $tag_object->get_elements_by_tag("input");
             if (empty($elements)) {
@@ -463,7 +525,7 @@ class label_value_row extends grid_row {
                 }
             }
         }
-        return null;
+        return NULL;
     }
 
 }

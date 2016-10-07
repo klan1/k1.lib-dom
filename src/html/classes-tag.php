@@ -878,7 +878,7 @@ class tag {
         }
         return $merged_childs;
     }
-
+    
 }
 
 /**
