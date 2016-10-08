@@ -217,12 +217,12 @@ class table_from_data extends \k1lib\html\table {
      */
     protected $max_text_length_on_cell = NULL;
 
-    function __construct(\k1lib\html\tag $parent, $class = "", $id = "") {
+    function __construct($class = "", $id = "") {
 
-        $this->parent = $parent;
+//        $this->parent = $parent;
 
         parent::__construct($class, $id);
-        $this->append_to($parent);
+//        $this->append_to($parent);
         $this->set_class($class);
         $this->set_id($id);
     }
@@ -445,12 +445,12 @@ class grid_row extends \k1lib\html\div {
      */
     protected $cols = [];
 
-    function __construct(\k1lib\html\tag $parent, $num_cols, $grid_row = NULL) {
+    function __construct($num_cols, $grid_row = NULL) {
 
-        $this->parent = $parent;
+//        $this->parent = $parent;
 
         parent::__construct("row", NULL);
-        $this->append_to($parent);
+//        $this->append_to($parent);
         if (!empty($grid_row)) {
             $this->set_attrib("data-grid-row", $grid_row);
         }
@@ -483,8 +483,8 @@ class grid_row extends \k1lib\html\div {
 
 class label_value_row extends grid_row {
 
-    function __construct(\k1lib\html\tag $parent, $label, $value, $grid_row = 0) {
-        parent::__construct($parent, 2, $grid_row);
+    function __construct($label, $value, $grid_row = 0) {
+        parent::__construct(2, $grid_row);
 
         $this->col(1)->medium(4)->large(3);
         $this->col(2)->medium(8)->large(9)->end();
@@ -526,6 +526,37 @@ class label_value_row extends grid_row {
             }
         }
         return NULL;
+    }
+
+}
+
+class callout extends \k1lib\html\div {
+
+    use foundation_methods;
+
+    /**
+     * @var grid_cell[]
+     */
+    protected $cols = [];
+
+    function __construct($message, $title = NULL) {
+
+        parent::__construct("callout", NULL);
+        $this->set_attrib("data-closable", TRUE);
+        if (!empty($title)) {
+            $h6 = new \k1lib\html\h6($title);
+        } else {
+            $h6 = "";
+        }
+        $close_button = new \k1lib\html\button(NULL, "close-button");
+        $close_button->set_attrib("data-close", TRUE);
+        $close_button->set_attrib("aria-label", "Close reveal");
+        $close_button->append_span()->set_attrib("aria-hidden", TRUE)->set_value("&times;");
+        $this->set_value("{$h6}{$message}{$close_button}");
+    }
+
+    public function margin($margin) {
+        $this->set_attrib("style", "margin: $margin");
     }
 
 }

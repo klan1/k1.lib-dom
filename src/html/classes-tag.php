@@ -186,7 +186,7 @@ class tag {
     /** @var Array */
     protected $childs_head = array();
 
-    /** @var Array */
+    /** @var tag[] */
     protected $childs = array();
 
     /** @var Array */
@@ -401,6 +401,26 @@ class tag {
     }
 
     /**
+     * @return tag
+     */
+    public function remove_childs() {
+        foreach ($this->childs as $key => $child) {
+            unset($this->childs[$key]);
+            $child->decatalog();
+        }
+        foreach ($this->childs_head as $key => $child) {
+            unset($this->childs_head[$key]);
+            $child->decatalog();
+        }
+        foreach ($this->childs_tail as $key => $child) {
+            unset($this->childs_tail[$key]);
+            $child->decatalog();
+        }
+        $this->has_child = FALSE;
+        return $this;
+    }
+
+    /**
      * Add free TEXT before the generated TAG
      * @param String $pre_code
      */
@@ -428,7 +448,7 @@ class tag {
                 $this->value = ($append === TRUE) ? ($this->value . " " . $value) : ("$value");
             }
         } else {
-            $this->linked_html_obj->value = (($append === TRUE) && (!empty($this->linked_html_obj->value)) ) ? ($this->linked_html_obj->value . " " . $value) : ("$value");
+            $this->linked_html_obj->set_value((($append === TRUE) && (!empty($this->linked_html_obj->get_value())) ) ? ($this->linked_html_obj->get_value() . " " . $value) : ("$value"));
         }
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} set value to: {$value}");
@@ -534,7 +554,7 @@ class tag {
     public function get_value($current_child_level = 0) {
         if (is_object($this->value)) {
             trigger_error("This shouldn't be used more", E_USER_NOTICE);
-            return $this->value->generate();
+            return $this->get_value();
         } else {
             $this->parse_value($current_child_level);
             return $this->value;
@@ -878,7 +898,7 @@ class tag {
         }
         return $merged_childs;
     }
-    
+
 }
 
 /**

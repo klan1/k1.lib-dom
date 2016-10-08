@@ -17,7 +17,7 @@ use k1lib\html as html_classes;
 function load_html_template($function_name) {
     $function_name_fixed = \str_replace("\\", "/", $function_name);
     $file_to_load = "/" . \basename($function_name_fixed) . ".html";
-    \trigger_error("Please write the file: {$file_to_load} as k1.lib-dom class.", E_USER_WARNING);
+    \trigger_error("Please write the file: {$file_to_load} as k1.lib-dom class. From: {$function_name}", E_USER_WARNING);
     return FALSE;
 }
 
@@ -304,6 +304,6 @@ function generate_row_2columns_layout(tag $parent, $row_data, $row_data_headers 
         } else {
             $field_label = $field;
         }
-        (new foundation\label_value_row($parent, $field_label, $value, $row));
+        (new foundation\label_value_row($field_label, $value, $row))->append_to($parent);
     }
 }
