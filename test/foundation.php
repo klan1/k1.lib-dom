@@ -1,4 +1,5 @@
 <?php
+
 // AUTOLAD
 require_once '../src/loader.php';
 
@@ -18,12 +19,16 @@ $body = DOM::html()->body();
 
 // Initialize the <section id="k1app-header"></section>,<section id="k1app-content"></section>,<section id="k1app-footer"></section>
 $body->init_sections();
+$body->content()->set_style('padding:2em;', TRUE);
 
 // Code shortcut to <section id="k1app-header"></section>
 $body_header = $body->header();
 
+
+/**
+ * TOP BAR
+ */
 $top_bar = new \k1lib\html\foundation\top_bar($body_header);
-$top_bar->append_to($body_header);
 
 $top_bar->set_title(1, "APP TITLE");
 $top_bar->set_title(2, " :: ");
@@ -40,6 +45,25 @@ $top_bar->add_menu_item("#", "Level 2", $sub_menu);
 
 $top_bar->add_button("#", "Ingresar");
 $top_bar->add_button("#", "Salir", "alert");
+
+/**
+ * TABLE WITH DATA
+ */
+$data = array(
+    0 => array('Name', 'Last name', 'Phone', 'Address', 'Picture'),
+    1 => array('Alejandro', 'Trujillo', '3183988800', 'Av 5 # 3-33', 'https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png'),
+    2 => array('Camilo', 'Lopez', '315555555', 'K 1 # 2-33', 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
+    3 => array('Alejandro', 'Trujillo', '3183988800', 'Av 5 # 3-33', 'https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png'),
+    4 => array('Camilo', 'Lopez', '315555555', 'K 1 # 2-33', 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
+);
+
+$table_with_data = new \k1lib\html\foundation\table_from_data('foundation-table', 'table-1');
+$table_with_data->set_data($data);
+$table_with_data->append_to($body->content());
+
+$img = new \k1lib\html\img();
+$img->set_attrib("alt", "Avatar of {{field:0}}");
+$table_with_data->insert_tag_on_field($img, [4], 'src');
 
 // HTML HEAD
 $head->set_title("FOUNDATION TEST");

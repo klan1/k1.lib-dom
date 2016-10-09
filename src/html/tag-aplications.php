@@ -274,7 +274,7 @@ class table_from_data extends \k1lib\html\table {
         }
     }
 
-    public function insert_tag_on_field(\k1lib\html\tag $tag_object, array $fields_to_insert, array $tag_attribs_to_check = ['href', 'src', 'alt']) {
+    public function insert_tag_on_field(\k1lib\html\tag $tag_object, array $fields_to_insert, $tag_attribs_to_use = NULL, $append = FALSE) {
         $row = 0;
         foreach ($this->data as $row_index => $row_data) {
             $row++;
@@ -294,14 +294,16 @@ class table_from_data extends \k1lib\html\table {
                     // CLONE the TAG object to apply on each field necessary
                     $tag_object_copy = clone $tag_object;
                     // IF the value is empty, we have to put the field value on it
-                    if (empty($tag_object_copy->get_value())) {
-                        $tag_object_copy->set_value($col_value);
+                    if (empty($tag_attribs_to_use)) {
+//                        $tag_object_copy->set_value($col_value, $append);
+                        $tag_object_copy->set_value($this->parse_string_value($col_value, $row_index));
+                    } else {
+                        $tag_object_copy->set_attrib($tag_attribs_to_use, $this->parse_string_value($col_value, $row_index));
                     }
                     $attribs = [];
-                    foreach ($tag_attribs_to_check as $attrib) {
-                        $attribs[$attrib] = $tag_object_copy->get_attribute($attrib);
-                        if (!empty($attribs[$attrib])) {
-                            $tag_object_copy->set_attrib($attrib, $this->parse_string_value($attribs[$attrib], $row_index));
+                    foreach ($tag_object_copy->get_attributes as $attribute => $value) {
+                        if (!empty($attribs[$value])) {
+                            $tag_object_copy->set_attrib($tag_attribs_to_use, $this->parse_string_value($value, $row_index));
                         }
                     }
                     $tag_object_copy->set_value($this->parse_string_value($tag_object_copy->get_value(), $row_index));

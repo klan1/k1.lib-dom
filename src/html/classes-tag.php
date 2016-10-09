@@ -535,6 +535,18 @@ class tag {
     }
 
     /**
+     * Shortcut for $html->set_attrib("style",$style);
+     * @param string $style
+     * @return tag
+     */
+    public function set_style($style, $append = FALSE) {
+        if (!empty($style)) {
+            $this->set_attrib("style", $style, $append);
+        }
+        return $this;
+    }
+
+    /**
      * If the attribute was set returns its value
      * @param String $attribute
      * @return String Returns FALSE if is not set
@@ -545,6 +557,10 @@ class tag {
         } else {
             return FALSE;
         }
+    }
+
+    public function get_attribute_array() {
+        return $this->attributes;
     }
 
     /**
