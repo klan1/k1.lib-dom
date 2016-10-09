@@ -559,7 +559,7 @@ class tag {
         }
     }
 
-    public function get_attribute_array() {
+    public function get_attributes_array() {
         return $this->attributes;
     }
 

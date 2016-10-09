@@ -50,20 +50,32 @@ $top_bar->add_button("#", "Salir", "alert");
  * TABLE WITH DATA
  */
 $data = array(
-    0 => array('Name', 'Last name', 'Phone', 'Address', 'Picture'),
-    1 => array('Alejandro', 'Trujillo', '3183988800', 'Av 5 # 3-33', 'https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png'),
-    2 => array('Camilo', 'Lopez', '315555555', 'K 1 # 2-33', 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
-    3 => array('Alejandro', 'Trujillo', '3183988800', 'Av 5 # 3-33', 'https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png'),
-    4 => array('Camilo', 'Lopez', '315555555', 'K 1 # 2-33', 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
+    0 => array(0 => 'Name', 1 => 'Last name', 'Full Name'),
+    1 => array('Alejandro', 'Trujillo', "{{field:0}} {{field:1}}"),
+    2 => array('Camilo', 'Lopez', "{{field:0}} {{field:1}}"),
 );
 
 $table_with_data = new \k1lib\html\foundation\table_from_data('foundation-table', 'table-1');
 $table_with_data->set_data($data);
 $table_with_data->append_to($body->content());
 
+$data1 = array(
+    0 => array(0 => 'Name', 1 => 'Last name', 'Full Name', 'Phone', 'Address', 'Picture'),
+    1 => array('Alejandro', 'Trujillo', NULL, '3183988800', 'Av 5 # 3-33', 'https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png'),
+    2 => array('Camilo', 'Lopez', NULL, '315555555', 'K 1 # 2-33', 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
+);
+
+$table_with_data1 = new \k1lib\html\foundation\table_from_data('foundation-table', 'table-1');
+$table_with_data1->set_data($data1);
+$table_with_data1->append_to($body->content());
+
 $img = new \k1lib\html\img();
 $img->set_attrib("alt", "Avatar of {{field:0}}");
-$table_with_data->insert_tag_on_field($img, [4], 'src');
+$table_with_data1->insert_tag_on_field($img, [5], 'src');
+
+$span = new k1lib\html\span();
+$span->set_value("{{field:0}} {{field:1}}");
+$table_with_data1->insert_tag_on_field($span, [2]);
 
 // HTML HEAD
 $head->set_title("FOUNDATION TEST");

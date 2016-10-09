@@ -240,6 +240,7 @@ class table_from_data extends \k1lib\html\table {
     public function use_data() {
         $num_col = 0;
         $num_row = 0;
+        $row = 0;
         foreach ($this->data as $row_index => $row_data) {
             if ($this->has_header && ($row_index === 0)) {
                 $thead = $this->append_thead();
@@ -252,6 +253,9 @@ class table_from_data extends \k1lib\html\table {
                 $tr = $tbody->append_tr();
             }
             foreach ($row_data as $field => $col_value) {
+                if ($this->has_header && $row !== 0) {
+                    $col_value = $this->parse_string_value($col_value, $row);
+                }
                 // FIELD HIDE
                 if (array_search($field, $this->fields_to_hide) !== FALSE) {
                     continue;
@@ -271,10 +275,11 @@ class table_from_data extends \k1lib\html\table {
                     $tr->append_td($col_value);
                 }
             }
+            $row++;
         }
     }
 
-    public function insert_tag_on_field(\k1lib\html\tag $tag_object, array $fields_to_insert, $tag_attribs_to_use = NULL, $append = FALSE) {
+    public function insert_tag_on_field(\k1lib\html\tag $tag_object, array $fields_to_insert, $tag_attrib_to_use = NULL, $append = FALSE) {
         $row = 0;
         foreach ($this->data as $row_index => $row_data) {
             $row++;
@@ -294,19 +299,21 @@ class table_from_data extends \k1lib\html\table {
                     // CLONE the TAG object to apply on each field necessary
                     $tag_object_copy = clone $tag_object;
                     // IF the value is empty, we have to put the field value on it
-                    if (empty($tag_attribs_to_use)) {
-//                        $tag_object_copy->set_value($col_value, $append);
-                        $tag_object_copy->set_value($this->parse_string_value($col_value, $row_index));
-                    } else {
-                        $tag_object_copy->set_attrib($tag_attribs_to_use, $this->parse_string_value($col_value, $row_index));
-                    }
-                    $attribs = [];
-                    foreach ($tag_object_copy->get_attributes as $attribute => $value) {
-                        if (!empty($attribs[$value])) {
-                            $tag_object_copy->set_attrib($tag_attribs_to_use, $this->parse_string_value($value, $row_index));
+                    if (empty($tag_attrib_to_use)) {
+                        if (empty($tag_object_copy->get_value())) {
+                            $tag_object_copy->set_value($this->parse_string_value($col_value, $row_index));
+                        } else {
+                            $tag_object_copy->set_value($this->parse_string_value($tag_object_copy->get_value(), $row_index));
                         }
+                    } else {
+                        $tag_object_copy->set_attrib($tag_attrib_to_use, $this->parse_string_value($col_value, $row_index));
                     }
-                    $tag_object_copy->set_value($this->parse_string_value($tag_object_copy->get_value(), $row_index));
+                    foreach ($tag_object_copy->get_attributes_array() as $attribute => $value) {
+                        if ($attribute == $tag_attrib_to_use) {
+                            continue;
+                        }
+                        $tag_object_copy->set_attrib($attribute, $this->parse_string_value($value, $row_index));
+                    }
                     $this->data[$row_index][$field] = $tag_object_copy;
                 }
             }
