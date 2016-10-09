@@ -93,7 +93,7 @@ class top_bar extends \k1lib\html\tag {
         $this->menu_left->append_to($left);
         $this->menu_left->set_attrib("data-dropdown-menu", TRUE);
 
-        $li = $this->menu_left->append_li(NULL, "menu-text k1app-title-container");
+        $li = $this->menu_left->append_li(NULL, "menu-text k1app-title-container hide-for-small-only");
         $li->append_span("k1app-title-1");
         $li->append_span("k1app-title-2");
         $li->append_span("k1app-title-3");
