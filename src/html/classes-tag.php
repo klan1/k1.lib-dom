@@ -1418,12 +1418,12 @@ class body extends tag {
     }
 
     function init_sections() {
-        $this->section_header = new section("k1app-header");
+        $this->section_header = new section("k1app-header", "hide-for-print");
         $this->section_header->append_to($this);
         $this->section_content = new section("k1app-content");
         $this->section_content->set_attrib("style", "overflow-x: auto;");
         $this->section_content->append_to($this);
-        $this->section_footer = new section("k1app-footer");
+        $this->section_footer = new section("k1app-footer", "hide-for-print");
         $this->section_footer->append_to($this);
     }
 

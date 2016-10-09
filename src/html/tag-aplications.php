@@ -83,7 +83,7 @@ class top_bar extends \k1lib\html\tag {
         $this->init_title_bar();
 
         parent::__construct("div", FALSE);
-        $this->set_class("top-bar", TRUE);
+        $this->set_class("top-bar hide-for-print", TRUE);
         $this->set_id("responsive-menu");
         $this->append_to($parent);
 
