@@ -506,8 +506,26 @@ class tag {
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} new attrib: {$attribute}={$value}");
         }
-
         return $this;
+    }
+
+    public function remove_attrib($attribute) {
+        if (isset($this->attributes[$attribute])) {
+            unset($this->attributes[$attribute]);
+        }
+    }
+
+    public function remove_attribute_text($attribute, $text) {
+        $attribute_value = $this->get_attribute($attribute);
+        $text_regexp = "/(\s*$text\s*)/";
+        $regexp_match = [];
+        if (preg_match($text_regexp, $attribute_value, $regexp_match)) {
+            $string_new = str_replace($regexp_match[1], "", $attribute_value);
+            $this->set_attrib($attribute, $string_new);
+            return $string_new;
+        } else {
+            return $attribute_value;
+        }
     }
 
     /**
@@ -831,6 +849,135 @@ class tag {
         }
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return " . count($tags) . " '$tag_name' tags");
+        }
+        return $tags;
+    }
+
+    /**
+     * Return an Array with all the objects that has ATTRIBUTE as $attribute_name
+     * @param string $attribute_name
+     * @param boolean $partial_text_search
+     * @return tag[]
+     */
+    public function get_elements_by_attrib($attribute_name, $partial_text_search = FALSE) {
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will SEARCH by ATTRIB='$attribute_name'");
+        }
+        $tags = [];
+        if ($this->get_tag_id()) {
+            if (array_key_exists($attribute_name, $this->attributes) && !$partial_text_search) {
+                if (html::get_use_log()) {
+                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by exact match");
+                }
+                $tags[] = $this;
+            } elseif ($partial_text_search) {
+                foreach ($this->attributes as $attribute => $value) {
+                    if (strstr($attribute, $attribute_name) !== FALSE) {
+                        if (html::get_use_log()) {
+                            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by partial match");
+                        }
+                        $tags[] = $this;
+                    }
+                }
+            }
+            /**
+             * Child and inline tags
+             */
+            $inline_tags = $this->get_inline_tags();
+            $all_childs = $this->get_all_childs();
+            $all_childs = array_merge($inline_tags, $all_childs);
+            foreach ($all_childs as $child) {
+                if (html::get_use_log()) {
+                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} looking on child [{$child->get_tag_name()}] ID:{$child->tag_id}");
+                }
+                $child_search_result = $child->get_elements_by_attrib($attribute_name);
+                if (!empty($child_search_result)) {
+//                        print_r($child_search_result);
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return child [{$child->get_tag_name()}] ID:{$child->tag_id} results");
+                    }
+                    $tags = array_merge($tags, $child_search_result);
+                }
+            }
+        }
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return " . count($tags) . " '$attribute_name' attribute");
+        }
+        return $tags;
+    }
+
+    /**
+     * Return an Array with all the objects that has ATTRIBUTE as $attribute_name
+     * @param string $attribute_name
+     * @param boolean $partial_text_search
+     * @return tag[]
+     */
+    public function get_elements_by_attrib_value($attribute_name, $attribute_value, $partial_attribute_text_search = FALSE, $partial_value_text_search = FALSE) {
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will SEARCH by ATTRIB='$attribute_name' and VALUE='$attribute_value'");
+        }
+        $tags = [];
+        if ($this->get_tag_id()) {
+            $tag_has_attribute = $this->get_elements_by_attrib($attribute_name, $partial_attribute_text_search);
+            if (!empty($tag_has_attribute) && $partial_attribute_text_search) {
+                foreach ($tag_has_attribute as $tag_to_look) {
+                    $tag_attributes = $tag_to_look->get_attributes_array();
+                    foreach ($tag_attributes as $attribute => $value) {
+                        if (strstr($attribute, $attribute_name) !== FALSE) {
+                            if ($partial_value_text_search && strstr($value, $attribute_value)) {
+                                if (html::get_use_log()) {
+                                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by partial text and partial attrib match");
+                                }
+                                $tags[] = $tag_to_look;
+                            } elseif ($attribute_value === $value) {
+                                if (html::get_use_log()) {
+                                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by exact text and partial attrib match");
+                                }
+                                $tags[] = $tag_to_look;
+                            }
+                        }
+                    }
+                }
+            } else if (!empty($tag_has_attribute) && !$partial_attribute_text_search) {
+                foreach ($tag_has_attribute as $tag_to_look) {
+                    $tag_attribute_value = $tag_to_look->get_attribute($attribute_name);
+                    if ($partial_value_text_search && (strstr($tag_attribute_value, $attribute_value) !== FALSE)) {
+                        if (html::get_use_log()) {
+                            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by partial text and exact attrib match");
+                        }
+                        $tags[] = $tag_to_look;
+                    } elseif ($tag_attribute_value === $attribute_value) {
+                        if (html::get_use_log()) {
+                            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by exact text and exact attrib match");
+                        }
+                        $tags[] = $tag_to_look;
+                    }
+                }
+            }
+
+            /**
+             * Child and inline tags
+             */
+            $inline_tags = $this->get_inline_tags();
+            $all_childs = $this->get_all_childs();
+            $all_childs = array_merge($inline_tags, $all_childs);
+            foreach ($all_childs as $child) {
+                if (html::get_use_log()) {
+                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} looking on child [{$child->get_tag_name()}] ID:{$child->tag_id}");
+                }
+                $child_search_result = [];
+                $child_search_result = $child->get_elements_by_attrib_value($attribute_name, $attribute_value, $partial_attribute_text_search, $partial_value_text_search);
+                if (!empty($child_search_result)) {
+//                        print_r($child_search_result);
+                    if (html::get_use_log()) {
+                        tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return child [{$child->get_tag_name()}] ID:{$child->tag_id} results");
+                    }
+                    $tags = array_merge($tags, $child_search_result);
+                }
+            }
+        }
+        if (html::get_use_log()) {
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will return " . count($tags) . " '$attribute_name' attribute");
         }
         return $tags;
     }
@@ -1841,6 +1988,17 @@ class select extends tag {
         return $child_object;
     }
 
+    function set_value($value, $append = FALSE) {
+        $selected = $this->get_elements_by_attrib("selected");
+        if (!empty($selected)) {
+            $selected[0]->remove_attrib("selected");
+        }
+        $targuet_tag = $this->get_elements_by_attrib_value("value", $value);
+        if (isset($targuet_tag[0])) {
+            $targuet_tag[0]->set_attrib("selected", TRUE);
+        }
+    }
+
 }
 
 class option extends tag {
@@ -1858,7 +2016,9 @@ class option extends tag {
         parent::__construct("option", FALSE);
         $this->set_value($label);
         $this->set_attrib("value", $value);
-        $this->set_attrib("selected", $selected);
+        if ($selected) {
+            $this->set_attrib("selected", $selected);
+        }
         $this->set_class($class, TRUE);
         $this->set_id($id);
     }
