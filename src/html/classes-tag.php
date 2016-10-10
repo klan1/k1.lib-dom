@@ -1488,7 +1488,7 @@ class img extends tag {
     use append_shotcuts;
 
     function __construct($src = NULL, $alt = "Image", $class = NULL, $id = NULL) {
-        parent::__construct("img", FALSE);
+        parent::__construct("img", TRUE);
         $this->set_attrib("src", $src);
         $this->set_attrib("alt", $alt);
         $this->set_class($class, TRUE);

@@ -184,7 +184,7 @@ Will generate a pretty table:
             <td>Trujillo</td>
             <td>Alejandro Trujillo</td>
             <td>
-                <img alt="Avatar of Alejandro" src="https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png"></img>
+                <img alt="Avatar of Alejandro" src="https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png">
             </td>
         </tr>
         <tr>
@@ -192,7 +192,7 @@ Will generate a pretty table:
             <td>Lopez</td>
             <td>Camilo Lopez</td>
             <td>
-                <img alt="Avatar of Camilo" src="https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png"></img>
+                <img alt="Avatar of Camilo" src="https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png">
             </td>
         </tr>
     </tbody>
