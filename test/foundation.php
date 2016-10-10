@@ -24,7 +24,6 @@ $body->content()->set_style('padding:2em;', TRUE);
 // Code shortcut to <section id="k1app-header"></section>
 $body_header = $body->header();
 
-
 /**
  * TOP BAR
  */
@@ -40,8 +39,6 @@ $top_bar->add_menu_item("#", "Item 3");
 
 $sub_menu = $top_bar->add_sub_menu($li);
 $top_bar->add_menu_item("#", "Level 1", $sub_menu);
-$top_bar->add_menu_item("#", "Level 2", $sub_menu);
-$top_bar->add_menu_item("#", "Level 2", $sub_menu);
 
 $top_bar->add_button("#", "Ingresar");
 $top_bar->add_button("#", "Salir", "alert");
@@ -62,24 +59,6 @@ $table_with_data = new \k1lib\html\foundation\table_from_data('foundation-table'
 $table_with_data->set_data($data);
 $table_with_data->insert_tag_on_field($img, [3], 'src');
 $table_with_data->append_to($body->content());
-
-$data1 = array(
-    0 => array(0 => 'Name', 1 => 'Last name', 'Full Name', 'Phone', 'Address', 'Picture'),
-    1 => array('Alejandro', 'Trujillo', NULL, '3183988800', 'Av 5 # 3-33', 'https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png'),
-    2 => array('Camilo', 'Lopez', NULL, '315555555', 'K 1 # 2-33', 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
-);
-
-$table_with_data1 = new \k1lib\html\foundation\table_from_data('foundation-table', 'table-1');
-$table_with_data1->set_data($data1);
-$table_with_data1->append_to($body->content());
-
-$img = new \k1lib\html\img();
-$img->set_attrib("alt", "Avatar of {{field:0}}");
-$table_with_data1->insert_tag_on_field($img, [5], 'src');
-
-$span = new k1lib\html\span();
-$span->set_value("{{field:1}}, {{field:0}}");
-$table_with_data1->insert_tag_on_field($span, [2]);
 
 /**
  * CALLOUT
