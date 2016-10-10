@@ -50,13 +50,17 @@ $top_bar->add_button("#", "Salir", "alert");
  * TABLE WITH DATA
  */
 $data = array(
-    0 => array(0 => 'Name', 1 => 'Last name', 'Full Name'),
-    1 => array('Alejandro', 'Trujillo', "{{field:0}} {{field:1}}"),
-    2 => array('Camilo', 'Lopez', "{{field:0}} {{field:1}}"),
+    0 => array(0 => 'Name', 1 => 'Last name', 'Full Name', 'Pic'),
+    1 => array('Alejandro', 'Trujillo', "{{field:0}} {{field:1}}", 'https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png'),
+    2 => array('Camilo', 'Lopez', "{{field:0}} {{field:1}}", 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
 );
+
+$img = new \k1lib\html\img();
+$img->set_attrib("alt", "Avatar of {{field:0}}");
 
 $table_with_data = new \k1lib\html\foundation\table_from_data('foundation-table', 'table-1');
 $table_with_data->set_data($data);
+$table_with_data->insert_tag_on_field($img, [3], 'src');
 $table_with_data->append_to($body->content());
 
 $data1 = array(
@@ -74,8 +78,16 @@ $img->set_attrib("alt", "Avatar of {{field:0}}");
 $table_with_data1->insert_tag_on_field($img, [5], 'src');
 
 $span = new k1lib\html\span();
-$span->set_value("{{field:0}} {{field:1}}");
+$span->set_value("{{field:1}}, {{field:0}}");
 $table_with_data1->insert_tag_on_field($span, [2]);
+
+/**
+ * CALLOUT
+ */
+$callout = new \k1lib\html\foundation\callout("2016 Klan1 Network", NULL, FALSE);
+$callout->set_class("secondary", TRUE);
+$callout->set_style("border: none;", TRUE);
+$callout->append_to($body->footer());
 
 // HTML HEAD
 $head->set_title("FOUNDATION TEST");
