@@ -6,12 +6,30 @@ DOM Classes from K1.lib.
 
 ## Requirements
 - PHP 5.4 with at least 2MB in memory allowed + Your code requirements. Maybe with 8MB in most cases is enough.
+- BOWER and COMPOSER to run tests
 
 ## Installation
+
+### In a Composer project:
 
 ```sh
 composer require klan1/k1.lib-dom
 ```
+### No Composer?:
+
+```sh
+git clone https://github.com/klan1/k1.lib-dom.git
+```
+### To run tests:
+
+```sh
+git clone https://github.com/klan1/k1.lib-dom.git
+cd k1.lib-dom/test/
+bower install
+composer install
+php -S localhost:8800
+```
+Then, open in your browser http://localhost:8800/foundation.php
 
 ## Basic example
 
