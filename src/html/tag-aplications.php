@@ -548,7 +548,7 @@ class callout extends \k1lib\html\div {
      */
     protected $cols = [];
 
-    function __construct($message, $title = NULL) {
+    function __construct($message, $title = NULL, $closable = TRUE) {
 
         parent::__construct("callout", NULL);
         $this->set_attrib("data-closable", TRUE);
@@ -557,11 +557,14 @@ class callout extends \k1lib\html\div {
         } else {
             $h6 = "";
         }
-        $close_button = new \k1lib\html\button(NULL, "close-button");
-        $close_button->set_attrib("data-close", TRUE);
-        $close_button->set_attrib("aria-label", "Close reveal");
-        $close_button->append_span()->set_attrib("aria-hidden", TRUE)->set_value("&times;");
-        $this->set_value("{$h6}{$message}{$close_button}");
+        if ($closable) {
+            $close_button = new \k1lib\html\button(NULL, "close-button");
+            $close_button->set_attrib("data-close", TRUE);
+            $close_button->set_attrib("aria-label", "Close reveal");
+            $close_button->append_span()->set_attrib("aria-hidden", TRUE)->set_value("&times;");
+            $this->append_child_tail($close_button);
+        }
+        $this->set_value("{$h6}{$message}");
     }
 
     public function margin($margin) {
