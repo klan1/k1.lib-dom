@@ -1,0 +1,3123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>k1.lib-dom</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">k1.lib-dom</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/k1lib.html">\k1lib</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">337</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1457315546"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1457315546" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2078884935"></a>
+                                <a href="../namespaces/k1lib.html" style="margin-left: 30px; padding-left: 0">k1lib</a>
+            </div>
+            <div id="namespace-2078884935" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1235702546"></a>
+                                <a href="../namespaces/k1lib.html.html" style="margin-left: 30px; padding-left: 0">html</a>
+            </div>
+            <div id="namespace-1235702546" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1463816899"></a>
+                                <a href="../namespaces/k1lib.html.foundation.html" style="margin-left: 30px; padding-left: 0">foundation</a>
+            </div>
+            <div id="namespace-1463816899" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/k1lib.html.foundation.foundation_methods.html">foundation_methods</a></li>
+                                                                            <li class="class"><a href="../classes/k1lib.html.foundation.callout.html">callout</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.foundation.grid_cell.html">grid_cell</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.foundation.grid_row.html">grid_row</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.foundation.label_value_row.html">label_value_row</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.foundation.table_from_data.html">table_from_data</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.foundation.top_bar.html">top_bar</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/k1lib.html.append_shotcuts.html">append_shotcuts</a></li>
+                                                                            <li class="class"><a href="../classes/k1lib.html.a.html">a</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.body.html">body</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.button.html">button</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.div.html">div</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.DOM.html">DOM</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.fieldset.html">fieldset</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.form.html">form</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.h1.html">h1</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.h2.html">h2</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.h3.html">h3</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.h4.html">h4</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.h5.html">h5</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.h6.html">h6</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.head.html">head</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.html.html">html</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.img.html">img</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.input.html">input</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.label.html">label</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.legend.html">legend</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.li.html">li</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.link.html">link</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.meta.html">meta</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.ol.html">ol</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.option.html">option</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.p.html">p</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.pre.html">pre</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.script.html">script</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.section.html">section</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.select.html">select</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.small.html">small</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.span.html">span</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.strong.html">strong</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.table.html">table</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.tag.html">tag</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.tag_catalog.html">tag_catalog</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.tag_log.html">tag_log</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.tbody.html">tbody</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.td.html">td</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.textarea.html">textarea</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.th.html">th</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.thead.html">thead</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.title.html">title</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.tr.html">tr</a></li>
+                                                    <li class="class"><a href="../classes/k1lib.html.ul.html">ul</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/k1lib.html.html">\k1lib\html</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\k1lib\html</small>ul</h1>
+                    <p><em>HTML Tag abstraction</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_div" class="">append_div()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_span" class="">append_span()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_p" class="">append_p()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_pre" class="">append_pre()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_a" class="">append_a()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_h1" class="">append_h1()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_h2" class="">append_h2()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_h3" class="">append_h3()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_h4" class="">append_h4()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_h5" class="">append_h5()</a><br />
+                                                                    <a href="../classes/k1lib.html.append_shotcuts.html#method_append_h6" class="">append_h6()</a><br />
+                                                                    <a href="../classes/k1lib.html.ul.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method___clone" class="">__clone()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_decatalog" class="">decatalog()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_tag_id" class="">get_tag_id()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_use_log" class="">get_use_log()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_set_use_log" class="">set_use_log()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_parent" class="">get_parent()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_set_parent" class="">set_parent()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method___toString" class="">__toString()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_append_child" class="">append_child()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_append_child_head" class="">append_child_head()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_append_child_tail" class="">append_child_tail()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_append_to" class="">append_to()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_remove_childs" class="">remove_childs()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_pre_code" class="">pre_code()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_post_code" class="">post_code()</a><br />
+                                                                    <a href="../classes/k1lib.html.ul.html#method_set_value" class="">set_value()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_link_value_obj" class="">link_value_obj()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_child" class="">get_child()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_set_attrib" class="">set_attrib()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_remove_attrib" class="">remove_attrib()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_remove_attribute_text" class="">remove_attribute_text()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_set_id" class="">set_id()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_set_class" class="">set_class()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_set_style" class="">set_style()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_attribute" class="">get_attribute()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_attributes_array" class="">get_attributes_array()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_value" class="">get_value()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_parse_value" class="">parse_value()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_inline_ids" class="">get_inline_ids()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_inline_tags" class="">get_inline_tags()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_generate" class="">generate()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_tag_name" class="">get_tag_name()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_element_by_id" class="">get_element_by_id()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_elements_by_tag" class="">get_elements_by_tag()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_elements_by_attrib" class="">get_elements_by_attrib()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_elements_by_attrib_value" class="">get_elements_by_attrib_value()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_elements_by_class" class="">get_elements_by_class()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_has_childs" class="">has_childs()</a><br />
+                                                                    <a href="../classes/k1lib.html.ul.html#method_append_li" class="">append_li()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/k1lib.html.tag.html#method_generate_attributes_code" class="">generate_attributes_code()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_generate_close" class="">generate_close()</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#method_get_all_childs" class="">get_all_childs()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/k1lib.html.tag.html#property_tag_id" class="">$tag_id</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_tag_name" class="">$tag_name</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_is_self_closed" class="">$is_self_closed</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_is_inline" class="">$is_inline</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_inside_inline" class="">$inside_inline</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_attributes" class="">$attributes</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_attributes_code" class="">$attributes_code</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_tag_code" class="">$tag_code</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_pre_code" class="">$pre_code</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_post_code" class="">$post_code</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_value" class="">$value</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_has_child" class="">$has_child</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_childs_head" class="">$childs_head</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_childs" class="">$childs</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_childs_tail" class="">$childs_tail</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_child_level" class="">$child_level</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_parent" class="">$parent</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_use_log" class="">$use_log</a><br />
+                                                                    <a href="../classes/k1lib.html.tag.html#property_linked_html_obj" class="">$linked_html_obj</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/html.classes-tag.html"><div class="path-wrapper">html/classes-tag.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">klan1/html</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper"><a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a></div>
+                                                                                                    <div class="namespace-wrapper">\k1lib\html\ul</div>
+                            </dd>
+
+                        
+                                                                                    <dt>Uses traits</dt>
+                                                        <dd>
+                                <a href="../classes/k1lib.html.append_shotcuts.html">                                    <div class="namespace-wrapper">\k1lib\html\append_shotcuts</div>
+                                </a>                            </dd>
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_tag_id" name="property_tag_id" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$tag_id</h3>
+                <pre class="signature">$tag_id : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_tag_name" name="property_tag_name" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$tag_name</h3>
+                <pre class="signature">$tag_name : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_is_self_closed" name="property_is_self_closed" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$is_self_closed</h3>
+                <pre class="signature">$is_self_closed : Boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_is_inline" name="property_is_inline" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$is_inline</h3>
+                <pre class="signature">$is_inline : Boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_inside_inline" name="property_inside_inline" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$inside_inline</h3>
+                <pre class="signature">$inside_inline : Boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_attributes" name="property_attributes" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$attributes</h3>
+                <pre class="signature">$attributes : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_attributes_code" name="property_attributes_code" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$attributes_code</h3>
+                <pre class="signature">$attributes_code : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_tag_code" name="property_tag_code" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$tag_code</h3>
+                <pre class="signature">$tag_code : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_pre_code" name="property_pre_code" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$pre_code</h3>
+                <pre class="signature">$pre_code : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_post_code" name="property_post_code" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$post_code</h3>
+                <pre class="signature">$post_code : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_value" name="property_value" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$value</h3>
+                <pre class="signature">$value : String</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_has_child" name="property_has_child" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$has_child</h3>
+                <pre class="signature">$has_child : Boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_childs_head" name="property_childs_head" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$childs_head</h3>
+                <pre class="signature">$childs_head : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_childs" name="property_childs" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$childs</h3>
+                <pre class="signature">$childs : array&lt;mixed,\k1lib\html\tag&gt;</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                array&lt;mixed,<a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>&gt;
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_childs_tail" name="property_childs_tail" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$childs_tail</h3>
+                <pre class="signature">$childs_tail : Array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_child_level" name="property_child_level" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$child_level</h3>
+                <pre class="signature">$child_level : Integer</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                Integer
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_parent" name="property_parent" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$parent</h3>
+                <pre class="signature">$parent : \k1lib\html\tag</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_use_log" name="property_use_log" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$use_log</h3>
+                <pre class="signature">$use_log : boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_linked_html_obj" name="property_linked_html_obj" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$linked_html_obj</h3>
+                <pre class="signature">$linked_html_obj : \k1lib\html\tag;</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                \k1lib\html\tag;
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_div" name="method_append_div" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_div()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_div(string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\div</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.div.html">\k1lib\html\div</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_span" name="method_append_span" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_span()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_span(string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\span</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.span.html">\k1lib\html\span</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_p" name="method_append_p" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_p()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_p(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\p</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.p.html">\k1lib\html\p</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_pre" name="method_append_pre" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_pre()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_pre(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\pre</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.pre.html">\k1lib\html\pre</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_a" name="method_append_a" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_a()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_a(string  <span class="argument">$href = NULL</span>, string  <span class="argument">$label = NULL</span>, string  <span class="argument">$target = NULL</span>, string  <span class="argument">$alt = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\a</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$href </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$label </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$target </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$alt </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.a.html">\k1lib\html\a</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_h1" name="method_append_h1" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_h1()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_h1(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\p</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.p.html">\k1lib\html\p</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_h2" name="method_append_h2" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_h2()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_h2(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\p</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.p.html">\k1lib\html\p</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_h3" name="method_append_h3" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_h3()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_h3(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\p</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.p.html">\k1lib\html\p</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_h4" name="method_append_h4" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_h4()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_h4(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\p</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.p.html">\k1lib\html\p</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_h5" name="method_append_h5" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_h5()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_h5(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\p</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.p.html">\k1lib\html\p</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_h6" name="method_append_h6" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_h6()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_h6(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\p</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.p.html">\k1lib\html\p</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.append_shotcuts.html"><div class="path-wrapper">\k1lib\html\append_shotcuts</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(String  <span class="argument">$class = NULL</span>, String  <span class="argument">$id = NULL</span>) </pre>
+                <p><em>Create a UL html tag.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___clone" name="method___clone" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__clone()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__clone() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_decatalog" name="method_decatalog" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">decatalog()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">decatalog() </pre>
+                <p><em>Remove the tag Object from the Array catalog, this will disable the
+Object to be found or generated on chain actions.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_tag_id" name="method_get_tag_id" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_tag_id()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_tag_id() : integer|NULL</pre>
+                <p><em>Get the catalog index (an unique id) for this tag Object or NULL if the
+Object has been decataloged</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    integer|NULL
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_use_log" name="method_get_use_log" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_use_log()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_use_log() : boolean</pre>
+                <p><em>Whatever or not EVERY tag Object created will use the log system</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_use_log" name="method_set_use_log" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set_use_log()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_use_log(  <span class="argument">$use_log</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$use_log </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_parent" name="method_get_parent" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_parent()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_parent() : \k1lib\html\tag|NULL</pre>
+                <p><em>Return the parent tag Object.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>|NULL
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_parent" name="method_set_parent" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set_parent()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_parent(\k1lib\html\tag  <span class="argument">$parent</span>) </pre>
+                <p><em>Chains the parent tag Object</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a></td>
+                                <td>$parent </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___toString" name="method___toString" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__toString()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__toString() : string</pre>
+                <p><em>When the tag Object is used as string, maybe as inline on text it
+will be returned as {{ID:1.</em></p>
+                <p>.}} to converted when the container Object is
+generated</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_child" name="method_append_child" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_child()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_child(\k1lib\html\tag  <span class="argument">$child_object</span>,   <span class="argument">$put_last_position = TRUE</span>,   <span class="argument">$tag_position = APPEND_ON_MAIN</span>) : \k1lib\html\tag</pre>
+                <p><em>Chains an HTML tag into the actual HTML tag on MAIN collection, by default will put on last
+position but with $put_last_position = FALSE will be the on first position</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a></td>
+                                <td>$child_object </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$put_last_position </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$tag_position </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_child_head" name="method_append_child_head" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_child_head()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_child_head(\k1lib\html\tag  <span class="argument">$child_object</span>,   <span class="argument">$put_last_position = TRUE</span>) : \k1lib\html\tag</pre>
+                <p><em>Chains an HTML tag into the actual HTML tag on HEAD collection, by default will put on last
+position but with $put_last_position = FALSE will be the on first position</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a></td>
+                                <td>$child_object </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$put_last_position </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_child_tail" name="method_append_child_tail" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_child_tail()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_child_tail(\k1lib\html\tag  <span class="argument">$child_object</span>,   <span class="argument">$put_last_position = TRUE</span>) : \k1lib\html\tag</pre>
+                <p><em>Chains an HTML tag into the actual HTML tag on TAIL collection, by default will put on last
+position but with $put_last_position = FALSE will be the on first position</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a></td>
+                                <td>$child_object </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$put_last_position </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_to" name="method_append_to" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_to()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_to(  <span class="argument">$html_object</span>) : \k1lib\html\tag</pre>
+                <p><em>Chains THIS HTML tag to a another HTML tag</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$html_object </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_childs" name="method_remove_childs" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_childs()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_childs() : \k1lib\html\tag</pre>
+                <p><em></em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_pre_code" name="method_pre_code" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">pre_code()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">pre_code(String  <span class="argument">$pre_code</span>) </pre>
+                <p><em>Add free TEXT before the generated TAG</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$pre_code </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_post_code" name="method_post_code" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">post_code()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">post_code(String  <span class="argument">$post_code</span>) </pre>
+                <p><em>Add free TEXT after the generated TAG</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$post_code </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_value" name="method_set_value" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set_value()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_value(String  <span class="argument">$value</span>,   <span class="argument">$append = FALSE</span>) : \k1lib\html\tag</pre>
+                <p><em>Set the VALUE for the TAG, as &lt;TAG value=&quot;$value&quot; /&gt; or &lt;TAG&gt;$value&lt;/TAG&gt;</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$append </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_link_value_obj" name="method_link_value_obj" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">link_value_obj()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">link_value_obj(\k1lib\html\tag  <span class="argument">$obj_to_link</span>) </pre>
+                <p><em>Links the value of the current object to a child one. The current WON&#039;t be used and the value will be placed on the link object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a></td>
+                                <td>$obj_to_link </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_child" name="method_get_child" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_child()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_child(Int  <span class="argument">$n</span>) : \k1lib\html\tag</pre>
+                <p><em>Return the reference for chained HTML tag object</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Int</td>
+                                <td>$n </td>
+                                <td><p>Index beginning from 0</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                            &mdash; <p>Returns FALSE if is not set</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_attrib" name="method_set_attrib" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set_attrib()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_attrib(String  <span class="argument">$attribute</span>, String  <span class="argument">$value</span>, Boolean  <span class="argument">$append = FALSE</span>) : \k1lib\html\tag</pre>
+                <p><em>Set an attribute with its value always overwriting if $append is not set TRUE to append old value with the recieved one.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$attribute </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>String</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$append </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_attrib" name="method_remove_attrib" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_attrib()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_attrib(  <span class="argument">$attribute</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$attribute </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_attribute_text" name="method_remove_attribute_text" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_attribute_text()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_attribute_text(  <span class="argument">$attribute</span>,   <span class="argument">$text</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$attribute </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$text </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_id" name="method_set_id" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set_id()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_id(string  <span class="argument">$id</span>,   <span class="argument">$append = FALSE</span>) : \k1lib\html\tag</pre>
+                <p><em>Shortcut for $html-&gt;set_attrib(&quot;id&quot;,$id);</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$append </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_class" name="method_set_class" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set_class()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_class(string  <span class="argument">$class</span>,   <span class="argument">$append = FALSE</span>) : \k1lib\html\tag</pre>
+                <p><em>Shortcut for $html-&gt;set_attrib(&quot;class&quot;,$class);</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$append </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set_style" name="method_set_style" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">set_style()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set_style(string  <span class="argument">$style</span>,   <span class="argument">$append = FALSE</span>) : \k1lib\html\tag</pre>
+                <p><em>Shortcut for $html-&gt;set_attrib(&quot;style&quot;,$style);</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$style </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$append </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_attribute" name="method_get_attribute" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_attribute()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_attribute(String  <span class="argument">$attribute</span>) : String</pre>
+                <p><em>If the attribute was set returns its value</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>String</td>
+                                <td>$attribute </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>Returns FALSE if is not set</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_attributes_array" name="method_get_attributes_array" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_attributes_array()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_attributes_array() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_value" name="method_get_value" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_value()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_value(  <span class="argument">$current_child_level</span>) : String</pre>
+                <p><em>Gets the VALUE for the TAG, as &lt;TAG value=&quot;$value&quot; /&gt; or &lt;TAG&gt;$value&lt;/TAG&gt;</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$current_child_level </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_parse_value" name="method_parse_value" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">parse_value()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">parse_value(  <span class="argument">$current_child_level</span>) </pre>
+                <p><em>Generate inline tag Objects on the value property</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$current_child_level </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_inline_ids" name="method_get_inline_ids" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_inline_ids()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_inline_ids() : array&lt;mixed,integer&gt;</pre>
+                <p><em>Returns an Array with the ID list found on $this-&gt;value</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,integer&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_inline_tags" name="method_get_inline_tags" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_inline_tags()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_inline_tags() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_generate" name="method_generate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">generate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">generate(Boolean  <span class="argument">$with_childs = \TRUE</span>, Int  <span class="argument">$n_childs</span>) : string</pre>
+                <p><em>This will generate the HTML TAG with ALL his childs by default. If the TAG is not SELF CLOSED will generate all as &lt;TAG attributeN=&quot;valueN&quot;&gt;$value&lt;/TAG&gt;</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>Boolean</td>
+                                <td>$with_childs </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>Int</td>
+                                <td>$n_childs </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Won't return any if is set $do_echo = TRUE</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_tag_name" name="method_get_tag_name" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_tag_name()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_tag_name() : string</pre>
+                <p><em>Returns the tag name. &lt;tag name&gt; or &lt;tag name&gt;&lt;/tag name&gt;</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_element_by_id" name="method_get_element_by_id" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_element_by_id()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_element_by_id(string  <span class="argument">$id</span>) : \k1lib\html\tag|NULL</pre>
+                <p><em>Return the FIRST object found with the $id</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>|NULL
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_elements_by_tag" name="method_get_elements_by_tag" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_elements_by_tag()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_elements_by_tag(string  <span class="argument">$tag_name</span>) : array&lt;mixed,\k1lib\html\tag&gt;</pre>
+                <p><em>Return an Array with all the objects that TAG is $tag_name</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$tag_name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,<a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_elements_by_attrib" name="method_get_elements_by_attrib" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_elements_by_attrib()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_elements_by_attrib(string  <span class="argument">$attribute_name</span>, boolean  <span class="argument">$partial_text_search = FALSE</span>) : array&lt;mixed,\k1lib\html\tag&gt;</pre>
+                <p><em>Return an Array with all the objects that has ATTRIBUTE as $attribute_name</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$attribute_name </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$partial_text_search </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,<a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_elements_by_attrib_value" name="method_get_elements_by_attrib_value" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_elements_by_attrib_value()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_elements_by_attrib_value(string  <span class="argument">$attribute_name</span>,   <span class="argument">$attribute_value</span>,   <span class="argument">$partial_attribute_text_search = FALSE</span>,   <span class="argument">$partial_value_text_search = FALSE</span>) : array&lt;mixed,\k1lib\html\tag&gt;</pre>
+                <p><em>Return an Array with all the objects that has ATTRIBUTE as $attribute_name</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$attribute_name </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$attribute_value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$partial_attribute_text_search </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$partial_value_text_search </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,<a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_elements_by_class" name="method_get_elements_by_class" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_elements_by_class()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_elements_by_class(string  <span class="argument">$class_name</span>) : array&lt;mixed,\k1lib\html\tag&gt;</pre>
+                <p><em>Return an Array with all the objects that CLASS is $class_name.</em></p>
+                <p>NOTE: This will work ONLY with 1 class at time, or multiple in exact order.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class_name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,<a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_has_childs" name="method_has_childs" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">has_childs()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">has_childs() : boolean</pre>
+                <p><em>TRUE if this Objects have child and FALSE if not.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_append_li" name="method_append_li" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">append_li()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">append_li(  <span class="argument">$value = NULL</span>, string  <span class="argument">$class = NULL</span>, string  <span class="argument">$id = NULL</span>) : \k1lib\html\li</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/k1lib.html.li.html">\k1lib\html\li</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_generate_attributes_code" name="method_generate_attributes_code" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">generate_attributes_code()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">generate_attributes_code() : string</pre>
+                <p><em>VALUE for the TAG, as &lt;TAG attribute1=&quot;value1&quot; .</em></p>
+                <p>. attributeN=&quot;valueN&quot; /&gt; or &lt;TAG attribute1=&quot;value1&quot; .. attributeN=&quot;valueN&quot;&gt;$value</TAG></p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Returns FALSE if is not attributes to generate</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_generate_close" name="method_generate_close" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">generate_close()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">generate_close() : string</pre>
+                <p><em>This will generate the HTML CLOSE TAG</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Won't return any if is set $do_echo = TRUE</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_all_childs" name="method_get_all_childs" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">get_all_childs()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_all_childs() : array&lt;mixed,\k1lib\html\tag&gt;</pre>
+                <p><em>Merge and return the $childs_head, $childs and $childs_tail</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,<a href="../classes/k1lib.html.tag.html">\k1lib\html\tag</a>&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/k1lib.html.tag.html"><div class="path-wrapper">\k1lib\html\tag</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">classes-tag.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/html/classes-tag.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/k1lib.html">\k1lib</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on 
+Warning: date_default_timezone_get(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected the timezone 'UTC' for now, but please set date.timezone to select your timezone. in phar:///usr/local/Cellar/phpdocumentor/2.8.5/libexec/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 89
+October 10th, 2016 at 15:47.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
