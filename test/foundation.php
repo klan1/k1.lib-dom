@@ -8,7 +8,7 @@ use \k1lib\html\DOM as DOM;
 use \k1lib\html\script as script;
 
 // ENABLE THE HTML LOG
-\k1lib\html\html::set_use_log(TRUE);
+\k1lib\html\html::set_use_log(FALSE);
 
 // START THE <html>, <body>, <head> tag inside the static class DOM
 DOM::start();
