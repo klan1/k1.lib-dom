@@ -929,7 +929,7 @@ class tag {
                                     tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by partial text and partial attrib match");
                                 }
                                 $tags[] = $tag_to_look;
-                            } elseif ($attribute_value === $value) {
+                            } elseif ($attribute_value == $value) {
                                 if (html::get_use_log()) {
                                     tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by exact text and partial attrib match");
                                 }
@@ -946,7 +946,7 @@ class tag {
                             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by partial text and exact attrib match");
                         }
                         $tags[] = $tag_to_look;
-                    } elseif ($tag_attribute_value === $attribute_value) {
+                    } elseif ($tag_attribute_value == $attribute_value) {
                         if (html::get_use_log()) {
                             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is returned by exact text and exact attrib match");
                         }
