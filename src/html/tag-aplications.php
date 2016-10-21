@@ -376,8 +376,13 @@ class grid_cell extends \k1lib\html\div {
     protected $medium = NULL;
     protected $large = NULL;
 
+    /**
+     * @param integer $col_number
+     * @param integer $class
+     * @param integer $id
+     *  */
     public function __construct($col_number = NULL, $class = NULL, $id = NULL) {
-        parent::__construct("column" . $class, NULL);
+        parent::__construct("column column-{$col_number}" . $class, NULL);
         $this->set_attrib("data-grid-col", $col_number);
     }
 
@@ -388,7 +393,7 @@ class grid_cell extends \k1lib\html\div {
         $this->small = $cols;
 
         if ($clear) {
-            $this->set_attrib("class", "small-{$cols}", (!$clear));
+            $this->set_attrib("class", "column small-{$cols}", (!$clear));
         } else {
             $this->replace_attribute_number("class", "small", $cols);
         }
@@ -403,11 +408,19 @@ class grid_cell extends \k1lib\html\div {
         $this->medium = $cols;
 
         if ($clear) {
-            $this->set_attrib("class", "medium-{$cols}", (!$clear));
+            $this->set_attrib("class", "column medium-{$cols}", (!$clear));
         } else {
             $this->replace_attribute_number("class", "medium", $cols);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return grid_cell
+     */
+    public function medium_centered() {
+        $this->set_attrib("class", "medium-centered", TRUE);
         return $this;
     }
 
@@ -418,11 +431,19 @@ class grid_cell extends \k1lib\html\div {
         $this->large = $cols;
 
         if ($clear) {
-            $this->set_attrib("class", "large-{$cols}", (!$clear));
+            $this->set_attrib("class", "column large-{$cols}", (!$clear));
         } else {
             $this->replace_attribute_number("class", "large", $cols);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return grid_cell
+     */
+    public function large_centered() {
+        $this->set_attrib("class", "large-centered", TRUE);
         return $this;
     }
 
@@ -446,6 +467,16 @@ class grid_cell extends \k1lib\html\div {
         return $this->large;
     }
 
+    /**
+     * @param integer $num_rows
+     * @param integer $num_cols
+     * @return \k1lib\html\foundation\grid
+     */
+    public function append_grid($num_rows, $num_cols) {
+        $grid = new grid($num_rows, $num_cols, $this);
+        return $grid;
+    }
+
 }
 
 class grid_row extends \k1lib\html\div {
@@ -462,19 +493,21 @@ class grid_row extends \k1lib\html\div {
      */
     protected $cols = [];
 
-    function __construct($num_cols, $grid_row = NULL) {
+    function __construct($num_cols, $grid_row = NULL, $parent = NULL) {
 
-//        $this->parent = $parent;
+        $this->parent = $parent;
 
-        parent::__construct("row", NULL);
-//        $this->append_to($parent);
+        parent::__construct("row row-{$grid_row}", NULL);
+        if (!empty($this->parent)) {
+            $this->append_to($this->parent);
+        }
+
         if (!empty($grid_row)) {
             $this->set_attrib("data-grid-row", $grid_row);
         }
 
         for ($col = 1; $col <= $num_cols; $col++) {
-            $this->cols[$col] = new grid_cell($col);
-            $this->cols[$col]->append_to($this);
+            $this->cols[$col] = $this->append_cell($col);
         }
     }
 
@@ -496,12 +529,72 @@ class grid_row extends \k1lib\html\div {
         return $this;
     }
 
+    /**
+     * 
+     * @param integer $col_number
+     * @param integer $class
+     * @param integer $id
+     * @return grid_cell
+     */
+    public function append_cell($col_number = NULL, $class = NULL, $id = NULL) {
+        $cell = new grid_cell($col_number, $class, $id);
+        $cell->append_to($this);
+        return $cell;
+    }
+
+}
+
+class grid extends \k1lib\html\div {
+
+    /**
+     * @var \k1lib\html\tag
+     */
+    protected $parent;
+
+    /**
+     * @var grid_cell[]
+     */
+    protected $rows = [];
+
+    public function __construct($num_rows, $num_cols, $parent = NULL) {
+        $this->parent = $parent;
+
+        parent::__construct();
+        if (!empty($this->parent)) {
+            $this->append_to($this->parent);
+        }
+        for ($row = 1; $row <= $num_rows; $row++) {
+            $this->rows[$row] = $this->append_row($num_cols, $row);
+        }
+    }
+
+    /**
+     * @param integer $row_number
+     * @return \k1lib\html\foundation\grid_row
+     */
+    public function row($row_number) {
+        if (isset($this->rows[$row_number])) {
+            return $this->rows[$row_number];
+        }
+    }
+
+    /**
+     * 
+     * @param type $num_cols
+     * @param type $grid_row
+     * @return \k1lib\html\foundation\grid_row
+     */
+    public function append_row($num_cols = NULL, $grid_row = NULL) {
+        $row = new grid_row($num_cols, $grid_row, $this);
+        return $row;
+    }
+
 }
 
 class label_value_row extends grid_row {
 
-    function __construct($label, $value, $grid_row = 0) {
-        parent::__construct(2, $grid_row);
+    function __construct($label, $value, $grid_row = 0, $parent = NULL) {
+        parent::__construct(2, $grid_row, $parent);
 
         $this->col(1)->medium(4)->large(3);
         $this->col(2)->medium(8)->large(9)->end();
