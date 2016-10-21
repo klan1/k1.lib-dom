@@ -628,8 +628,6 @@ class label_value_row extends grid_row {
             $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1lib-label-object right inline hide-for-small-only text-right"));
             $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1lib-label-object left show-for-small-only"));
         }
-
-
         $this->col(2)->set_value($value);
     }
 
