@@ -556,15 +556,21 @@ class grid extends \k1lib\html\div {
      */
     protected $rows = [];
 
-    public function __construct($num_rows, $num_cols, $parent = NULL) {
+    public function __construct($num_rows, $num_cols, \k1lib\html\tag $parent = NULL) {
         $this->parent = $parent;
 
-        parent::__construct();
-        if (!empty($this->parent)) {
-            $this->append_to($this->parent);
-        }
-        for ($row = 1; $row <= $num_rows; $row++) {
-            $this->rows[$row] = $this->append_row($num_cols, $row);
+        if (empty($this->parent)) {
+            parent::__construct();
+            for ($row = 1; $row <= $num_rows; $row++) {
+                $this->rows[$row] = $this->append_row($num_cols, $row, $this);
+            }
+        } else {
+//            $this->append_to($this->parent);
+            $this->link_value_obj($parent);
+            for ($row = 1; $row <= $num_rows; $row++) {
+                $this->rows[$row] = $this->append_row($num_cols, $row, $this->parent);
+            }
+            return $parent;
         }
     }
 
@@ -584,8 +590,8 @@ class grid extends \k1lib\html\div {
      * @param type $grid_row
      * @return \k1lib\html\foundation\grid_row
      */
-    public function append_row($num_cols = NULL, $grid_row = NULL) {
-        $row = new grid_row($num_cols, $grid_row, $this);
+    public function append_row($num_cols = NULL, $grid_row = NULL, $parent = NULL) {
+        $row = new grid_row($num_cols, $grid_row, $parent);
         return $row;
     }
 

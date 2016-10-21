@@ -202,7 +202,7 @@ class tag {
     static protected $use_log = FALSE;
 
     /** @var tag; */
-    protected $linked_html_obj = NULL;
+    protected $this_link = NULL;
 
     /**
      * Constructor with $tag_name and $self_closed options for beginning
@@ -443,12 +443,12 @@ class tag {
      */
     public function set_value($value, $append = FALSE) {
 
-        if (empty($this->linked_html_obj)) {
+        if (empty($this->this_link)) {
             if (!empty($value)) {
                 $this->value = ($append === TRUE) ? ($this->value . " " . $value) : ("$value");
             }
         } else {
-            $this->linked_html_obj->set_value((($append === TRUE) && (!empty($this->linked_html_obj->get_value())) ) ? ($this->linked_html_obj->get_value() . " " . $value) : ("$value"));
+            $this->this_link->set_value((($append === TRUE) && (!empty($this->this_link->get_value())) ) ? ($this->this_link->get_value() . " " . $value) : ("$value"));
         }
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} set value to: {$value}");
@@ -461,7 +461,7 @@ class tag {
      * @param tag $obj_to_link
      */
     public function link_value_obj(tag $obj_to_link) {
-        $this->linked_html_obj = $obj_to_link;
+        $this->this_link = $obj_to_link;
         if (html::get_use_log()) {
             tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} is linked to [{$obj_to_link->get_tag_name()}]");
         }
@@ -489,7 +489,7 @@ class tag {
      */
     public function set_attrib($attribute, $value, $append = FALSE) {
         if (!empty($attribute) && is_string($attribute)) {
-            if (empty($this->linked_html_obj)) {
+            if (empty($this->this_link)) {
                 if ($value !== NULL) {
                     if (($append === TRUE) && (!empty($this->attributes[$attribute]))) {
                         $this->attributes[$attribute] = $this->attributes[$attribute] . " " . $value;
@@ -498,7 +498,7 @@ class tag {
                     }
                 }
             } else {
-                $this->linked_html_obj->set_attrib($attribute, $value, $append);
+                $this->this_link->set_attrib($attribute, $value, $append);
             }
         } else {
             trigger_error("HTML ATTRIBUTE has to be string", E_USER_WARNING);
