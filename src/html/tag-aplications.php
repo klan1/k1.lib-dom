@@ -97,19 +97,19 @@ class top_bar extends \k1lib\html\tag {
 
         $left = $this->append_div("top-bar-left");
 
-        $this->menu_left = new \k1lib\html\ul("dropdown menu", "k1app-menu-left");
+        $this->menu_left = new \k1lib\html\ul("dropdown menu", "k1lib-menu-left");
         $this->menu_left->append_to($left);
         $this->menu_left->set_attrib("data-dropdown-menu", TRUE);
 
-        $li = $this->menu_left->append_li(NULL, "menu-text k1app-title-container hide-for-small-only");
-        $li->append_span("k1app-title-1");
-        $li->append_span("k1app-title-2");
-        $li->append_span("k1app-title-3");
+        $li = $this->menu_left->append_li(NULL, "menu-text k1lib-title-container hide-for-small-only");
+        $li->append_span("k1lib-title-1");
+        $li->append_span("k1lib-title-2");
+        $li->append_span("k1lib-title-3");
 
 
         $right = $this->append_div("top-bar-right");
 
-        $this->menu_right = new \k1lib\html\ul("dropdown menu", "k1app-menu-right");
+        $this->menu_right = new \k1lib\html\ul("dropdown menu", "k1lib-menu-right");
         $this->menu_right->append_to($right);
         $this->menu_right->set_attrib("data-dropdown-menu", TRUE);
     }
@@ -154,7 +154,7 @@ class top_bar extends \k1lib\html\tag {
     }
 
     function set_title($number, $value, $append = FALSE) {
-        $elements = $this->parent->get_elements_by_class("k1app-title-{$number}");
+        $elements = $this->parent->get_elements_by_class("k1lib-title-{$number}");
         foreach ($elements as $element) {
             $element->set_value($value, $append);
         }
@@ -166,11 +166,11 @@ class top_bar extends \k1lib\html\tag {
                 ->set_attrib("data-hide-for", "medium");
         $title->append_child((new \k1lib\html\button(NULL, "menu-icon"))->set_attrib("data-toggle", TRUE));
 
-        $title_bar_title = $title->append_h1(NULL, "title-bar-title k1app-title-container");
+        $title_bar_title = $title->append_h1(NULL, "title-bar-title k1lib-title-container");
         $title_bar_title->set_attrib("style", "font-size:inherit;display:inline");
-        $title_bar_title->append_span("k1app-title-1");
-        $title_bar_title->append_span("k1app-title-2");
-        $title_bar_title->append_span("k1app-title-3");
+        $title_bar_title->append_span("k1lib-title-1");
+        $title_bar_title->append_span("k1lib-title-2");
+        $title_bar_title->append_span("k1lib-title-3");
     }
 
     /**
@@ -512,11 +512,11 @@ class label_value_row extends grid_row {
 
         if (method_exists($label, "generate")) {
             $small_label = clone $label;
-            $this->col(1)->append_child($label->set_class("k1-label-object right inline hide-for-small-only text-right"));
-            $this->col(1)->append_child($small_label->set_class("k1-label-object left show-for-small-only"));
+            $this->col(1)->append_child($label->set_class("k1lib-label-object right inline hide-for-small-only text-right"));
+            $this->col(1)->append_child($small_label->set_class("k1lib-label-object left show-for-small-only"));
         } else {
-            $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1-label-object right inline hide-for-small-only text-right"));
-            $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1-label-object left show-for-small-only"));
+            $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1lib-label-object right inline hide-for-small-only text-right"));
+            $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1lib-label-object left show-for-small-only"));
         }
 
 

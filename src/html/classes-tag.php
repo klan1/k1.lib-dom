@@ -221,7 +221,7 @@ class tag {
         } else {
             trigger_error("Self closed value has to be boolean", E_USER_WARNING);
         }
-//            $this->set_attrib("class", "k1-{$tag_name}-object");
+//            $this->set_attrib("class", "k1lib-{$tag_name}-object");
 // GET the global tag ID and catalog the object
         $this->tag_id = tag_catalog::increase($this);
         if (html::get_use_log()) {
@@ -1389,9 +1389,9 @@ class meta extends tag {
 /**
  * This is the body of HTML document 
  *  <body>
- *      <section id='k1app-header'></section>
- *      <section id='k1app-content'></section>
- *      <section id='k1app-footer'></section>
+ *      <section id='k1lib-header'></section>
+ *      <section id='k1lib-content'></section>
+ *      <section id='k1lib-footer'></section>
  *  </body>
  */
 class body extends tag {
@@ -1418,12 +1418,12 @@ class body extends tag {
     }
 
     function init_sections() {
-        $this->section_header = new section("k1app-header", "hide-for-print");
+        $this->section_header = new section("k1lib-header", "hide-for-print");
         $this->section_header->append_to($this);
-        $this->section_content = new section("k1app-content");
+        $this->section_content = new section("k1lib-content");
         $this->section_content->set_attrib("style", "overflow-x: auto;");
         $this->section_content->append_to($this);
-        $this->section_footer = new section("k1app-footer", "hide-for-print");
+        $this->section_footer = new section("k1lib-footer", "hide-for-print");
         $this->section_footer->append_to($this);
     }
 
@@ -2032,10 +2032,10 @@ class form extends tag {
 
     use append_shotcuts;
 
-    function __construct($id = "k1-form") {
+    function __construct($id = "k1lib-form") {
         parent::__construct("form", FALSE);
         $this->set_id($id);
-        $this->set_attrib("name", "k1-form");
+        $this->set_attrib("name", "k1lib-form");
         $this->set_attrib("method", "post");
         $this->set_attrib("autocomplete", "yes");
         $this->set_attrib("enctype", "multipart/form-data");
