@@ -375,6 +375,7 @@ class grid_cell extends \k1lib\html\div {
     protected $small = NULL;
     protected $medium = NULL;
     protected $large = NULL;
+    protected $row_number = 0;
 
     /**
      * @param integer $col_number
@@ -384,6 +385,11 @@ class grid_cell extends \k1lib\html\div {
     public function __construct($col_number = NULL, $class = NULL, $id = NULL) {
         parent::__construct("column column-{$col_number}" . $class, NULL);
         $this->set_attrib("data-grid-col", $col_number);
+    }
+
+    public function set_class($class, $append = TRUE) {
+        parent::set_class($class, $append);
+        return $this;
     }
 
     /**
@@ -475,6 +481,11 @@ class grid_cell extends \k1lib\html\div {
     public function append_grid($num_rows, $num_cols) {
         $grid = new grid($num_rows, $num_cols, $this);
         return $grid;
+    }
+
+    public function append_row($num_cols) {
+        $row = new grid_row($num_cols, ++$this->row_number, $this);
+        return $row;
     }
 
 }
