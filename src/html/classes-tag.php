@@ -1125,8 +1125,8 @@ trait append_shotcuts {
      * @param string $id
      * @return a
      */
-    function append_a($href = NULL, $label = NULL, $target = NULL, $alt = NULL, $class = NULL, $id = NULL) {
-        $new = new a($href, $label, $target, $alt, $class, $id);
+    function append_a($href = NULL, $label = NULL, $target = NULL, $class = NULL, $id = NULL) {
+        $new = new a($href, $label, $target, $class, $id);
         $this->append_child($new);
         return $new;
     }
