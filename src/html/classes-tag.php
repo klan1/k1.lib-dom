@@ -2037,7 +2037,7 @@ class form extends tag {
         $this->set_id($id);
         $this->set_attrib("name", "k1lib-form");
         $this->set_attrib("method", "post");
-        $this->set_attrib("autocomplete", "yes");
+        $this->set_attrib("autocomplete", "on");
         $this->set_attrib("enctype", "multipart/form-data");
         $this->set_attrib("novalidate", FALSE);
         $this->set_attrib("target", "_self");
