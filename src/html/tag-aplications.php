@@ -408,6 +408,14 @@ class grid_cell extends \k1lib\html\div {
     }
 
     /**
+     * @return grid_cell
+     */
+    public function small_centered() {
+        $this->set_attrib("class", "small-centered", TRUE);
+        return $this;
+    }
+
+    /**
      * @return \k1lib\html\div
      */
     public function medium($cols, $clear = FALSE) {
