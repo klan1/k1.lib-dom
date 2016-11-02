@@ -238,6 +238,7 @@ class table_from_data extends \k1lib\html\table {
     public function set_data(array $data, $has_header = TRUE) {
         $this->data = $data;
         $this->has_header = $has_header;
+        return $this;
     }
 
     public function generate($with_childs = TRUE, $n_childs = 0) {
