@@ -216,6 +216,11 @@ class table_from_data extends \k1lib\html\table {
     protected $fields_to_hide = [];
 
     /**
+     * @var array
+     */
+    protected $fields_for_key_array_text = [];
+
+    /**
      * @var boolean 
      */
     protected $has_header = TRUE;
@@ -288,6 +293,14 @@ class table_from_data extends \k1lib\html\table {
         }
     }
 
+    public function get_fields_for_key_array_text() {
+        return $this->fields_for_key_array_text;
+    }
+
+    public function set_fields_for_key_array_text(array $fields_for_key_array_text) {
+        $this->fields_for_key_array_text = $fields_for_key_array_text;
+    }
+
     public function insert_tag_on_field(\k1lib\html\tag $tag_object, array $fields_to_insert, $tag_attrib_to_use = NULL, $append = FALSE) {
         $row = 0;
         foreach ($this->data as $row_index => $row_data) {
@@ -332,6 +345,21 @@ class table_from_data extends \k1lib\html\table {
     protected function parse_string_value($value, $row) {
         foreach ($this->get_fields_on_string($value) as $field) {
             if (isset($this->data[$row][$field])) {
+                /**
+                 * AUTH-CODE 
+                 */
+                $key_array_text = implode("--", $this->fields_for_key_array_text);
+                if (!empty($key_array_text)) {
+                    $auth_code = md5(\k1lib\K1MAGIC::get_value() . $key_array_text);
+                } else {
+                    $auth_code = NULL;
+                }
+                if (strstr($value, "--authcode--") !== FALSE) {
+                    $value = str_replace("--authcode--", $auth_code, $value);
+                }
+                /**
+                 * {{field:NAME}}
+                 */
                 $field_tag = "{{field:" . $field . "}}";
                 $value = str_replace($field_tag, $this->data[$row][$field], $value);
             }
