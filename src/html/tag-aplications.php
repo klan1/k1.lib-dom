@@ -348,7 +348,11 @@ class table_from_data extends \k1lib\html\table {
                 /**
                  * AUTH-CODE 
                  */
-                $key_array_text = implode("--", $this->fields_for_key_array_text);
+                $key_array = [];
+                foreach ($this->fields_for_key_array_text as $field_for_key_array_text) {
+                    $key_array[] = $this->data[$row][$field_for_key_array_text];
+                }
+                $key_array_text = implode("--", $key_array);
                 if (!empty($key_array_text)) {
                     $auth_code = md5(\k1lib\K1MAGIC::get_value() . $key_array_text);
                 } else {
