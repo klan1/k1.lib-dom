@@ -355,7 +355,7 @@ class table_from_data extends \k1lib\html\table {
                     $auth_code = NULL;
                 }
                 if (strstr($value, "--authcode--") !== FALSE) {
-                    $value = str_replace("--authcode--", $auth_code, $this->data[$row][$field]);
+                    $value = str_replace("--authcode--", $auth_code, $value);
                 }
                 /**
                  * {{field:NAME}}
