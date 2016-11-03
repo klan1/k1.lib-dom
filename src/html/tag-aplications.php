@@ -291,6 +291,7 @@ class table_from_data extends \k1lib\html\table {
             }
             $row++;
         }
+        return $this;
     }
 
     public function get_fields_for_key_array_text() {
@@ -340,6 +341,7 @@ class table_from_data extends \k1lib\html\table {
                 }
             }
         }
+        return $this;
     }
 
     protected function parse_string_value($value, $row) {
@@ -385,6 +387,7 @@ class table_from_data extends \k1lib\html\table {
 
     public function hide_fields(array $fields) {
         $this->fields_to_hide = $fields;
+        return $this;
     }
 
     public function has_header() {
@@ -397,6 +400,7 @@ class table_from_data extends \k1lib\html\table {
 
     public function set_max_text_length_on_cell($max_text_length_on_cell) {
         $this->max_text_length_on_cell = $max_text_length_on_cell;
+        return $this;
     }
 
 }
