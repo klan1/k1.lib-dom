@@ -1417,14 +1417,26 @@ class body extends tag {
         parent::__construct("body", FALSE);
     }
 
-    function init_sections() {
+    function init_sections(tag $where = NULL) {
         $this->section_header = new section("k1lib-header", "hide-for-print");
-        $this->section_header->append_to($this);
         $this->section_content = new section("k1lib-content");
         $this->section_content->set_attrib("style", "overflow-x: auto;");
-        $this->section_content->append_to($this);
         $this->section_footer = new section("k1lib-footer", "hide-for-print");
-        $this->section_footer->append_to($this);
+        if (empty($where)) {
+            $this->section_header->append_to($this);
+            $this->section_content->append_to($this);
+            $this->section_footer->append_to($this);
+        } else {
+            $this->section_header->append_to($where);
+            $this->section_content->append_to($where);
+            $this->section_footer->append_to($where);
+        }
+    }
+
+    function disable_sections() {
+        $this->section_header->decatalog();
+        $this->section_content->decatalog();
+        $this->section_footer->decatalog();
     }
 
     /**
