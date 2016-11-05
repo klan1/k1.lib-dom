@@ -65,7 +65,341 @@ trait foundation_methods {
 
 }
 
-class top_bar extends \k1lib\html\tag {
+class bar extends \k1lib\html\div {
+
+    /**
+     * @var string
+     */
+    protected $type;
+
+    /**
+     * @var \k1lib\html\div
+     */
+    protected $left = null;
+
+    /**
+     * @var \k1lib\html\div
+     */
+    protected $right = null;
+
+    function __construct($type, $id = NULL) {
+        $this->type = $type;
+        parent::__construct("{$type}-bar", $id);
+        $this->left = new \k1lib\html\div("{$type}-bar-left");
+        $this->right = new \k1lib\html\div("{$type}-bar-right");
+
+        $this->left->append_to($this);
+        $this->right->append_to($this);
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function left() {
+        return $this->left;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function right() {
+        if (empty($this->right)) {
+            $this->right = new \k1lib\html\div("{$this->type}-bar-right");
+        }
+        return $this->right;
+    }
+
+}
+
+class title_bar extends bar {
+
+    /**
+     * @var \k1lib\html\button
+     */
+    protected $left_button = null;
+
+    /**
+     * @var \k1lib\html\span
+     */
+    protected $title = null;
+
+    function __construct($id = NULL) {
+        parent::__construct('title', $id);
+        $this->left_button = new \k1lib\html\button(NULL, "menu-icon");
+        $this->left_button->append_to($this->left);
+
+        $this->title = new \k1lib\html\span("title-bar-title");
+        $this->title->append_to($this->left);
+    }
+
+    /**
+     * @return \k1lib\html\span
+     */
+    public function title() {
+        return $this->title;
+    }
+
+    /**
+     * @return \k1lib\html\button
+     */
+    public function left_button() {
+        return $this->left_button;
+    }
+
+}
+
+class top_bar extends bar {
+
+    /**
+     * @var menu
+     */
+    protected $menu_left = null;
+
+    /**
+     * @var \k1lib\html\span
+     */
+    protected $title = null;
+
+    function __construct($id = NULL) {
+        parent::__construct('top', $id);
+
+        $this->menu_left = new menu('dropdown');
+        $this->menu_left->append_to($this->left);
+        $this->title = $this->menu_left->add_menu_item(NULL, NULL);
+        $this->title->set_class('menu-text');
+    }
+
+    /**
+     * @return \k1lib\html\span
+     */
+    public function title() {
+        return $this->title;
+    }
+
+}
+
+class menu extends \k1lib\html\ul {
+
+    protected $type = '';
+    protected $is_vertical = false;
+    protected $menu_class = '';
+    protected $nested_class = '';
+    protected $data_attribute = '';
+
+    function __construct($type = 'menu', $sub_class = NULL, $vertical = FALSE) {
+        $this->type = $type;
+        $this->is_vertical = $vertical;
+        switch ($type) {
+            case 'menu':
+                if ($vertical) {
+                    $this->menu_class = 'menu vertical';
+                } else {
+                    $this->menu_class = 'menu';
+                }
+                $this->nested_class = '';
+                $this->data_attribute = '';
+
+                break;
+            case 'dropdown':
+                if ($vertical) {
+                    $this->menu_class = 'dropdown menu vertical';
+                } else {
+                    $this->menu_class = 'dropdown menu';
+                }
+                $this->nested_class = 'menu';
+                $this->data_attribute = 'data-dropdown-menu';
+
+                break;
+            case 'drilldown':
+                $vertical = TRUE;
+                $this->menu_class = 'menu vertical';
+                $this->nested_class = 'menu vertical';
+                $this->data_attribute = 'data-drilldown';
+
+                break;
+            case 'accordion':
+                $vertical = TRUE;
+                $this->menu_class = 'menu vertical';
+                $this->nested_class = 'menu vertical nested';
+                $this->data_attribute = 'data-accordion-menu';
+
+                break;
+
+            default:
+                break;
+        }
+        if (!empty($sub_class)) {
+            $this->menu_class = $sub_class;
+        }
+        parent::__construct($this->menu_class, NULL);
+        if (empty($sub_class)) {
+            $this->set_attrib($this->data_attribute, TRUE);
+        }
+    }
+
+    /**
+     * @param string $href
+     * @param string $label
+     * @return \k1lib\html\li
+     */
+    function add_menu_item($href, $label, &$a = null) {
+        $li = $this->append_li();
+        if (!empty($href)) {
+            $a = $li->append_a($href, $label);
+        } else {
+            $li->set_value($label);
+        }
+        return $li;
+    }
+
+    /**
+     * @param string $href
+     * @param string $label
+     * @return menu
+     */
+    function add_sub_menu($href, $label, $class = NULL, &$a = null) {
+        $li = $this->add_menu_item($href, $label);
+        $li->set_class($class);
+        $ul = new menu($this->type, $this->nested_class, $this->is_vertical);
+        $li->append_child($ul);
+        return $ul;
+    }
+
+}
+
+class off_canvas extends \k1lib\html\tag {
+
+    use foundation_methods;
+    use \k1lib\html\append_shotcuts;
+
+    /**
+     * @var \k1lib\html\tag
+     */
+    protected $parent;
+
+    /**
+     * @var \k1lib\html\div
+     */
+    protected $inner_canvas;
+
+    /**
+     * @var \k1lib\html\div
+     */
+    protected $left = null;
+
+    /**
+     * @var menu
+     */
+    protected $left_menu = null;
+
+    /**
+     * @var menu
+     */
+    protected $left_menu_head = null;
+
+    /**
+     * @var menu
+     */
+    protected $left_menu_tail = null;
+
+    /**
+     * @var \k1lib\html\div
+     */
+    protected $right = null;
+
+    /**
+     * @var menu
+     */
+    protected $rigth_menu = null;
+
+    /**
+     * @var \k1lib\html\div
+     */
+    public $content = null;
+
+    public function __construct(\k1lib\html\body $parent = NULL) {
+        $this->parent = $parent;
+
+        parent::__construct("div", FALSE);
+        $this->append_to($parent);
+        $this->set_class("off-canvas-wrapper");
+
+        $this->inner_canvas = $this->append_div("off-canvas-wrapper-inner")->set_attrib('data-off-canvas-wrapper', TRUE);
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function left() {
+        if (empty($this->left)) {
+            $this->left = new \k1lib\html\div("off-canvas position-left", 'offCanvasLeft');
+            $this->left->set_attrib('data-off-canvas', TRUE);
+            $this->left->append_to($this->inner_canvas);
+        }
+        return $this->left;
+    }
+
+    /**
+     * @return menu
+     */
+    public function left_menu() {
+        if (empty($this->left_menu)) {
+            $this->left_menu = new menu('accordion');
+            $this->left->append_child($this->left_menu);
+        }
+        return $this->left_menu;
+    }
+
+    /**
+     * @return menu
+     */
+    public function left_menu_head() {
+        if (empty($this->left_menu_head)) {
+            $this->left_menu_head = new menu('accordion');
+            $this->left->append_child_head($this->left_menu_head);
+        }
+        return $this->left_menu_head;
+    }
+
+    /**
+     * @return menu
+     */
+    public function left_menu_tail() {
+        if (empty($this->left_menu_tail)) {
+            $this->left_menu_tail = new menu('accordion');
+            $this->left->append_child_tail($this->left_menu_tail);
+        }
+        return $this->left_menu_tail;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function right() {
+        if (empty($this->right)) {
+            $this->right = new \k1lib\html\div("off-canvas position-right", 'offCanvasReft');
+            $this->right->set_attrib('data-off-canvas', TRUE);
+            $this->right->set_attrib('data-position', 'right');
+            $this->right->append_to($this->inner_canvas);
+        }
+        return $this->right;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function content() {
+        if (empty($this->content)) {
+            $this->content = new \k1lib\html\div("off-canvas-content");
+            $this->content->set_attrib('data-off-canvas-content', TRUE);
+            $this->content->append_to($this->inner_canvas);
+        }
+        return $this->content;
+    }
+
+}
+
+class top_bar_ extends \k1lib\html\tag {
 
     use foundation_methods;
     use \k1lib\html\append_shotcuts;
@@ -270,7 +604,7 @@ class table_from_data extends \k1lib\html\table {
                 if ($this->has_header && $row !== 0) {
                     $col_value = $this->parse_string_value($col_value, $row);
                 }
-                // FIELD HIDE
+// FIELD HIDE
                 if (array_search($field, $this->fields_to_hide) !== FALSE) {
                     continue;
                 }
@@ -306,22 +640,22 @@ class table_from_data extends \k1lib\html\table {
         $row = 0;
         foreach ($this->data as $row_index => $row_data) {
             $row++;
-            // NOT on the HEADERS
+// NOT on the HEADERS
             if ($this->has_header && $row == 1) {
                 continue;
             }
             $col = 0;
             foreach ($row_data as $field => $col_value) {
                 $col++;
-                // FIELD HIDE, don't waste CPU power ;)
+// FIELD HIDE, don't waste CPU power ;)
                 if (array_search($field, $this->fields_to_hide) !== FALSE) {
                     continue;
                 }
-                // Field to insert
+// Field to insert
                 if (array_search($field, $fields_to_insert) !== FALSE) {
-                    // CLONE the TAG object to apply on each field necessary
+// CLONE the TAG object to apply on each field necessary
                     $tag_object_copy = clone $tag_object;
-                    // IF the value is empty, we have to put the field value on it
+// IF the value is empty, we have to put the field value on it
                     if (empty($tag_attrib_to_use)) {
                         if (empty($tag_object_copy->get_value())) {
                             $tag_object_copy->set_value($this->parse_string_value($col_value, $row_index));
