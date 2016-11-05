@@ -279,7 +279,7 @@ class menu extends \k1lib\html\ul {
         $tag = $this->get_element_by_id($id);
         if (!empty($tag)) {
             $tag->unlink_value_obj();
-            $tag->set_class('active');
+            $tag->set_class('active', TRUE);
         }
     }
 
