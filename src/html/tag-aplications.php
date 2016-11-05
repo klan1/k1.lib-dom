@@ -249,10 +249,12 @@ class menu extends \k1lib\html\ul {
      * @param string $label
      * @return \k1lib\html\li
      */
-    function add_menu_item($href, $label, &$a = null) {
+    function add_menu_item($href, $label, $id = NULL) {
         $li = $this->append_li();
+        $li->set_id($id);
         if (!empty($href)) {
             $a = $li->append_a($href, $label);
+            $li->link_value_obj($a);
         } else {
             $li->set_value($label);
         }
@@ -270,6 +272,13 @@ class menu extends \k1lib\html\ul {
         $ul = new menu($this->type, $this->nested_class, $this->is_vertical);
         $li->append_child($ul);
         return $ul;
+    }
+
+    function set_active($id) {
+        $tag = $this->get_element_by_id($id);
+        if (!empty($tag)) {
+            $tag->set_class('active');
+        }
     }
 
 }
