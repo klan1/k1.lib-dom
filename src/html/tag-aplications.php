@@ -266,9 +266,8 @@ class menu extends \k1lib\html\ul {
      * @param string $label
      * @return menu
      */
-    function add_sub_menu($href, $label, $class = NULL, &$a = null) {
-        $li = $this->add_menu_item($href, $label);
-        $li->set_class($class);
+    function add_sub_menu($href, $label, $id = NULL) {
+        $li = $this->add_menu_item($href, $label, $id);
         $ul = new menu($this->type, $this->nested_class, $this->is_vertical);
         $li->append_child($ul);
         return $ul;
