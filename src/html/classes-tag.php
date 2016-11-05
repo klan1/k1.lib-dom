@@ -808,7 +808,6 @@ class tag {
                 }
             }
         } else {
-            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} NOTHING found searching by ID='$id'");
             return NULL;
         }
     }
