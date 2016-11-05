@@ -268,6 +268,7 @@ class menu extends \k1lib\html\ul {
      */
     function add_sub_menu($href, $label, $id = NULL) {
         $li = $this->add_menu_item($href, $label, $id);
+        $li->unlink_value_obj();
         $li->set_class("has-subnav", TRUE);
         $ul = new menu($this->type, $this->nested_class, $this->is_vertical);
         $li->append_child($ul);
