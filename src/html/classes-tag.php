@@ -467,6 +467,10 @@ class tag {
         }
     }
 
+    public function unlink_value_obj() {
+        $this->this_link = NULL;
+    }
+
     /**
      * Return the reference for chained HTML tag object
      * @param Int $n Index beginning from 0
