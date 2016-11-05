@@ -176,6 +176,13 @@ class top_bar extends bar {
         return $this->title;
     }
 
+    /**
+     * @return menu
+     */
+    public function menu_left() {
+        return $this->menu_left;
+    }
+
 }
 
 class menu extends \k1lib\html\ul {
@@ -290,17 +297,17 @@ class off_canvas extends \k1lib\html\tag {
     /**
      * @var menu
      */
-    protected $left_menu = null;
+    protected $menu_left = null;
 
     /**
      * @var menu
      */
-    protected $left_menu_head = null;
+    protected $menu_left_head = null;
 
     /**
      * @var menu
      */
-    protected $left_menu_tail = null;
+    protected $menu_left_tail = null;
 
     /**
      * @var \k1lib\html\div
@@ -342,36 +349,36 @@ class off_canvas extends \k1lib\html\tag {
     /**
      * @return menu
      */
-    public function left_menu() {
-        if (empty($this->left_menu)) {
-            $this->left_menu = new menu('accordion');
-            $this->left->append_child($this->left_menu);
+    public function menu_left() {
+        if (empty($this->menu_left)) {
+            $this->menu_left = new menu('accordion');
+            $this->left->append_child($this->menu_left);
         }
-        return $this->left_menu;
+        return $this->menu_left;
     }
 
     /**
      * @return menu
      */
-    public function left_menu_head() {
-        if (empty($this->left_menu_head)) {
-            $this->left_menu_head = new menu('accordion');
-            $this->left_menu_head->set_class('head', TRUE);
-            $this->left->append_child_head($this->left_menu_head);
+    public function menu_left_head() {
+        if (empty($this->menu_left_head)) {
+            $this->menu_left_head = new menu('accordion');
+            $this->menu_left_head->set_class('head', TRUE);
+            $this->left->append_child_head($this->menu_left_head);
         }
-        return $this->left_menu_head;
+        return $this->menu_left_head;
     }
 
     /**
      * @return menu
      */
-    public function left_menu_tail() {
-        if (empty($this->left_menu_tail)) {
-            $this->left_menu_tail = new menu('accordion');
-            $this->left_menu_tail->set_class('tail', TRUE);
-            $this->left->append_child_tail($this->left_menu_tail);
+    public function menu_left_tail() {
+        if (empty($this->menu_left_tail)) {
+            $this->menu_left_tail = new menu('accordion');
+            $this->menu_left_tail->set_class('tail', TRUE);
+            $this->left->append_child_tail($this->menu_left_tail);
         }
-        return $this->left_menu_tail;
+        return $this->menu_left_tail;
     }
 
     /**

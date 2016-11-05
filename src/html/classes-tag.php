@@ -1444,35 +1444,35 @@ class body extends tag {
     }
 
     /**
-     * return section
+     * return section|body
      */
     function header() {
         if (!empty($this->section_header)) {
             return $this->section_header;
         } else {
-            return FALSE;
+            return $this;
         }
     }
 
     /**
-     * return section
+     * return section|body
      */
     function content() {
         if (!empty($this->section_content)) {
             return $this->section_content;
         } else {
-            return FALSE;
+            return $this;
         }
     }
 
     /**
-     * return section
+     * return section|body
      */
     function footer() {
         if (!empty($this->section_footer)) {
             return $this->section_footer;
         } else {
-            return FALSE;
+            return $this;
         }
     }
 
