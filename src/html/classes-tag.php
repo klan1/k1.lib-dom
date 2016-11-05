@@ -788,26 +788,23 @@ class tag {
                     tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} has the ID='$id' and is returned");
                 }
                 return $this;
-            }
-            /**
-             * Child and inline tags
-             */
-            $inline_tags = $this->get_inline_tags();
-            $all_childs = $this->get_all_childs();
-            $all_childs = array_merge($inline_tags, $all_childs);
-            foreach ($all_childs as $child) {
-                if (html::get_use_log()) {
-                    tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will SEARCH by ID='$id' on child [{$child->get_tag_name()}] ID:{$child->tag_id}");
-                }
-                $child_search_result = $child->get_element_by_id($id);
-                if (!empty($child_search_result)) {
+            } else {
+                $inline_tags = $this->get_inline_tags();
+                $all_childs = $this->get_all_childs();
+                $all_childs = array_merge($inline_tags, $all_childs);
+                foreach ($all_childs as $child) {
                     if (html::get_use_log()) {
-                        tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} has child [{$child->get_tag_name()}] ID:{$child->tag_id} with the ID='$id' and is returned");
+                        tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} will SEARCH by ID='$id' on child [{$child->get_tag_name()}] ID:{$child->tag_id}");
                     }
-                    return $child_search_result;
+                    $child_search_result = $child->get_element_by_id($id);
+                    if (!empty($child_search_result)) {
+                        if (html::get_use_log()) {
+                            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} has child [{$child->get_tag_name()}] ID:{$child->tag_id} with the ID='$id' and is returned");
+                        }
+                        return $child_search_result;
+                    }
                 }
             }
-            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} NOTHING found searching by ID='$id'");
         } else {
             return NULL;
         }
