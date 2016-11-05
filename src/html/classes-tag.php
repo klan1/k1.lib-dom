@@ -807,6 +807,7 @@ class tag {
                     return $child_search_result;
                 }
             }
+            tag_log::log("[{$this->get_tag_name()}] ID:{$this->tag_id} NOTHING found searching by ID='$id'");
         } else {
             return NULL;
         }
