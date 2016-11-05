@@ -356,6 +356,7 @@ class off_canvas extends \k1lib\html\tag {
     public function left_menu_head() {
         if (empty($this->left_menu_head)) {
             $this->left_menu_head = new menu('accordion');
+            $this->left_menu_head->set_class('head', TRUE);
             $this->left->append_child_head($this->left_menu_head);
         }
         return $this->left_menu_head;
@@ -367,6 +368,7 @@ class off_canvas extends \k1lib\html\tag {
     public function left_menu_tail() {
         if (empty($this->left_menu_tail)) {
             $this->left_menu_tail = new menu('accordion');
+            $this->left_menu_tail->set_class('tail', TRUE);
             $this->left->append_child_tail($this->left_menu_tail);
         }
         return $this->left_menu_tail;
