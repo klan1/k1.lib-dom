@@ -1226,7 +1226,7 @@ class DOM {
         return self::$html->generate();
     }
 
-    static function link_html(html $html_to_link) {
+    static function link_html(html &$html_to_link) {
         self::$html = $html_to_link;
     }
 
