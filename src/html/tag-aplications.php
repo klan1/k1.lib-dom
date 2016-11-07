@@ -247,16 +247,28 @@ class menu extends \k1lib\html\ul {
     /**
      * @param string $href
      * @param string $label
+     * @param string $id
+     * @param string $where
      * @return \k1lib\html\li
      */
-    function add_menu_item($href, $label, $id = NULL) {
-        $li = $this->append_li();
-        $li->set_id($id);
-        if (!empty($href)) {
-            $a = $li->append_a($href, $label);
-            $li->link_value_obj($a);
+    function add_menu_item($href, $label, $id = NULL, $where_id = NULL) {
+        if (!empty($where_id)) {
+            $parent = $this->get_element_by_id($where_id);
+//            d($parent);
+        }
+        if (empty($parent)) {
+            $li = $this->append_li();
+            $li->set_id($id);
+            if (!empty($href)) {
+                $a = $li->append_a($href, $label);
+                $li->link_value_obj($a);
+            } else {
+                $li->set_value($label);
+            }
         } else {
-            $li->set_value($label);
+            $ul = new menu($this->type, $this->nested_class, $this->is_vertical);
+            $parent->append_child($ul);
+            $li = $ul->add_menu_item($href, $label, $id);
         }
         return $li;
     }
@@ -266,9 +278,18 @@ class menu extends \k1lib\html\ul {
      * @param string $label
      * @return menu
      */
-    function add_sub_menu($href, $label, $id = NULL) {
-        $li = $this->add_menu_item($href, $label, $id);
-        $li->unlink_value_obj();
+    function add_sub_menu($href, $label, $id = NULL, $where_id = NULL) {
+        if (!empty($where_id)) {
+            $parent = $this->get_element_by_id($where_id);
+        }
+        if (empty($parent)) {
+            $li = $this->add_menu_item($href, $label, $id);
+            $li->unlink_value_obj();
+        } else {
+            $ul = new menu($this->type, $this->nested_class, $this->is_vertical);
+            $parent->append_child($ul);
+            $li = $ul->add_menu_item($href, $label, $id);
+        }
         $li->set_class("has-submenu", TRUE);
         $ul = new menu($this->type, $this->nested_class, $this->is_vertical);
         $li->append_child($ul);
@@ -363,6 +384,7 @@ class off_canvas extends \k1lib\html\tag {
     public function menu_left() {
         if (empty($this->menu_left)) {
             $this->menu_left = new menu('accordion');
+            $this->menu_left->set_id('menu-left');
             $this->left->append_child($this->menu_left);
         }
         return $this->menu_left;
@@ -374,6 +396,7 @@ class off_canvas extends \k1lib\html\tag {
     public function menu_left_head() {
         if (empty($this->menu_left_head)) {
             $this->menu_left_head = new menu('accordion');
+            $this->menu_left_head->set_id('menu-left-head');
             $this->menu_left_head->set_class('head', TRUE);
             $this->left->append_child_head($this->menu_left_head);
         }
@@ -386,6 +409,7 @@ class off_canvas extends \k1lib\html\tag {
     public function menu_left_tail() {
         if (empty($this->menu_left_tail)) {
             $this->menu_left_tail = new menu('accordion');
+            $this->menu_left_tail->set_id('menu-left-tail');
             $this->menu_left_tail->set_class('tail', TRUE);
             $this->left->append_child_tail($this->menu_left_tail);
         }
