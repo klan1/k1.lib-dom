@@ -444,7 +444,7 @@ class tag {
     public function set_value($value, $append = FALSE) {
 
         if (empty($this->this_link)) {
-            if (!empty($value)) {
+            if (($value !== 0) && ($value !== NULL)) {
                 $this->value = ($append === TRUE) ? ($this->value . " " . $value) : ("$value");
             }
         } else {
