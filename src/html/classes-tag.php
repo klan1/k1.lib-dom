@@ -661,6 +661,8 @@ class tag {
      * @return string Returns FALSE if is not attributes to generate
      */
     protected function generate_attributes_code() {
+        // WTF line
+        // TODO: Check for numeric value on 0
         if ($this->is_self_closed && ($this->value !== 0) && ($this->value != NULL)) {
             $this->set_attrib("value", $this->value);
         }
