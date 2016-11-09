@@ -1218,6 +1218,14 @@ class DOM {
         self::$html = new html($lang);
     }
 
+    static function is_started() {
+        if (!empty(self::$html)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     /**
      * @return html
      */
