@@ -576,6 +576,8 @@ class top_bar_ extends \k1lib\html\tag {
 
 class table_from_data extends \k1lib\html\table {
 
+    static public $float_round_default = NULL;
+
     use foundation_methods;
 
     /**
@@ -608,6 +610,11 @@ class table_from_data extends \k1lib\html\table {
      */
     protected $max_text_length_on_cell = NULL;
 
+    /**
+     * @var int
+     */
+    protected $float_round = NULL;
+
     function __construct($class = "", $id = "") {
 
 //        $this->parent = $parent;
@@ -616,6 +623,8 @@ class table_from_data extends \k1lib\html\table {
 //        $this->append_to($parent);
         $this->set_class($class);
         $this->set_id($id);
+
+        $this->float_round = self::$float_round_default;
     }
 
     public function set_data(array $data, $has_header = TRUE) {
@@ -648,7 +657,7 @@ class table_from_data extends \k1lib\html\table {
                 if ($this->has_header && $row !== 0) {
                     $col_value = $this->parse_string_value($col_value, $row);
                 }
-// FIELD HIDE
+                // FIELD HIDE
                 if (array_search($field, $this->fields_to_hide) !== FALSE) {
                     continue;
                 }
@@ -656,8 +665,12 @@ class table_from_data extends \k1lib\html\table {
                     $tr->append_th($col_value);
                 } else {
                     if (!is_object($col_value)) {
-                        if (is_numeric($this->max_text_length_on_cell) && strlen($col_value) > $this->max_text_length_on_cell) {
-                            $col_value = substr($col_value, 0, $this->max_text_length_on_cell) . "...";
+                        if (($this->float_round !== NULL) && is_numeric($col_value) && is_float($col_value + 0)) {
+                            $col_value = round($col_value + 0, $this->float_round);
+                        } else {
+                            if (is_numeric($this->max_text_length_on_cell) && strlen($col_value) > $this->max_text_length_on_cell) {
+                                $col_value = substr($col_value, 0, $this->max_text_length_on_cell) . "...";
+                            }
                         }
                     } else {
                         if (is_numeric($this->max_text_length_on_cell) && strlen($col_value->get_value()) > $this->max_text_length_on_cell) {
@@ -684,22 +697,22 @@ class table_from_data extends \k1lib\html\table {
         $row = 0;
         foreach ($this->data as $row_index => $row_data) {
             $row++;
-// NOT on the HEADERS
+            // NOT on the HEADERS
             if ($this->has_header && $row == 1) {
                 continue;
             }
             $col = 0;
             foreach ($row_data as $field => $col_value) {
                 $col++;
-// FIELD HIDE, don't waste CPU power ;)
+                // FIELD HIDE, don't waste CPU power ;)
                 if (array_search($field, $this->fields_to_hide) !== FALSE) {
                     continue;
                 }
-// Field to insert
+                // Field to insert
                 if (array_search($field, $fields_to_insert) !== FALSE) {
-// CLONE the TAG object to apply on each field necessary
+                    // CLONE the TAG object to apply on each field necessary
                     $tag_object_copy = clone $tag_object;
-// IF the value is empty, we have to put the field value on it
+                    // IF the value is empty, we have to put the field value on it
                     if (empty($tag_attrib_to_use)) {
                         if (empty($tag_object_copy->get_value())) {
                             $tag_object_copy->set_value($this->parse_string_value($col_value, $row_index));
@@ -779,6 +792,16 @@ class table_from_data extends \k1lib\html\table {
     public function set_max_text_length_on_cell($max_text_length_on_cell) {
         $this->max_text_length_on_cell = $max_text_length_on_cell;
         return $this;
+    }
+
+    public function set_float_round($round_places) {
+//        if (is_int($round_places)) {
+            $this->float_round = $round_places;
+//        }
+    }
+
+    public function get_float_round() {
+        return $this->float_round;
     }
 
 }
