@@ -1681,7 +1681,8 @@ class script extends tag {
     use append_shotcuts;
 
     /**
-     * Create a SCRIPT html tag with VALUE as data. Use $script->set_value($data)
+     * Create a SCRIPT html tag with VALUE as data. Use $script->set_value($crs) 
+     * for load a file.
      * @param String $class
      * @param String $id
      */
