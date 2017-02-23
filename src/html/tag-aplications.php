@@ -796,7 +796,7 @@ class table_from_data extends \k1lib\html\table {
 
     public function set_float_round($round_places) {
 //        if (is_int($round_places)) {
-            $this->float_round = $round_places;
+        $this->float_round = $round_places;
 //        }
     }
 
@@ -1012,9 +1012,14 @@ class grid extends \k1lib\html\div {
      * @var grid_cell[]
      */
     protected $rows = [];
+    protected $rows;
+    protected $cols;
 
     public function __construct($num_rows, $num_cols, \k1lib\html\tag $parent = NULL) {
         $this->parent = $parent;
+
+        $this->rows = $num_rows;
+        $this->cols = $num_cols;
 
         if (empty($this->parent)) {
             parent::__construct();
@@ -1043,11 +1048,14 @@ class grid extends \k1lib\html\div {
 
     /**
      * 
-     * @param type $num_cols
-     * @param type $grid_row
+     * @param int $num_cols
+     * @param int $grid_row
      * @return \k1lib\html\foundation\grid_row
      */
     public function append_row($num_cols = NULL, $grid_row = NULL, $parent = NULL) {
+        if ($num_cols === NULL) {
+            $num_cols = $this->cols;
+        }
         $row = new grid_row($num_cols, $grid_row, $parent);
         return $row;
     }
