@@ -1011,7 +1011,6 @@ class grid extends \k1lib\html\div {
     /**
      * @var grid_cell[]
      */
-    protected $rows = [];
     protected $rows;
     protected $cols;
 
