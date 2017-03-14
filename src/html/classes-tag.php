@@ -26,6 +26,11 @@ const NO_VALUE = NULL;
 const APPEND_ON_HEAD = 1;
 const APPEND_ON_MAIN = 2;
 const APPEND_ON_TAIL = 3;
+const INSERT_ON_PRE_TAG = -1;
+const INSERT_ON_AFTER_TAG_OPEN = 2;
+const INSERT_ON_VALUE = 0;
+const INSERT_ON_BEFORE_TAG_CLOSE = 3;
+const INSERT_ON_POST_TAG = 1;
 
 /**
  * Static Class to log all the Class tag actions 
@@ -179,6 +184,12 @@ class tag {
 
     /** @var String */
     protected $value = "";
+
+    /** @var String */
+    protected $post_value = "";
+
+    /** @var String */
+    protected $pre_value = "";
 
     /** @var Boolean */
     protected $has_child = FALSE;
@@ -425,6 +436,12 @@ class tag {
      * @param String $pre_code
      */
     function pre_code($pre_code) {
+        if (substr($pre_code, 0, 1) != "\n") {
+            $pre_code = "\n" . $pre_code;
+        }
+        if (substr($pre_code, -1) != "\n") {
+            $pre_code = $pre_code . "\n";
+        }
         $this->pre_code = $pre_code;
     }
 
@@ -433,7 +450,86 @@ class tag {
      * @param String $post_code
      */
     function post_code($post_code) {
+        if (substr($post_code, 0, 1) != "\n") {
+            $post_code = "\n" . $post_code;
+        }
+        if (substr($post_code, -1) != "\n") {
+            $post_code = $post_code . "\n";
+        }
         $this->post_code = $post_code;
+    }
+
+    /**
+     * Add free TEXT before the generated TAG
+     * @param String $pre_value
+     */
+    function pre_value($pre_value) {
+        if (substr($pre_value, 0, 1) != "\n") {
+            $pre_value = "\n" . $pre_value;
+        }
+        if (substr($pre_value, -1) != "\n") {
+            $pre_value = $pre_value . "\n";
+        }
+        $this->pre_value = $pre_value;
+    }
+
+    /**
+     * Add free TEXT after the generated TAG
+     * @param String $post_value
+     */
+    function post_value($post_value) {
+        if (substr($post_value, 0, 1) != "\n") {
+            $post_value = "\n" . $post_value;
+        }
+        if (substr($post_value, -1) != "\n") {
+            $post_value = $post_value . "\n";
+        }
+        $this->post_value = $post_value;
+    }
+
+    function load_file($file_path, $position = INSERT_ON_VALUE, $include_file = TRUE) {
+        if (file_exists($file_path)) {
+            if ($include_file) {
+                ob_start();
+                include $file_path;
+                $file_content = ob_get_clean();
+            } else {
+                $file_content = file_get_contents($file_path);
+            }
+            if (!empty($file_content)) {
+                switch ($position) {
+                    case INSERT_ON_PRE_TAG:
+                        $this->pre_code($file_content);
+                        break;
+                    case INSERT_ON_AFTER_TAG_OPEN:
+                        $this->pre_value($file_content);
+                        break;
+                    case INSERT_ON_VALUE:
+                        if (substr($file_content, 0, 1) != "\n") {
+                            $file_content = "\n" . $file_content;
+                        }
+                        if (substr($file_content, -1) != "\n") {
+                            $file_content = $file_content . "\n";
+                        }
+                        $this->set_value($file_content, TRUE);
+                        break;
+                    case INSERT_ON_BEFORE_TAG_CLOSE:
+                        $this->post_value($file_content);
+                        break;
+                    case INSERT_ON_POST_TAG:
+                        $this->post_code($file_content);
+                        break;
+                    default:
+                        break;
+                }
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } else {
+            user_error("the file '$file_path' do not exist", E_USER_WARNING);
+            return FALSE;
+        }
     }
 
     /**
@@ -720,11 +816,8 @@ class tag {
 
         $has_childs = FALSE;
         if (!$this->is_self_closed) {
-//            if ($has_childs && empty($this->value)) {
-//                $html_code .= "\n{$tabs}\t";
-//            }
             // VALUE first, then child objects
-            $html_code .= $this->get_value($this->child_level);
+            $html_code .= $this->pre_value . $this->get_value($this->child_level);
             // Child objetcs generation
             if (($with_childs) && ($object_childs >= 1)) {
                 $has_childs = TRUE;
@@ -738,7 +831,7 @@ class tag {
             if ($has_childs || $this->has_child) {
                 $html_code .= "\n";
             }
-            $html_code .= $this->generate_close();
+            $html_code .= $this->post_value . $this->generate_close();
         }
         // TODO: Fix this!! please no more pre_code and post_code
         $this->tag_code = $this->pre_code . $html_code . $this->post_code;
@@ -1626,7 +1719,9 @@ class link extends tag {
         parent::__construct("link");
         if (!empty($href)) {
             $this->set_attrib("rel", "stylesheet");
-            $this->set_attrib("type", "text/css");
+            if (strtolower(substr($href, -4)) == '.css') {
+                $this->set_attrib("type", "text/css");
+            }
             $this->set_attrib("href", $href);
         }
     }
