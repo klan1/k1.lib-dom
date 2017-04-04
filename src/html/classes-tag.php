@@ -499,10 +499,10 @@ class tag {
             if (!empty($file_content)) {
                 switch ($position) {
                     case INSERT_ON_PRE_TAG:
-                        $this->pre_code($file_content);
+                        $this->pre_code($this->pre_code . $file_content);
                         break;
                     case INSERT_ON_AFTER_TAG_OPEN:
-                        $this->pre_value($file_content);
+                        $this->pre_value($this->pre_value . $file_content);
                         break;
                     case INSERT_ON_VALUE:
                         if (substr($file_content, 0, 1) != "\n") {
@@ -514,10 +514,10 @@ class tag {
                         $this->set_value($file_content, TRUE);
                         break;
                     case INSERT_ON_BEFORE_TAG_CLOSE:
-                        $this->post_value($file_content);
+                        $this->post_value($this->post_value . $file_content);
                         break;
                     case INSERT_ON_POST_TAG:
-                        $this->post_code($file_content);
+                        $this->post_code($this->post_code . $file_content);
                         break;
                     default:
                         break;
@@ -1321,6 +1321,10 @@ class DOM {
         }
     }
 
+    static function end() {
+        self::$html = NULL;
+    }
+
     /**
      * @return html
      */
@@ -1329,8 +1333,12 @@ class DOM {
     }
 
     static function generate() {
-        self::$html->pre_code("<!DOCTYPE html>\n");
-        return self::$html->generate();
+        if (!empty(self::$html)) {
+            self::$html->pre_code("<!DOCTYPE html>\n");
+            return self::$html->generate();
+        } else {
+            return NULL;
+        }
     }
 
     static function link_html(html $html_to_link) {
