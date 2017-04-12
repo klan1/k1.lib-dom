@@ -112,13 +112,13 @@ function label_text_combo_2columns($label, $value) {
  * @param String $id
  * @return html_classes\select_tag
  */
-function select_list_from_array($name, $data_array, $default_value = "", $allow_empty = FALSE, $class = "", $id = "") {
+function select_list_from_array($name, $data_array, $default_value = "", $allow_empty = FALSE, $class = "", $id = "", $select_message = 'Select an option') {
     $select_object = new html_classes\select($name);
     $select_object->set_attrib("class", $class, TRUE);
     $select_object->set_attrib("id", $id);
 
     if ($allow_empty) {
-        $select_object->append_option("", "Seleccione una opcion");
+        $select_object->append_option("", $select_message);
     }
 
     foreach ($data_array as $value => $label) {
