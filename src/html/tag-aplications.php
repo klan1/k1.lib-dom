@@ -670,11 +670,15 @@ class table_from_data extends \k1lib\html\table {
                         } else {
                             if (is_numeric($this->max_text_length_on_cell) && strlen($col_value) > $this->max_text_length_on_cell) {
                                 $col_value = substr($col_value, 0, $this->max_text_length_on_cell) . "...";
+                            } else {
+                                
                             }
                         }
                     } else {
                         if (is_numeric($this->max_text_length_on_cell) && strlen($col_value->get_value()) > $this->max_text_length_on_cell) {
                             $col_value->set_value(substr($col_value->get_value(), 0, $this->max_text_length_on_cell) . "...");
+                        } else {
+                            
                         }
                     }
                     $tr->append_td($col_value);
