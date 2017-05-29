@@ -13,7 +13,7 @@ function js_back() {
  */
 function html_header_go($url) {
     ob_clean();
-    header("X-K1.LIB-Message : Redirecting...");
+    header("X-K1.LIB-Message: Redirecting...");
     header("Location: {$url}");
     exit;
 }
