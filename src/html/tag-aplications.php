@@ -1072,8 +1072,8 @@ class label_value_row extends grid_row {
     function __construct($label, $value, $grid_row = 0, $parent = NULL) {
         parent::__construct(2, $grid_row, $parent);
 
-        $this->col(1)->medium(4)->large(3);
-        $this->col(2)->medium(8)->large(9)->end();
+        $this->col(1)->medium(5)->large(4);
+        $this->col(2)->medium(7)->large(8)->end();
 
         $this->col(2)->remove_attribute_text("class", "end");
 
