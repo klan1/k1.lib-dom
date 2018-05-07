@@ -25,31 +25,12 @@ $body->content()->set_style('padding:2em;', TRUE);
 $body_header = $body->header();
 
 /**
- * TOP BAR
- */
-$top_bar = new \k1lib\html\foundation\top_bar($body_header);
-
-$top_bar->set_title(1, "APP TITLE");
-$top_bar->set_title(2, " :: ");
-$top_bar->set_title(3, "HOME");
-
-$li = $top_bar->add_menu_item("#", "Sub menu 1");
-$top_bar->add_menu_item("#", "Item 2");
-$top_bar->add_menu_item("#", "Item 3");
-
-$sub_menu = $top_bar->add_sub_menu($li);
-$top_bar->add_menu_item("#", "Level 1", $sub_menu);
-
-$top_bar->add_button("#", "Ingresar");
-$top_bar->add_button("#", "Salir", "alert");
-
-/**
  * TABLE WITH DATA
  */
 $data = array(
-    0 => array(0 => 'Name', 1 => 'Last name', 'Full Name', 'Pic'),
+    0 => array(0 => 'Name', 1 => 'Last name', 2 => 'Full Name', 3 => 'Pic'),
     1 => array('Alejandro', 'Trujillo', "{{field:0}} {{field:1}}", 'https://66.media.tumblr.com/avatar_32dc0cfad91f_128.png'),
-    2 => array('Camilo', 'Lopez', "{{field:0}} {{field:1}}", 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
+    2 => array('Camilo', 'Lopez', "{{field:1}} {{field:0}}", 'https://cdn1.iconfinder.com/data/icons/halloween-6/96/Zombie-128.png'),
 );
 
 $img = new \k1lib\html\img();
