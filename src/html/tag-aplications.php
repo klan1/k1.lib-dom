@@ -1124,7 +1124,7 @@ class callout extends \k1lib\html\div {
     protected $cols = [];
     protected $title = "";
     protected $message = "no message";
-    protected $margin = '20px';
+    protected $margin = '';
 
     function __construct($message = NULL, $title = NULL, $closable = TRUE, $type = "primary") {
         $this->message = $message;
