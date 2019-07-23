@@ -643,6 +643,7 @@ class table_from_data extends \k1lib\html\table {
         $num_row = 0;
         $row = 0;
         foreach ($this->data as $row_index => $row_data) {
+//            print_r($this->data);
             if ($this->has_header && ($row_index === 0)) {
                 $thead = $this->append_thead();
                 $tr = $thead->append_tr();
@@ -681,7 +682,10 @@ class table_from_data extends \k1lib\html\table {
                             
                         }
                     }
-                    $tr->append_td($col_value);
+                    $last_td = $tr->append_td($col_value, 'responsive');
+                    if ($this->has_header && $row !== 0) {
+                        $last_td->set_attrib('data-label', trim($this->data[0][$field]->value), TRUE);
+                    }
                 }
             }
             $row++;
