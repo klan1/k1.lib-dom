@@ -20,6 +20,10 @@ namespace k1lib\html\foundation;
 
 trait foundation_methods {
 
+    protected $small = NULL;
+    protected $medium = NULL;
+    protected $large = NULL;
+
     /**
      * Will search for the $text as small-1, medium-12 as: /({$text}-[0-9]+)/
      * and replace the number part with the new number
@@ -61,6 +65,95 @@ trait foundation_methods {
         $close_button->set_attrib("aria-label", "Close reveal");
         $close_button->append_span()->set_attrib("aria-hidden", TRUE)->set_value("&times;");
         $this->append_child_tail($close_button);
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function align_center() {
+        $this->set_attrib("class", "align-center", TRUE);
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function align_left() {
+        $this->set_attrib("class", "align-left", TRUE);
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function align_right() {
+        $this->set_attrib("class", "align-right", TRUE);
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function align_justify() {
+        $this->set_attrib("class", "align-justify", TRUE);
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function small($cols, $clear = FALSE) {
+        $this->small = $cols;
+
+        if ($clear) {
+            $this->set_attrib("class", "cell small-{$cols}", (!$clear));
+        } else {
+            $this->replace_attribute_number("class", "small", $cols);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function medium($cols, $clear = FALSE) {
+        $this->medium = $cols;
+
+        if ($clear) {
+            $this->set_attrib("class", "cell medium-{$cols}", (!$clear));
+        } else {
+            $this->replace_attribute_number("class", "medium", $cols);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \k1lib\html\div
+     */
+    public function large($cols, $clear = FALSE) {
+        $this->large = $cols;
+
+        if ($clear) {
+            $this->set_attrib("class", "cell large-{$cols}", (!$clear));
+        } else {
+            $this->replace_attribute_number("class", "large", $cols);
+        }
+
+        return $this;
+    }
+
+    public function get_small() {
+        return $this->small;
+    }
+
+    public function get_medium() {
+        return $this->medium;
+    }
+
+    public function get_large() {
+        return $this->large;
     }
 
 }
@@ -818,9 +911,6 @@ class grid_cell extends \k1lib\html\div {
 
     use foundation_methods;
 
-    protected $small = NULL;
-    protected $medium = NULL;
-    protected $large = NULL;
     protected $row_number = 0;
 
     /**
@@ -829,81 +919,13 @@ class grid_cell extends \k1lib\html\div {
      * @param integer $id
      *  */
     public function __construct($col_number = NULL, $class = NULL, $id = NULL) {
-        parent::__construct("column column-{$col_number}" . $class, NULL);
-        $this->set_attrib("data-grid-col", $col_number);
+        parent::__construct("cell cell-{$col_number}" . $class, NULL);
+        $this->set_attrib("data-grid-cell", $col_number);
     }
 
+    // change the default behaivor of append from FALSE to TRUE
     public function set_class($class, $append = TRUE) {
         parent::set_class($class, $append);
-        return $this;
-    }
-
-    /**
-     * @return \k1lib\html\div
-     */
-    public function small($cols, $clear = FALSE) {
-        $this->small = $cols;
-
-        if ($clear) {
-            $this->set_attrib("class", "column small-{$cols}", (!$clear));
-        } else {
-            $this->replace_attribute_number("class", "small", $cols);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return grid_cell
-     */
-    public function small_centered() {
-        $this->set_attrib("class", "small-centered", TRUE);
-        return $this;
-    }
-
-    /**
-     * @return \k1lib\html\div
-     */
-    public function medium($cols, $clear = FALSE) {
-        $this->medium = $cols;
-
-        if ($clear) {
-            $this->set_attrib("class", "column medium-{$cols}", (!$clear));
-        } else {
-            $this->replace_attribute_number("class", "medium", $cols);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return grid_cell
-     */
-    public function medium_centered() {
-        $this->set_attrib("class", "medium-centered", TRUE);
-        return $this;
-    }
-
-    /**
-     * @return \k1lib\html\div
-     */
-    public function large($cols, $clear = FALSE) {
-        $this->large = $cols;
-
-        if ($clear) {
-            $this->set_attrib("class", "column large-{$cols}", (!$clear));
-        } else {
-            $this->replace_attribute_number("class", "large", $cols);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return grid_cell
-     */
-    public function large_centered() {
-        $this->set_attrib("class", "large-centered", TRUE);
         return $this;
     }
 
@@ -913,18 +935,6 @@ class grid_cell extends \k1lib\html\div {
     public function end() {
         $this->set_attrib("class", "end", TRUE);
         return $this;
-    }
-
-    public function get_small() {
-        return $this->small;
-    }
-
-    public function get_medium() {
-        return $this->medium;
-    }
-
-    public function get_large() {
-        return $this->large;
     }
 
     /**
@@ -962,7 +972,7 @@ class grid_row extends \k1lib\html\div {
 
         $this->parent = $parent;
 
-        parent::__construct("row row-{$grid_row}", NULL);
+        parent::__construct("grid-x row-{$grid_row}", NULL);
         if (!empty($this->parent)) {
             $this->append_to($this->parent);
         }
@@ -981,6 +991,13 @@ class grid_row extends \k1lib\html\div {
      * @return \k1lib\html\foundation\grid_cell
      */
     public function col($col_number) {
+        return $this->cell($col_number);
+    }
+    /**
+     * @param integer $col_number
+     * @return \k1lib\html\foundation\grid_cell
+     */
+    public function cell($col_number) {
         if (isset($this->num_cols[$col_number])) {
             return $this->num_cols[$col_number];
         }
@@ -1010,6 +1027,8 @@ class grid_row extends \k1lib\html\div {
 }
 
 class grid extends \k1lib\html\div {
+
+    use foundation_methods;
 
     /**
      * @var \k1lib\html\tag
@@ -1075,23 +1094,23 @@ class label_value_row extends grid_row {
 
     function __construct($label, $value, $grid_row = 0, $parent = NULL) {
         parent::__construct(2, $grid_row, $parent);
+        $this->set_class('grid-margin-x', TRUE);
+        $this->cell(1)->medium(3)->large(3);
+        $this->cell(2)->medium(9)->large(9)->end();
 
-        $this->col(1)->medium(5)->large(4);
-        $this->col(2)->medium(7)->large(8)->end();
-
-        $this->col(2)->remove_attribute_text("class", "end");
+        $this->cell(2)->remove_attribute_text("class", "end");
 
         $input_name = $this->get_name_attribute($value);
 
         if (method_exists($label, "generate")) {
             $small_label = clone $label;
-            $this->col(1)->append_child($label->set_class("k1lib-label-object right inline hide-for-small-only text-right"));
-            $this->col(1)->append_child($small_label->set_class("k1lib-label-object left show-for-small-only"));
+            $this->cell(1)->append_child($label->set_class("k1lib-label-object right inline hide-for-small-only text-right"));
+            $this->cell(1)->append_child($small_label->set_class("k1lib-label-object left show-for-small-only"));
         } else {
-            $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1lib-label-object right inline hide-for-small-only text-right"));
-            $this->col(1)->append_child(new \k1lib\html\label($label, $input_name, "k1lib-label-object left show-for-small-only"));
+            $this->cell(1)->append_child(new \k1lib\html\label($label, $input_name, "k1lib-label-object right inline hide-for-small-only text-right"));
+            $this->cell(1)->append_child(new \k1lib\html\label($label, $input_name, "k1lib-label-object left show-for-small-only"));
         }
-        $this->col(2)->set_value($value);
+        $this->cell(2)->set_value($value);
     }
 
     private function get_name_attribute($tag_object) {
