@@ -319,7 +319,7 @@ class menu extends \k1lib\html\ul {
                 break;
             case 'accordion':
                 $vertical = TRUE;
-                $this->menu_class = 'menu vertical';
+                $this->menu_class = 'vertical menu accordion-menu';
                 $this->nested_class = 'menu vertical nested';
                 $this->data_attribute = 'data-accordion-menu';
 
