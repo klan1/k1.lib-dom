@@ -312,8 +312,8 @@ class menu extends \k1lib\html\ul {
                 break;
             case 'drilldown':
                 $vertical = TRUE;
-                $this->menu_class = 'menu vertical';
-                $this->nested_class = 'menu vertical';
+                $this->menu_class = 'vertical menu drilldown';
+                $this->nested_class = 'menu vertical nested';
                 $this->data_attribute = 'data-drilldown';
 
                 break;
