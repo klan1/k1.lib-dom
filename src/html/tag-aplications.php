@@ -412,11 +412,6 @@ class off_canvas extends \k1lib\html\tag {
     /**
      * @var \k1lib\html\div
      */
-    protected $inner_canvas;
-
-    /**
-     * @var \k1lib\html\div
-     */
     protected $left = null;
 
     /**
@@ -451,12 +446,6 @@ class off_canvas extends \k1lib\html\tag {
 
     public function __construct(\k1lib\html\body $parent = NULL) {
         $this->parent = $parent;
-
-        parent::__construct("div", FALSE);
-        $this->append_to($parent);
-        $this->set_class("off-canvas-wrapper");
-
-        $this->inner_canvas = $this->append_div("off-canvas-wrapper-inner")->set_attrib('data-off-canvas-wrapper', TRUE);
     }
 
     /**
@@ -466,7 +455,7 @@ class off_canvas extends \k1lib\html\tag {
         if (empty($this->left)) {
             $this->left = new \k1lib\html\div("off-canvas position-left", 'offCanvasLeft');
             $this->left->set_attrib('data-off-canvas', TRUE);
-            $this->left->append_to($this->inner_canvas);
+            $this->left->append_to($this->parent);
         }
         return $this->left;
     }
@@ -514,10 +503,10 @@ class off_canvas extends \k1lib\html\tag {
      */
     public function right() {
         if (empty($this->right)) {
-            $this->right = new \k1lib\html\div("off-canvas position-right", 'offCanvasReft');
+            $this->right = new \k1lib\html\div("off-canvas position-right", 'offCanvasRight');
             $this->right->set_attrib('data-off-canvas', TRUE);
             $this->right->set_attrib('data-position', 'right');
-            $this->right->append_to($this->inner_canvas);
+            $this->right->append_to($this->parent);
         }
         return $this->right;
     }
@@ -529,7 +518,7 @@ class off_canvas extends \k1lib\html\tag {
         if (empty($this->content)) {
             $this->content = new \k1lib\html\div("off-canvas-content");
             $this->content->set_attrib('data-off-canvas-content', TRUE);
-            $this->content->append_to($this->inner_canvas);
+            $this->content->append_to($this->parent);
         }
         return $this->content;
     }
