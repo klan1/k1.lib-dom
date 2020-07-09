@@ -581,6 +581,30 @@ class tag {
     }
 
     /**
+     * Return array of reference for chained HTML tags objects
+     * @return tag[] Returns [] if is not set
+     */
+    public function get_childs() {
+        if (!empty($this->childs)) {
+            return $this->childs;
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * Replace current child reference with another one
+     * @param type $n
+     * @param \k1lib\html\tag $new_object
+     */
+    public function replace_child($n, tag $new_object) {
+        if (array_key_exists($n, $this->childs)) {
+            $this->childs[$n] = $new_object;
+//            echo "$n exists ! {$this->childs[$n]} {$this->childs[$n]->generate()} <br>";
+        }
+    }
+
+    /**
      * Set an attribute with its value always overwriting if $append is not set TRUE to append old value with the recieved one.
      * @param String $attribute
      * @param String $value
@@ -1875,6 +1899,7 @@ class table extends tag {
     use append_shotcuts;
 
 //    private $data_array = array();
+
     /**
      * @param String $class
      * @param String $id

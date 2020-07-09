@@ -675,6 +675,11 @@ class table_from_data extends \k1lib\html\table {
     /**
      * @var array
      */
+    protected $data_original = [];
+
+    /**
+     * @var array
+     */
     protected $fields_to_hide = [];
 
     /**
@@ -711,6 +716,7 @@ class table_from_data extends \k1lib\html\table {
 
     public function set_data(array $data, $has_header = TRUE) {
         $this->data = $data;
+        $this->data_original = $data;
         $this->has_header = $has_header;
         return $this;
     }
@@ -783,10 +789,24 @@ class table_from_data extends \k1lib\html\table {
         $this->fields_for_key_array_text = $fields_for_key_array_text;
     }
 
-    public function insert_tag_on_field(\k1lib\html\tag $tag_object, array $fields_to_insert, $tag_attrib_to_use = NULL, $append = FALSE) {
+    public function insert_tag_on_field(\k1lib\html\tag $tag_object, array $fields_to_insert, $tag_attrib_to_use = NULL, $append = FALSE, $respect_blanks = FALSE, $just_replace_attribs = FALSE, $just_this_row = NULL) {
         $row = 0;
-        foreach ($this->data as $row_index => $row_data) {
+//        if ($just_replace_attribs) {
+//            echo "child call - row_key:$just_this_row<br>";
+//        } else {
+//            echo "normal call <br>";
+//        }
+        foreach ($this->data_original as $row_index => $row_data) {
             $row++;
+            if ($just_this_row !== NULL && $just_this_row != $row_index) {
+//                echo "child: $row_index:$just_this_row <br>";
+                continue;
+            }
+//            else {
+//                if ($just_this_row !== NULL) {
+//                    echo "this is the ROW: $row_index:$just_this_row <br>";
+//                }
+//            }
             // NOT on the HEADERS
             if ($this->has_header && $row == 1) {
                 continue;
@@ -794,6 +814,9 @@ class table_from_data extends \k1lib\html\table {
             $col = 0;
             foreach ($row_data as $field => $col_value) {
                 $col++;
+                if (empty($this->data_original[$row_index][$field]) && $respect_blanks) {
+                    continue;
+                }
                 // FIELD HIDE, don't waste CPU power ;)
                 if (array_search($field, $this->fields_to_hide) !== FALSE) {
                     continue;
@@ -801,11 +824,28 @@ class table_from_data extends \k1lib\html\table {
                 // Field to insert
                 if (array_search($field, $fields_to_insert) !== FALSE) {
                     // CLONE the TAG object to apply on each field necessary
-                    $tag_object_copy = clone $tag_object;
+                    if (!$just_replace_attribs) {
+                        $tag_object_copy = clone $tag_object;
+                    } else {
+                        $tag_object_copy = $tag_object;
+                    }
+
                     // IF the value is empty, we have to put the field value on it
                     if (empty($tag_attrib_to_use)) {
                         if (empty($tag_object_copy->get_value())) {
-                            $tag_object_copy->set_value($this->parse_string_value($col_value, $row_index));
+                            $tag_object_childs = $tag_object_copy->get_childs();
+                            if (!empty($tag_object_childs)) {
+//                                echo "childs!  [$row_index][$field] <br>";
+                                foreach ($tag_object_childs as $child_key => $tag_object_child) {
+//                                    echo "$tag_object $tag_object_child <br>";
+                                    $tag_object_child_copy = clone $tag_object_child;
+                                    $this->insert_tag_on_field($tag_object_child_copy, $fields_to_insert, $tag_attrib_to_use, $append, $respect_blanks, TRUE, $row_index);
+                                    $tag_object_copy->replace_child($child_key, $tag_object_child_copy);
+//                                    echo "$tag_object_copy $tag_object_child_copy <br>";
+                                }
+                            } else {
+                                $tag_object_copy->set_value($this->parse_string_value($col_value, $row_index));
+                            }
                         } else {
                             $tag_object_copy->set_value($this->parse_string_value($tag_object_copy->get_value(), $row_index));
                         }
@@ -818,8 +858,14 @@ class table_from_data extends \k1lib\html\table {
                         }
                         $tag_object_copy->set_attrib($attribute, $this->parse_string_value($value, $row_index));
                     }
-                    $this->data[$row_index][$field] = $tag_object_copy;
+                    if (!$just_replace_attribs) {
+                        $this->data[$row_index][$field] = $tag_object_copy;
+                    }
                 }
+            }
+            if ($just_this_row !== NULL && $just_this_row == $row_index) {
+//                echo "END child: $just_this_row <br>";
+                break;
             }
         }
         return $this;
@@ -827,13 +873,13 @@ class table_from_data extends \k1lib\html\table {
 
     protected function parse_string_value($value, $row) {
         foreach ($this->get_fields_on_string($value) as $field) {
-            if (isset($this->data[$row][$field])) {
+            if (array_key_exists($field, $this->data_original[$row])) {
                 /**
                  * AUTH-CODE 
                  */
                 $key_array = [];
                 foreach ($this->fields_for_key_array_text as $field_for_key_array_text) {
-                    $key_array[] = $this->data[$row][$field_for_key_array_text];
+                    $key_array[] = $this->data_original[$row][$field_for_key_array_text];
                 }
                 $key_array_text = implode("--", $key_array);
                 if (!empty($key_array_text)) {
@@ -848,7 +894,32 @@ class table_from_data extends \k1lib\html\table {
                  * {{field:NAME}}
                  */
                 $field_tag = "{{field:" . $field . "}}";
-                $value = str_replace($field_tag, $this->data[$row][$field], $value);
+                $value = str_replace($field_tag, urlencode($this->data_original[$row][$field]), $value);
+            }
+        }
+        foreach ($this->get_raw_fields_on_string($value) as $field) {
+            if (array_key_exists($field, $this->data_original[$row])) {
+                /**
+                 * AUTH-CODE 
+                 */
+                $key_array = [];
+                foreach ($this->fields_for_key_array_text as $field_for_key_array_text) {
+                    $key_array[] = $this->data_original[$row][$field_for_key_array_text];
+                }
+                $key_array_text = implode("--", $key_array);
+                if (!empty($key_array_text)) {
+                    $auth_code = md5(\k1lib\K1MAGIC::get_value() . $key_array_text);
+                } else {
+                    $auth_code = NULL;
+                }
+                if (strstr($value, "--authcode--") !== FALSE) {
+                    $value = str_replace("--authcode--", $auth_code, $value);
+                }
+                /**
+                 * {{field:NAME}}
+                 */
+                $field_tag = "{{field-raw:" . $field . "}}";
+                $value = str_replace($field_tag, $this->data_original[$row][$field], $value);
             }
         }
         return $value;
@@ -856,6 +927,18 @@ class table_from_data extends \k1lib\html\table {
 
     protected function get_fields_on_string($value) {
         $pattern = "/{{field:(\w+)}}/";
+        $matches = [];
+        $fields = [];
+        if (preg_match_all($pattern, $value, $matches)) {
+            foreach ($matches[1] as $field) {
+                $fields[] = $field;
+            }
+        }
+        return $fields;
+    }
+
+    protected function get_raw_fields_on_string($value) {
+        $pattern = "/{{field-raw:(\w+)}}/";
         $matches = [];
         $fields = [];
         if (preg_match_all($pattern, $value, $matches)) {
@@ -982,6 +1065,7 @@ class grid_row extends \k1lib\html\div {
     public function col($col_number) {
         return $this->cell($col_number);
     }
+
     /**
      * @param integer $col_number
      * @return \k1lib\html\foundation\grid_cell
