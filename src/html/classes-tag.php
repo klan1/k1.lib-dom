@@ -1454,7 +1454,7 @@ class head extends tag {
      */
     function append_title() {
         $this->title = new title();
-        $this->append_child_head($this->title);
+        $this->append_child($this->title);
         return $this->title;
     }
 
