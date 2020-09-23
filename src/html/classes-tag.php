@@ -407,6 +407,7 @@ class tag {
      * @return tag 
      */
     public function append_to($html_object) {
+        $this->set_parent($html_object);
         $html_object->append_child($this);
         return $this;
     }
@@ -1454,7 +1455,7 @@ class head extends tag {
      */
     function append_title() {
         $this->title = new title();
-        $this->append_child($this->title);
+        $this->append_child_head($this->title);
         return $this->title;
     }
 
