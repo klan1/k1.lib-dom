@@ -155,7 +155,6 @@ trait foundation_methods {
     public function get_large() {
         return $this->large;
     }
-
 }
 
 class bar extends \k1lib\html\div {
@@ -201,7 +200,6 @@ class bar extends \k1lib\html\div {
         }
         return $this->right;
     }
-
 }
 
 class title_bar extends bar {
@@ -238,7 +236,6 @@ class title_bar extends bar {
     public function left_button() {
         return $this->left_button;
     }
-
 }
 
 class top_bar extends bar {
@@ -275,7 +272,6 @@ class top_bar extends bar {
     public function menu_left() {
         return $this->menu_left;
     }
-
 }
 
 class menu extends \k1lib\html\ul {
@@ -396,7 +392,6 @@ class menu extends \k1lib\html\ul {
             $tag->set_class('active', TRUE);
         }
     }
-
 }
 
 class off_canvas extends \k1lib\html\tag {
@@ -522,7 +517,6 @@ class off_canvas extends \k1lib\html\tag {
         }
         return $this->content;
     }
-
 }
 
 class top_bar_ extends \k1lib\html\tag {
@@ -565,7 +559,6 @@ class top_bar_ extends \k1lib\html\tag {
         $li->append_span("k1lib-title-1");
         $li->append_span("k1lib-title-2");
         $li->append_span("k1lib-title-3");
-
 
         $right = $this->append_div("top-bar-right");
 
@@ -653,7 +646,6 @@ class top_bar_ extends \k1lib\html\tag {
     function get_parent() {
         return $this->parent;
     }
-
 }
 
 class table_from_data extends \k1lib\html\table {
@@ -724,6 +716,10 @@ class table_from_data extends \k1lib\html\table {
     public function generate($with_childs = TRUE, $n_childs = 0) {
         $this->use_data();
         return parent::generate($with_childs, $n_childs);
+    }
+
+    public function set_fields_to_hide($fields) {
+        $this->fields_to_hide = $fields;
     }
 
     public function use_data() {
@@ -976,7 +972,6 @@ class table_from_data extends \k1lib\html\table {
     public function get_float_round() {
         return $this->float_round;
     }
-
 }
 
 class grid_cell extends \k1lib\html\div {
@@ -1023,7 +1018,6 @@ class grid_cell extends \k1lib\html\div {
         $row = new grid_row($num_cols, ++$this->row_number, $this);
         return $row;
     }
-
 }
 
 class grid_row extends \k1lib\html\div {
@@ -1096,7 +1090,6 @@ class grid_row extends \k1lib\html\div {
         $cell->append_to($this);
         return $cell;
     }
-
 }
 
 class grid extends \k1lib\html\div {
@@ -1160,7 +1153,6 @@ class grid extends \k1lib\html\div {
         $this->rows[++$this->num_rows] = $row;
         return $row;
     }
-
 }
 
 class label_value_row extends grid_row {
@@ -1207,7 +1199,6 @@ class label_value_row extends grid_row {
         }
         return NULL;
     }
-
 }
 
 class callout extends \k1lib\html\div {
@@ -1281,7 +1272,6 @@ class callout extends \k1lib\html\div {
 
         return parent::generate($with_childs, $n_childs);
     }
-
 }
 
 /**
@@ -1393,5 +1383,4 @@ class accordion extends \k1lib\html\ul {
         $this->tabs_content_container->append_to($html_object);
         return $this;
     }
-
 }
