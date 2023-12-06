@@ -16,13 +16,8 @@
     },
     "autoload": {
         "files": [
-            "src/init.php",
-            "src/functions/common.php",
-            "src/functions/tag-aplications.php"
-        ],
-        "psr-4": {
-            "k1lib\\": "src/k1lib/"
-        }
+            "src/init.php"
+        ]
     },
     "require-dev": {
     }
