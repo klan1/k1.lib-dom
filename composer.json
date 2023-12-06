@@ -3,19 +3,16 @@
     "description": "Say good bye to the inline HTML tags as strings on your PHP code!. DOM Classes from K1.lib.",
     "license": "Apache-2.0",
     "type": "library",
+    "version": "0.8.0",
     "homepage": "https://github.com/klan1/k1.lib-dom",
     "authors": [
         {
-            "name": "Klan1 Network",
-            "homepage": "https://klan1.com/ref=k1.lib"
-        },
-        {
-            "name": "Alejandro Trujillo J.",
-            "homepage": "https://klan1.com/ref=k1.lib"
+            "name": "Alejandro Trujillo J. (J0hnd03)",
+            "homepage": "https://github.com/j0hnd03"
         }
     ],
     "require": {
-        "php": "^5.6 | ^7.4"
+        "php": "^7.4"
     },
     "autoload": {
         "files": [
