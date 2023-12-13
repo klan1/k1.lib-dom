@@ -1,4 +1,6 @@
 <?php
+// V1.0
+
 
 /**
  * HTML Related funcions that uses the HTML Classes

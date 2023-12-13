@@ -11,7 +11,7 @@
  * @package klan1/html
  * @link https://github.com/klan1/k1.lib-dom
  * @author Alejandro Trujillo J. - https://github.com/j0hnd03
- * @version 0.8
+ * @version 1.0
  * @since 0.6
  * @license https://github.com/klan1/k1.lib-dom/blob/master/LICENSE Apache License 2.0
  */
