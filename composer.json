@@ -16,7 +16,7 @@
     },
     "autoload": {
         "files": [
-            "src/init.php"
+            "src/loader.php"
         ]
     },
     "require-dev": {
